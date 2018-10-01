@@ -10,10 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181001211904) do
+ActiveRecord::Schema.define(version: 20181001213545) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "companies", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "name"
+    t.text "description"
+    t.string "contact_name"
+    t.string "phone"
+    t.string "email"
+    t.string "address"
+    t.time "init_hour"
+    t.time "final_hour"
+    t.string "fb_id"
+    t.string "fb_access_token"
+    t.boolean "deleted", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_companies_on_user_id"
+  end
 
   create_table "roles", force: :cascade do |t|
     t.string "name"
@@ -46,6 +64,7 @@ ActiveRecord::Schema.define(version: 20181001211904) do
     t.index ["username", "email"], name: "index_users_on_username_and_email", unique: true
   end
 
+  add_foreign_key "companies", "users"
   add_foreign_key "roles_users", "roles"
   add_foreign_key "roles_users", "users"
 end
