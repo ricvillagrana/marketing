@@ -10,10 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181001213545) do
+ActiveRecord::Schema.define(version: 20181001215917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "campaigns", force: :cascade do |t|
+    t.bigint "company_id"
+    t.bigint "community_manager_id"
+    t.string "name"
+    t.text "objective"
+    t.date "init_date"
+    t.date "finish_date"
+    t.text "image"
+    t.boolean "finished"
+    t.boolean "deleted"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["community_manager_id"], name: "index_campaigns_on_community_manager_id"
+    t.index ["company_id"], name: "index_campaigns_on_company_id"
+  end
+
+  create_table "campaigns_users", force: :cascade do |t|
+    t.bigint "campaign_id"
+    t.bigint "user_id"
+    t.index ["campaign_id"], name: "index_campaigns_users_on_campaign_id"
+    t.index ["user_id"], name: "index_campaigns_users_on_user_id"
+  end
 
   create_table "companies", force: :cascade do |t|
     t.bigint "user_id"
@@ -64,6 +87,9 @@ ActiveRecord::Schema.define(version: 20181001213545) do
     t.index ["username", "email"], name: "index_users_on_username_and_email", unique: true
   end
 
+  add_foreign_key "campaigns", "companies"
+  add_foreign_key "campaigns_users", "campaigns"
+  add_foreign_key "campaigns_users", "users"
   add_foreign_key "companies", "users"
   add_foreign_key "roles_users", "roles"
   add_foreign_key "roles_users", "users"
