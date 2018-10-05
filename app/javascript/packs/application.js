@@ -13,6 +13,12 @@ import Vue from 'vue/dist/vue.esm'
 // Import of own components
 import Login from '../components/sessions/Login'
 
+import Reg from '../components/sessions/Register'
+
+// Registration of own components
+Vue.use('login', Login)
+Vue.use('reg', Reg)
+
 // Registration of own components
 Vue.use('login', Login)
 
@@ -23,7 +29,7 @@ document.addEventListener('turbolinks:load', () => {
   const app = new Vue({
     el: '#app',
     components: {
-      Login
+      Login, Reg
     }
   })
 })
