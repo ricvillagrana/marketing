@@ -5,5 +5,5 @@ class MainController < ApplicationController
 
   def register
   end
-
+  
 end
