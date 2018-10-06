@@ -57,3 +57,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Bulma
 gem 'bulma-rails'
+
+# FontAwesome
+gem 'font-awesome-rails'
