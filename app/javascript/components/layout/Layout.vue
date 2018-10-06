@@ -1,7 +1,6 @@
 <template>
   <div>
     <top-bar />
-    <button class="button is-primary">Hola</button>
     <slot></slot>
   </div>
 </template>
