@@ -64,5 +64,9 @@ html, body {
 }
 .side-bar {
   padding: 2.5rem;
-  overflow-y: scroll;
+}
+
+.menu-list li a:hover {
+  background-color: #3273dc;
+  color: #fff;
 }

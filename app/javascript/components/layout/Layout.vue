@@ -1,17 +1,21 @@
 <template>
   <div>
     <top-bar />
-    <slot></slot>
+    <side-bar />
+    <div class="column is-main-content">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
 <script>
   import TopBar from './TopBar'
+  import SideBar from './SideBar'
 
   export default {
     name: 'layout',
     components: {
-      TopBar
+      TopBar, SideBar
     }
   }
 </script>
