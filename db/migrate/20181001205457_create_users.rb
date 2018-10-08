@@ -4,12 +4,10 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.string :username
       t.string :name, null: true
       t.string :lastname, null: true
-      t.string :email, null: true
-      t.string :password_digest
       t.text :profile_pic
       t.date :born_date
       t.boolean :deleted
-      
+
       # Facebook data
       t.string :fb_id
       t.string :fb_name
@@ -17,6 +15,6 @@ class CreateUsers < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
-    add_index :users, %i[username email], unique: true
+    add_index :users, %i[username], unique: true
   end
 end
