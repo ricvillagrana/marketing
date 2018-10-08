@@ -5,7 +5,7 @@ class CreateCampaigns < ActiveRecord::Migration[5.1]
       t.references :community_manager
 
       t.string :name
-      t.text :objective
+      t.text :objetive
       t.date :init_date
       t.date :finish_date
       t.text :image

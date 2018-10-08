@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< Updated upstream
 ActiveRecord::Schema.define(version: 20181001215917) do
+=======
+ActiveRecord::Schema.define(version: 20181008183624) do
+>>>>>>> Stashed changes
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +23,7 @@ ActiveRecord::Schema.define(version: 20181001215917) do
     t.bigint "company_id"
     t.bigint "community_manager_id"
     t.string "name"
-    t.text "objective"
+    t.text "objetive"
     t.date "init_date"
     t.date "finish_date"
     t.text "image"
@@ -54,6 +58,16 @@ ActiveRecord::Schema.define(version: 20181001215917) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_companies_on_user_id"
+  end
+
+  create_table "nodes", force: :cascade do |t|
+    t.bigint "node_id"
+    t.bigint "campaign_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["campaign_id"], name: "index_nodes_on_campaign_id"
+    t.index ["node_id"], name: "index_nodes_on_node_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -91,6 +105,8 @@ ActiveRecord::Schema.define(version: 20181001215917) do
   add_foreign_key "campaigns_users", "campaigns"
   add_foreign_key "campaigns_users", "users"
   add_foreign_key "companies", "users"
+  add_foreign_key "nodes", "campaigns"
+  add_foreign_key "nodes", "nodes"
   add_foreign_key "roles_users", "roles"
   add_foreign_key "roles_users", "users"
 end
