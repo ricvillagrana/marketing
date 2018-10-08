@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  publication: one
+  user: one
+  title: MyString
+  content: MyText
+  deadeline: 2018-10-08 16:26:47
+
+two:
+  publication: two
+  user: two
+  title: MyString
+  content: MyText
+  deadeline: 2018-10-08 16:26:47
