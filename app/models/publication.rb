@@ -3,4 +3,5 @@ class Publication < ApplicationRecord
   belongs_to :node
   has_many :log, class_name: 'PublicationLog'
   has_many :tasks
+  has_many :channels
 end
