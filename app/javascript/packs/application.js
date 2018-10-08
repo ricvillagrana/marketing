@@ -7,4 +7,26 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-console.log('Hello World from Webpacker')
+import TurbolinksAdapter from 'vue-turbolinks'
+import Vue from 'vue/dist/vue.esm'
+
+// Import of own components
+import Login from '../components/sessions/Login'
+import Register from '../components/sessions/Register'
+import Layout from '../components/layout/Layout'
+
+// Registration of own components
+Vue.use('login', Login)
+Vue.use('register', Register)
+Vue.use('layout', Layout)
+
+Vue.use(TurbolinksAdapter)
+
+document.addEventListener('turbolinks:load', () => {
+  const app = new Vue({
+    el: '#app',
+    components: {
+      Login, Register, Layout
+    }
+  })
+})

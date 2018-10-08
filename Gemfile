@@ -60,3 +60,8 @@ gem 'bcrypt', '~> 3.1', '>= 3.1.12'
 
 # Devise
 gem 'devise'
+# Bulma
+gem 'bulma-rails'
+
+# FontAwesome
+gem 'font-awesome-rails'
