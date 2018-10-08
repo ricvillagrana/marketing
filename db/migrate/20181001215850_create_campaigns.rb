@@ -10,8 +10,8 @@ class CreateCampaigns < ActiveRecord::Migration[5.1]
       t.date :finish_date
       t.text :image
 
-      t.boolean :finished
-      t.boolean :deleted
+      t.boolean :finished, default: false
+      t.boolean :deleted, default: false
 
       t.timestamps
     end

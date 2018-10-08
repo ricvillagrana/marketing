@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181008195356) do
+ActiveRecord::Schema.define(version: 20181008204105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,29 @@ ActiveRecord::Schema.define(version: 20181008195356) do
     t.index ["node_id"], name: "index_nodes_on_node_id"
   end
 
+  create_table "publication_statuses", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "publications", force: :cascade do |t|
+    t.bigint "publication_status_id"
+    t.bigint "node_id"
+    t.text "content"
+    t.text "image"
+    t.date "publication_date"
+    t.boolean "published", default: false
+    t.string "fb_id"
+    t.integer "likes", default: 0
+    t.integer "shares", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["node_id"], name: "index_publications_on_node_id"
+    t.index ["publication_status_id"], name: "index_publications_on_publication_status_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -128,6 +151,8 @@ ActiveRecord::Schema.define(version: 20181008195356) do
   add_foreign_key "node_users", "users"
   add_foreign_key "nodes", "campaigns"
   add_foreign_key "nodes", "nodes"
+  add_foreign_key "publications", "nodes"
+  add_foreign_key "publications", "publication_statuses"
   add_foreign_key "roles_users", "roles"
   add_foreign_key "roles_users", "users"
 end

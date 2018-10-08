@@ -4,14 +4,14 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.string :username
       t.string :name, null: true
       t.string :lastname, null: true
-      t.text :profile_pic
+      t.text :image
       t.date :born_date
       t.boolean :deleted
 
       # Facebook data
       t.string :fb_id
       t.string :fb_name
-      t.string :fb_profile_pic
+      t.string :fb_image
 
       t.timestamps
     end
