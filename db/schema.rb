@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181008183624) do
+ActiveRecord::Schema.define(version: 20181008195356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,18 @@ ActiveRecord::Schema.define(version: 20181008183624) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_companies_on_user_id"
+  end
+
+  create_table "node_users", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "granter_id"
+    t.bigint "role_id"
+    t.bigint "node_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["node_id"], name: "index_node_users_on_node_id"
+    t.index ["role_id"], name: "index_node_users_on_role_id"
+    t.index ["user_id"], name: "index_node_users_on_user_id"
   end
 
   create_table "nodes", force: :cascade do |t|
@@ -111,6 +123,9 @@ ActiveRecord::Schema.define(version: 20181008183624) do
   add_foreign_key "campaigns_users", "campaigns"
   add_foreign_key "campaigns_users", "users"
   add_foreign_key "companies", "users"
+  add_foreign_key "node_users", "nodes"
+  add_foreign_key "node_users", "roles"
+  add_foreign_key "node_users", "users"
   add_foreign_key "nodes", "campaigns"
   add_foreign_key "nodes", "nodes"
   add_foreign_key "roles_users", "roles"
