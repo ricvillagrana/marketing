@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181008204105) do
+ActiveRecord::Schema.define(version: 20181008210755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,17 @@ ActiveRecord::Schema.define(version: 20181008204105) do
     t.datetime "updated_at", null: false
     t.index ["campaign_id"], name: "index_nodes_on_campaign_id"
     t.index ["node_id"], name: "index_nodes_on_node_id"
+  end
+
+  create_table "publication_logs", force: :cascade do |t|
+    t.bigint "publication_id"
+    t.bigint "user_id"
+    t.string "content"
+    t.text "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["publication_id"], name: "index_publication_logs_on_publication_id"
+    t.index ["user_id"], name: "index_publication_logs_on_user_id"
   end
 
   create_table "publication_statuses", force: :cascade do |t|
@@ -151,6 +162,8 @@ ActiveRecord::Schema.define(version: 20181008204105) do
   add_foreign_key "node_users", "users"
   add_foreign_key "nodes", "campaigns"
   add_foreign_key "nodes", "nodes"
+  add_foreign_key "publication_logs", "publications"
+  add_foreign_key "publication_logs", "users"
   add_foreign_key "publications", "nodes"
   add_foreign_key "publications", "publication_statuses"
   add_foreign_key "roles_users", "roles"
