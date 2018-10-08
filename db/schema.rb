@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181008210755) do
+ActiveRecord::Schema.define(version: 20181008213506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,17 @@ ActiveRecord::Schema.define(version: 20181008210755) do
     t.index ["node_id"], name: "index_nodes_on_node_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "task_id"
+    t.integer "reciever_id"
+    t.integer "sender_id"
+    t.text "message"
+    t.boolean "seen", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["task_id"], name: "index_notifications_on_task_id"
+  end
+
   create_table "publication_logs", force: :cascade do |t|
     t.bigint "publication_id"
     t.bigint "user_id"
@@ -126,6 +137,19 @@ ActiveRecord::Schema.define(version: 20181008210755) do
     t.index ["user_id"], name: "index_roles_users_on_user_id"
   end
 
+  create_table "tasks", force: :cascade do |t|
+    t.bigint "publication_id"
+    t.bigint "user_id"
+    t.integer "creator_id"
+    t.string "title"
+    t.text "content"
+    t.datetime "deadeline"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["publication_id"], name: "index_tasks_on_publication_id"
+    t.index ["user_id"], name: "index_tasks_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "name"
@@ -162,10 +186,13 @@ ActiveRecord::Schema.define(version: 20181008210755) do
   add_foreign_key "node_users", "users"
   add_foreign_key "nodes", "campaigns"
   add_foreign_key "nodes", "nodes"
+  add_foreign_key "notifications", "tasks"
   add_foreign_key "publication_logs", "publications"
   add_foreign_key "publication_logs", "users"
   add_foreign_key "publications", "nodes"
   add_foreign_key "publications", "publication_statuses"
   add_foreign_key "roles_users", "roles"
   add_foreign_key "roles_users", "users"
+  add_foreign_key "tasks", "publications"
+  add_foreign_key "tasks", "users"
 end
