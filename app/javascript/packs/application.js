@@ -9,6 +9,7 @@
 
 import TurbolinksAdapter from 'vue-turbolinks'
 import Vue from 'vue/dist/vue.esm'
+import Notifications from 'vue-notification'
 
 // Import of own components
 import Login from '../components/sessions/Login'
@@ -21,6 +22,7 @@ Vue.use('register', Register)
 Vue.use('layout', Layout)
 
 Vue.use(TurbolinksAdapter)
+Vue.use(Notifications)
 
 document.addEventListener('turbolinks:load', () => {
   const app = new Vue({

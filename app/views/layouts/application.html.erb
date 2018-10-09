@@ -11,10 +11,15 @@
   </head>
 
   <body>
-    <div id="app">
-      <layout>
+    <div id="app" class="h-100 container-fluid">
+      <notifications group="app" position="bottom right" width="350px"></notifications>
+      <% if user_signed_in? %>
+        <layout :alert="'<%= alert %>'" :notice="'<%= notice %>'" :user="<%= current_user.to_json(include: :roles) %>">
+          <%= yield %>
+        </layout>
+      <% else %>
         <%= yield %>
-      </layout>
+      <% end %>
     </div>
   </body>
 </html>
