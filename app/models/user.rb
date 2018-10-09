@@ -17,4 +17,8 @@ class User < ApplicationRecord
 
   has_many :notifications, class_name: 'Notification', foreign_key: 'reciever_id'
   has_many :notifications_sended, class_name: 'Notification', foreign_key: 'sender_id'
+
+  def self.fullname
+    "#{self.name} #{self.lastname}"
+  end
 end

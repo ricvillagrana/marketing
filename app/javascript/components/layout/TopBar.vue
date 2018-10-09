@@ -17,14 +17,14 @@
         <div class="navbar-start">
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
-              Nombre de 
+              {{ user.name }} {{ user.lastname }}
             </a>
             <div class="navbar-dropdown ">
               <a class="navbar-item ">
                 Perfil
               </a>
               <hr class="navbar-divider">
-              <a class="navbar-item has-text-danger">
+              <a class="navbar-item has-text-danger" data-method="delete" href="/users/sign_out">
                 <i class="fa fa-times"></i>Cerrar sesión
               </a>
             </div>
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
     name: 'top-bar',
     data() {
@@ -52,5 +53,6 @@
         showNavbar: false
       }
     },
+    props: ['user']
   }
 </script>
