@@ -28,26 +28,31 @@
           <td>
             <div class="buttons has-addons">
               <!--<a class="button is-link"><i class="fa fa-eye"></i></a>-->
-              <a class="button is-warning" @click="edit(admin.id)"><i class="fa fa-edit"></i></a>
-              <a class="button is-danger"><i class="fa fa-times"></i></a>
+              <a class="button is-warning" @click="editUser(admin)"><i class="fa fa-edit"></i></a>
+              <a class="button is-danger" @click="deleteUser(admin)"><i class="fa fa-times"></i></a>
             </div>
           </td>
         </tr>
       </tbody>
     </table>
-    <admin-editor :open="editor.open" :id="editor.user_id" @close="editor.open = false"></admin-editor>
+    <admin-editor :open="editOptions.open" :id="editOptions.user_id" @close="editOptions.open = false"></admin-editor>
   </div>
 </template>
 
 <script>
   import AdminEditor from './admins/Editor'
+
   export default {
     name: 'superadmin-admins',
     data() {
       return {
-        editor: {
+        editOptions: {
           open: false,
           user_id: 0
+        },
+        deleteOptions: {
+          open: false,
+          user: null
         }
       }
     },
@@ -56,12 +61,47 @@
       AdminEditor
     },
     methods: {
-      edit: function (user_id) {
-        this.editor.user_id = user_id
-        this.editor.open = true
+      editUser: function ({id}) {
+        this.editOptions.user_id = id
+        this.editOptions.open = true
       },
-      delete: function (user_id) {
-        
+      deleteUser: function (user) {
+        const that = this
+        this.$swal({
+          title: `Se eliminará el usuario ${user.name}`,
+          text: "No se podrá recuprar",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Eliminar',
+          cancelButtonText: 'No, cancelar',
+          cancelButtonColor: 'red',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.value) {
+            this.$swal({
+              title: 'Eliminando...',
+              onOpen: () => that.$swal.showLoading()
+            })
+            this.$axios.delete(`/superadmin/admins/${user.id}`)
+            .then(({data}) => {
+              if (data.status == 200) {
+                that.$swal({
+                  type: 'success',
+                  title: 'Elminado',
+                  text: 'El usuario se eliminó de manera corrects.',
+                })
+              }
+            })
+            .catch(err => {
+              that.$swal({
+                type: 'error',
+                title: 'Error',
+                text: 'No se pudo eliminar al usuario.',
+                footer: `Error: ${err}`
+              })
+            })
+          }
+        })
       }
     }
   }

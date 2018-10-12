@@ -22,6 +22,15 @@ class Superadmin::UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @admin = User.find(params[:id])
+    if @admin.destroy
+      render json: { status: 200 }
+    else
+      render json: { status: 500 }
+    end
+  end
+
   private 
 
   def user_params
