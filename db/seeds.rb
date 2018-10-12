@@ -9,27 +9,33 @@
 Role.create([
   {
     name: 'Súper Admin', 
-    description: 'Administra la aplicación, así como a los demás administradores.' 
+    description: 'Administra la aplicación, así como a los demás administradores.',
+    keyword: 'superadmin'
   },
   {
     name: 'Administrador', 
-    description: 'Administra Empresas, usuarios de las mismas y les asigna un CM' 
+    description: 'Administra Empresas, usuarios de las mismas y les asigna un CM',
+    keyword: 'admin'
   },
   {
     name: 'Community Manager', 
-    description: 'Crea y gestiona campañas, asigna usuarios registrados en la Empresa a las campañas. Generaredes semánticas y publicaciones para las mismas. Publica en Facebook o programa las publicaciones.' 
+    description: 'Crea y gestiona campañas, asigna usuarios registrados en la Empresa a las campañas. Generaredes semánticas y publicaciones para las mismas. Publica en Facebook o programa las publicaciones.',
+    keyword: 'cm'
   },
   {
     name: 'Generador de contenido', 
-    description: 'Crea contenido (text y multimedia si así lo desea) para las publicaciones.' 
+    description: 'Crea contenido (text y multimedia si así lo desea) para las publicaciones.',
+    keyword: 'cg'
   },
   {
     name: 'Diseñador', 
-    description: 'Genera contenido multimedia para las publicaciones.' 
+    description: 'Genera contenido multimedia para las publicaciones.',
+    keyword: 'designer'
   },
   {
     name: 'Cliente',
-    description: 'Puede ver resultados de las campañas.'
+    description: 'Puede ver resultados de las campañas.',
+    keyword: 'client'
   }
   ])
 

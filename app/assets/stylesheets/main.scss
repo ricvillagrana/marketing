@@ -76,6 +76,12 @@ html, body {
   float: left;
 }
 
+.is-notification-counter{
+  margin-top: -10px;
+  margin-left: 10px;
+  position: absolute;
+}
+
 .menu-list li a:hover {
   background-color: #3273dc;
   color: #fff;

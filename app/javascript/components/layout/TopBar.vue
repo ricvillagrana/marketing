@@ -15,6 +15,22 @@
 
       <div class="navbar-menu" :class="{ 'is-active':showNavbar }">
         <div class="navbar-start">
+          
+        </div>
+
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="field is-grouped">
+              <span class="button is-link is-rounded">
+                <i class="fa fa-comment fa-normal"></i>
+                <span class="tag is-warning is-rounded is-notification-counter" v-if="messages > 0">{{ messages }}</span>
+              </span>
+              <span class="button is-link is-rounded">
+                <i class="fa fa-bell fa-normal"></i>
+                <span class="tag is-warning is-rounded is-notification-counter" v-if="notifications > 0">{{ notifications }}</span>
+              </span>
+            </div>
+          </div>
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
               {{ user.name }} {{ user.lastname }}
@@ -30,15 +46,6 @@
             </div>
           </div>
         </div>
-
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <div class="field is-grouped">
-              <p class="control">
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </nav>
   </div>
@@ -50,7 +57,9 @@
     name: 'top-bar',
     data() {
       return {
-        showNavbar: false
+        showNavbar: false,
+        notifications: 5,
+        messages: 1
       }
     },
     props: ['user']

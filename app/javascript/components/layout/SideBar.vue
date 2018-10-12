@@ -4,24 +4,56 @@
       <p class="menu-label">
         Roles
       </p>
-      <ul class="menu-list">
-        <li v-for="(role, key) in roles" :key="key"><a>{{ role.name }}</a></li>
-      </ul>
-      <p class="menu-label">
-        General
-      </p>
-      <ul class="menu-list">
-        <li><a>Dashboard</a></li>
-        <li><a>Customers</a></li>
-      </ul>
-      <p class="menu-label">
-        Transactions
-      </p>
-      <ul class="menu-list">
-        <li><a>Payments</a></li>
-        <li><a>Transfers</a></li>
-        <li><a>Balance</a></li>
-      </ul>
+      <div class="tags">
+        <span class="tag is-link" v-for="(role, key) in roles" :key="key">{{ role.name }}</span>
+      </div>
+      <div v-if="roles.filter(role => role.id == 1).length !== 0">
+        <p class="menu-label">
+          Súper admin
+        </p>
+        <ul class="menu-list">
+          <li><a href="/superadmin/admins">Gestionar Administradores</a></li>
+          <li><a>Gestionar Empresas</a></li>
+        </ul>
+      </div>
+      <div v-if="roles.filter(role => role.id == 2).length !== 0">
+        <p class="menu-label">
+          Administrador
+        </p>
+        <ul class="menu-list">
+          <li><a>Empresas</a></li>
+          <li><a>Campañas</a></li>
+          <li><a>Publicaciones</a></li>
+          <li><a>Usuarios</a></li>
+        </ul>
+      </div>
+      <div v-if="roles.filter(role => role.id == 3).length !== 0">
+        <p class="menu-label">
+          Community Manager
+        </p>
+        <ul class="menu-list">
+          <li><a>Publicaciones</a></li>
+          <li><a>Campañas</a></li>
+        </ul>
+      </div>
+      <div v-if="roles.filter(role => role.id == 4).length !== 0">
+        <p class="menu-label">
+          Generador de contenido
+        </p>
+        <ul class="menu-list">
+          <li><a>Publicaciones</a></li>
+          <li><a>Campañas</a></li>
+        </ul>
+      </div>
+      <div v-if="roles.filter(role => role.id == 5).length !== 0">
+        <p class="menu-label">
+          Diseñador
+        </p>
+        <ul class="menu-list">
+          <li><a>Publicaciones</a></li>
+          <li><a>Campañas</a></li>
+        </ul>
+      </div>
     </aside>
   </div>
 </template>

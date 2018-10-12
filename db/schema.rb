@@ -146,9 +146,11 @@ ActiveRecord::Schema.define(version: 20181012145748) do
 
   create_table "roles", force: :cascade do |t|
     t.string "name"
+    t.string "keyword"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["keyword"], name: "index_roles_on_keyword", unique: true
   end
 
   create_table "roles_users", force: :cascade do |t|
