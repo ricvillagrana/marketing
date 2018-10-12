@@ -7,7 +7,7 @@
       <div class="tags">
         <span class="tag is-link" v-for="(role, key) in roles" :key="key">{{ role.name }}</span>
       </div>
-      <div v-if="roles.filter(role => role.id == 1).length !== 0">
+      <div v-if="roles.filter(role => role.keyword === 'superadmin').length !== 0">
         <p class="menu-label">
           Súper admin
         </p>
@@ -16,7 +16,7 @@
           <li><a>Gestionar Empresas</a></li>
         </ul>
       </div>
-      <div v-if="roles.filter(role => role.id == 2).length !== 0">
+      <div v-if="roles.filter(role => role.keyword === 'admin').length !== 0">
         <p class="menu-label">
           Administrador
         </p>
@@ -27,7 +27,7 @@
           <li><a>Usuarios</a></li>
         </ul>
       </div>
-      <div v-if="roles.filter(role => role.id == 3).length !== 0">
+      <div v-if="roles.filter(role => role.keyword === 'cm').length !== 0">
         <p class="menu-label">
           Community Manager
         </p>
@@ -36,7 +36,7 @@
           <li><a>Campañas</a></li>
         </ul>
       </div>
-      <div v-if="roles.filter(role => role.id == 4).length !== 0">
+      <div v-if="roles.filter(role => role.keyword === 'cg').length !== 0">
         <p class="menu-label">
           Generador de contenido
         </p>
@@ -45,9 +45,18 @@
           <li><a>Campañas</a></li>
         </ul>
       </div>
-      <div v-if="roles.filter(role => role.id == 5).length !== 0">
+      <div v-if="roles.filter(role => role.keyword === 'designer').length !== 0">
         <p class="menu-label">
           Diseñador
+        </p>
+        <ul class="menu-list">
+          <li><a>Publicaciones</a></li>
+          <li><a>Campañas</a></li>
+        </ul>
+      </div>
+      <div v-if="roles.filter(role => role.keyword === 'client').length !== 0">
+        <p class="menu-label">
+          Revisión
         </p>
         <ul class="menu-list">
           <li><a>Publicaciones</a></li>

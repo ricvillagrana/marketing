@@ -1,5 +1,6 @@
 <template>
   <div>
+    <button class="button is-link is-rounded is-pulled-right" @click="addOptions.open = true"><i class="fa fa-plus"></i>Invitar Administrador</button>
     <p class="title is-2">Administradores</p>
     <table class="table is-bordered is-striped is-hoverable is-fullwidth">
       <thead>
@@ -35,32 +36,48 @@
         </tr>
       </tbody>
     </table>
-    <admin-editor :open="editOptions.open" :id="editOptions.user_id" @close="editOptions.open = false"></admin-editor>
+    <admin-editor
+      :open="editOptions.open" 
+      :id="editOptions.user_id" 
+      @close="editOptions.open = false" 
+      @update-users="fetchAdmins"></admin-editor>
+    <admin-add
+      :open="addOptions.open" 
+      @close="addOptions.open = false" 
+      @update-users="fetchAdmins"></admin-add>
   </div>
 </template>
 
 <script>
   import AdminEditor from './admins/Editor'
+  import AdminAdd from './admins/Add'
 
   export default {
     name: 'superadmin-admins',
     data() {
       return {
+        admins: [],
         editOptions: {
           open: false,
           user_id: 0
         },
-        deleteOptions: {
-          open: false,
-          user: null
+        addOptions: {
+          open: false
         }
       }
     },
-    props: ['admins'],
+    props: ['users'],
+    mounted() {
+      this.admins = this.users
+    },
     components: {
-      AdminEditor
+      AdminEditor, AdminAdd
     },
     methods: {
+      addUser: function () {
+        const that = this
+        this.addOptions.open = true
+      },
       editUser: function ({id}) {
         this.editOptions.user_id = id
         this.editOptions.open = true
@@ -91,6 +108,7 @@
                   text: 'El usuario se eliminó de manera corrects.',
                 })
               }
+              that.fetchAdmins()
             })
             .catch(err => {
               that.$swal({
@@ -101,6 +119,22 @@
               })
             })
           }
+        })
+      },
+      fetchAdmins: function () {
+        const that = this
+        this.$axios.get('/superadmin/admins.json')
+        .then(({data}) => {
+          console.log(data)
+          that.admins = data.admins
+        })
+        .catch(err => {
+          that.$swal({
+            type: 'error',
+            title: 'Error',
+            text: 'No se pudo actualizar la lista de usiarios.',
+            footer: `Error: ${err}`
+          })
         })
       }
     }

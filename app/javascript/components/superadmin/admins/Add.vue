@@ -1,29 +1,17 @@
 <template>
   <app-modal :open='open' @close="$emit('close')">
     <template slot="header">
-      <p class="modal-card-title">Modificando a {{ user.name }} {{ user.lastname }}</p>
+      <p class="modal-card-title">Invitar nuevo administrador.</p>
     </template>
     <template slot="content">
-      <form>
-        <label for="name">Usuario:</label>
-        <input type="text" class="input" name="username" v-model="user.username" />
-
-        <label for="name">Nombre:</label>
-        <input type="text" class="input" name="name" v-model="user.name" />
-
-        <label for="lastname">Apellido:</label>
-        <input type="text" class="input" name="lastname" v-model="user.lastname" />
-
+      <div>
         <label for="email">Correo electrónico:</label>
         <input type="mail" class="input" name="email" v-model="user.email" />
-
-        <label for="brithday">Fecha de nacimiento:</label>
-        <input type="date" class="input" v-model="user.born_date">
-      </form>
+      </div>
     </template>
     <template slot="footer">
       <button class="button is-danger" @click="$emit('close')"><i class="fa fa-times"></i>Cancelar</button>
-      <button class="button is-link" :class="{ 'is-loading' : saving }" @click="save"><i class="fa fa-save"></i>Guardar</button>
+      <button class="button is-link" :class="{ 'is-loading' : saving }" @click="save"><i class="fa fa-plus"></i>Invitar</button>
     </template>
   </app-modal>
 </template>
@@ -32,14 +20,10 @@
   import AppModal from '../../app/AppModal'
   export default {
     components: {AppModal},
-    name: 'admin-editor',
+    name: 'admin-add',
     data() {
       return {
         user: {
-          username: '',
-          name: '',
-          lastname: '',
-          born_date: '',
           email: ''
         },
         saving: false
@@ -51,7 +35,7 @@
         e.preventDefault()
         const that = this
         this.saving = true
-        this.$axios.put(`/superadmin/admins/${this.id}`, this.user)
+        this.$axios.post(`/superadmin/admins`, this.user)
         .then(({data}) => {
           if(data.status === 200){
             that.saving = false
@@ -59,9 +43,19 @@
             that.$swal({
               type: 'success',
               title: 'Guardado',
-              text: `El usuario ${data.user.username} se actualizó correctamente`
+              html: `El link de invitación para el usuario: 
+                <pre><code>${data.link}</code></pre>`
             })
             this.$emit('update-users')
+          } else {
+            that.saving = false
+            console.log(data.errors.email)
+            that.$swal({
+              type: 'error',
+              title: 'Error',
+              text: `El usuario no se pudo crear.`,
+              footer: `Error: email ${data.errors.email[0]}`
+            })
           }
         })
         .catch(err => {
@@ -69,7 +63,7 @@
           that.$swal({
             type: 'error',
             title: 'Error',
-            text: `El usuario no se pudo actualizar`,
+            text: `El usuario no se pudo crear.`,
             footer: `Error ${err}`
           })
         })

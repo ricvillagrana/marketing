@@ -58,8 +58,8 @@
     data() {
       return {
         showNavbar: false,
-        notifications: 5,
-        messages: 1
+        notifications: 0,
+        messages: 0
       }
     },
     props: ['user']
