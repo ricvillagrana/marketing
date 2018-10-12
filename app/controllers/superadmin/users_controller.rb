@@ -25,6 +25,6 @@ class Superadmin::UsersController < ApplicationController
   private 
 
   def user_params
-    params.require(:user).permit(:name, :lastname, :email, :username, :birthday)
+    params.require(:user).permit(:name, :lastname, :email, :username, :born_date)
   end
 end

@@ -23,12 +23,16 @@ import Login from '../components/sessions/Login'
 import Register from '../components/sessions/Register'
 import Layout from '../components/layout/Layout'
 import SuperadminAdmins from '../components/superadmin/Admins'
+import AppModal from '../components/app/AppModal'
 
 // Registration of own components
 Vue.use('login', Login)
 Vue.use('register', Register)
 Vue.use('layout', Layout)
 Vue.use('superadmin-admins', SuperadminAdmins)
+
+// Registration of App components
+Vue.use('app-modal', AppModal)
 
 Vue.use(TurbolinksAdapter)
 Vue.use(Notifications)
@@ -40,7 +44,11 @@ document.addEventListener('turbolinks:load', () => {
   const app = new Vue({
     el: '#app',
     components: {
-      Login, Register, Layout, SuperadminAdmins
+      // Project
+      Login, Register, Layout, SuperadminAdmins,
+      
+      // App
+      AppModal
     }
   })
 })
