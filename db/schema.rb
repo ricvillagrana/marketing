@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181008214853) do
+ActiveRecord::Schema.define(version: 20181012145748) do
 
   create_table "campaigns", force: :cascade do |t|
     t.integer "company_id"
@@ -171,13 +171,21 @@ ActiveRecord::Schema.define(version: 20181008214853) do
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
+  create_table "user_creations", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "creation_token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_creations_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "name"
     t.string "lastname"
     t.text "image"
     t.date "born_date"
-    t.boolean "deleted"
+    t.boolean "deleted", default: false
     t.string "fb_id"
     t.string "fb_name"
     t.string "fb_image"

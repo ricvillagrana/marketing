@@ -1,17 +1,17 @@
 class CreateUsers < ActiveRecord::Migration[5.1]
   def change
     create_table :users do |t|
-      t.string :username
+      t.string :username, null: true
       t.string :name, null: true
       t.string :lastname, null: true
-      t.text :image
-      t.date :born_date
-      t.boolean :deleted
+      t.text :image, null: true
+      t.date :born_date, null: true
+      t.boolean :deleted, default: false
 
       # Facebook data
-      t.string :fb_id
-      t.string :fb_name
-      t.string :fb_image
+      t.string :fb_id, null: true
+      t.string :fb_name, null: true
+      t.string :fb_image, null: true
 
       t.timestamps
     end
