@@ -44,7 +44,7 @@
               html: `El link de invitación para el usuario: 
                 <pre><code>${data.link}</code></pre>`
             })
-            this.$emit('update-users')
+            that.$emit('update-users')
           } else {
             that.saving = false
             that.$swal({

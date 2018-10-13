@@ -13,7 +13,7 @@
         </p>
         <ul class="menu-list">
           <li><a href="/superadmin/admins">Gestionar Administradores</a></li>
-          <li><a>Gestionar Empresas</a></li>
+          <li><a href="/superadmin/companies">Gestionar Empresas</a></li>
         </ul>
       </div>
       <div v-if="roles.filter(role => role.keyword === 'admin').length !== 0">

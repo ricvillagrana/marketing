@@ -1,64 +1,65 @@
 <template>
   <div>
-    <button class="button is-link is-rounded is-pulled-right" @click="addOptions.open = true"><i class="fa fa-plus"></i>Invitar Administrador</button>
-    <p class="title is-2">Administradores</p>
-    <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+    <button class="button is-link is-rounded is-pulled-right" @click="addOptions.open = true"><i class="fa fa-plus"></i>Añadir Empresa</button>
+    <p class="title is-2">Empresas</p>
+    <div v-if="companies.length === 0">
+      <p class="title is-3">No hay empresas registrades.</p>
+    </div>
+    <table v-else class="table is-bordered is-striped is-hoverable is-fullwidth">
       <thead>
         <tr class="has-text-weight-bold">
-          <!--<td>Imagen</td>-->
           <td>Nombre</td>
-          <td>Apellido</td>
-          <td>Usuario</td>
-          <td>Correo electŕonico</td>
-          <td>Se unió</td>
-          <td>Estatus</td>
+          <td>Administrador</td>
+          <td>Descripción</td>
+          <td>Nombre de contacto</td>
+          <td>Teléfono</td>
+          <td>Correo electrónico</td>
+          <td>Dirección</td>
+          <td>Horarios</td>
           <td>Opciones</td>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(admin, key) in admins" :key="key">
-          <!--<td>
-            <figure>
-              <img :src="admin.image" :alt="admin.name" class="image is-32x32" />
-            </figure>
-          </td>-->
-          <td>{{ admin.name }}</td>
-          <td>{{ admin.lastname }}</td>
-          <td>{{ admin.username }}</td>
-          <td>{{ admin.email }}</td>
-          <td>{{ $datetime(admin.created_at) }}</td>
-          <td @click="showLink(`${base_url}/invited/${admin.user_creation.creation_token}`)">{{ admin.user_creation ? 'Link de invitación' : '' }}</td>
+        <tr v-for="(company, key) in companies" :key="key">
+          <td>{{ company.name }}</td>
+          <td>{{ company.description }}</td>
+          <td>{{ company.admin ? company.admin.name : '[Sin asignar]' }}</td>
+          <td>{{ company.contact_name }}</td>
+          <td>{{ company.phone }}</td>
+          <td>{{ company.email }}</td>
+          <td>{{ company.address }}</td>
+          <td>De {{ $time(company.init_hour) }} a {{ $time(company.final_hour) }}</td>
           <td>
             <div class="buttons has-addons">
               <!--<a class="button is-link"><i class="fa fa-eye"></i></a>-->
-              <a class="button is-warning" @click="editUser(admin)"><i class="fa fa-edit"></i></a>
-              <a class="button is-danger" @click="deleteUser(admin)"><i class="fa fa-times"></i></a>
+              <a class="button is-warning" @click="editUser(company)"><i class="fa fa-edit"></i></a>
+              <a class="button is-danger" @click="deleteUser(company)"><i class="fa fa-times"></i></a>
             </div>
           </td>
         </tr>
       </tbody>
     </table>
-    <admin-editor
+    <!--<company-editor
       :open="editOptions.open" 
       :id="editOptions.user_id" 
       @close="editOptions.open = false" 
-      @update-users="fetchAdmins"></admin-editor>
-    <admin-add
+      @update-companies="fetchCompanies"></company-editor>-->
+    <company-add
       :open="addOptions.open" 
       @close="addOptions.open = false" 
-      @update-users="fetchAdmins"></admin-add>
+      @update-companies="fetchCompanies"></company-add>
   </div>
 </template>
 
 <script>
-  import AdminEditor from './admins/Editor'
-  import AdminAdd from './admins/Add'
+  //import CompanyEditor from './companies/Editor'
+  import CompanyAdd from './companies/Add'
 
   export default {
-    name: 'superadmin-admins',
+    name: 'superadmin-companies',
     data() {
       return {
-        admins: [],
+        companies: [],
         editOptions: {
           open: false,
           user_id: 0
@@ -71,24 +72,25 @@
     },
     props: ['users'],
     mounted() {
-      this.fetchAdmins()
+      this.fetchCompanies()
     },
     components: {
-      AdminEditor, AdminAdd
+     // CompanyEditor, 
+     CompanyAdd
     },
     methods: {
-      addUser: function () {
+      addCompany: function () {
         const that = this
         this.addOptions.open = true
       },
-      editUser: function ({id}) {
+      editCompany: function ({id}) {
         this.editOptions.user_id = id
         this.editOptions.open = true
       },
-      deleteUser: function (user) {
+      deleteCompany: function (company) {
         const that = this
         this.$swal({
-          title: `Se eliminará el usuario ${user.name}`,
+          title: `Se eliminará el usuario ${company.name}`,
           text: "No se podrá recuprar",
           type: 'warning',
           showCancelButton: true,
@@ -102,7 +104,7 @@
               title: 'Eliminando...',
               onOpen: () => that.$swal.showLoading()
             })
-            this.$axios.delete(`/superadmin/admins/${user.id}`)
+            this.$axios.delete(`/superadmin/companies/${company.id}`)
             .then(({data}) => {
               if (data.status == 200) {
                 that.$swal({
@@ -111,7 +113,7 @@
                   text: 'El usuario se eliminó de manera corrects.',
                 })
               }
-              that.fetchAdmins()
+              that.fetchCompanies()
             })
             .catch(err => {
               that.$swal({
@@ -124,18 +126,11 @@
           }
         })
       },
-      showLink: function (link) {
-        this.$swal({
-          type: 'info',
-          title: 'Link de invitación',
-          html: `<pre><code>${link}</code></pre>`
-        })
-      },
-      fetchAdmins: function () {
+      fetchCompanies: function () {
         const that = this
-        this.$axios.get('/superadmin/admins.json')
+        this.$axios.get('/superadmin/companies.json')
         .then(({data}) => {
-          that.admins = data.admins
+          that.companies = data.companies
         })
         .catch(err => {
           that.$swal({
