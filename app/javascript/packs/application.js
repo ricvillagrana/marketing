@@ -36,8 +36,8 @@ Vue.prototype.$datetime = function (datetime) {
 import Login from '../components/sessions/Login'
 import Register from '../components/sessions/Register'
 import Layout from '../components/layout/Layout'
-import SuperadminCompanies from '../components/superadmin/Companies'
-import SuperadminAdmins from '../components/superadmin/Admins'
+import SuperadminCompanies from '../components/superadmin/companies'
+import SuperadminAdmins from '../components/superadmin/admins'
 import AppModal from '../components/app/AppModal'
 
 // Registration of own components

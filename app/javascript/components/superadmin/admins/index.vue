@@ -51,8 +51,8 @@
 </template>
 
 <script>
-  import AdminEdit from './admins/Edit'
-  import AdminAdd from './admins/Add'
+  import AdminEdit from './Edit'
+  import AdminAdd from './Add'
 
   export default {
     name: 'superadmin-admins',

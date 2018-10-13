@@ -50,7 +50,7 @@
 </template>
 
 <script>
-  import CompanyForm from './companies/CompanyForm'
+  import CompanyForm from './CompanyForm'
 
   export default {
     name: 'superadmin-companies',
