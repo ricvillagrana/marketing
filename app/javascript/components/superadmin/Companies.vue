@@ -37,21 +37,20 @@
         </tr>
       </tbody>
     </table>
-    <company-edit
+    <company-form
       :open="editOptions.open" 
       :id="editOptions.company_id" 
       @close="editOptions.open = false" 
-      @update-companies="fetchCompanies"></company-edit>
-    <company-add
+      @update-companies="fetchCompanies"></company-form>
+    <company-form
       :open="addOptions.open" 
       @close="addOptions.open = false" 
-      @update-companies="fetchCompanies"></company-add>
+      @update-companies="fetchCompanies"></company-form>
   </div>
 </template>
 
 <script>
-  import CompanyEdit from './companies/Edit'
-  import CompanyAdd from './companies/Add'
+  import CompanyForm from './companies/CompanyForm'
 
   export default {
     name: 'superadmin-companies',
@@ -73,7 +72,7 @@
       this.fetchCompanies()
     },
     components: {
-     CompanyEdit, CompanyAdd
+      CompanyForm
     },
     methods: {
       addCompany: function () {

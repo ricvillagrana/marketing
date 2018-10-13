@@ -79,10 +79,6 @@
     watch: {
       id: function () {
         const that = this
-        this.$swal({
-          title: 'Cargando...',
-          onOpen: () => that.$swal.showLoading()
-        })
         this.$axios.get(`/superadmin/admins/${this.id}`)
         .then(({data}) => {
           that.user.username = data.user.username
