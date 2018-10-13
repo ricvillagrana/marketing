@@ -11,6 +11,7 @@
           <td>Usuario</td>
           <td>Correo electŕonico</td>
           <td>Se unió</td>
+          <td>Estatus</td>
           <td>Opciones</td>
         </tr>
       </thead>
@@ -26,6 +27,7 @@
           <td>{{ admin.username }}</td>
           <td>{{ admin.email }}</td>
           <td>{{ admin.created_at }}</td>
+          <td @click="showLink(`${base_url}/invited/${admin.user_creation.creation_token}`)">{{ admin.user_creation ? 'Link de invitación' : '' }}</td>
           <td>
             <div class="buttons has-addons">
               <!--<a class="button is-link"><i class="fa fa-eye"></i></a>-->
@@ -63,12 +65,13 @@
         },
         addOptions: {
           open: false
-        }
+        },
+        base_url: window.location.origin
       }
     },
     props: ['users'],
     mounted() {
-      this.admins = this.users
+      this.fetchAdmins()
     },
     components: {
       AdminEditor, AdminAdd
@@ -121,11 +124,17 @@
           }
         })
       },
+      showLink: function (link) {
+        this.$swal({
+          type: 'info',
+          title: 'Link de invitación',
+          html: `<pre><code>${link}</code></pre>`
+        })
+      },
       fetchAdmins: function () {
         const that = this
         this.$axios.get('/superadmin/admins.json')
         .then(({data}) => {
-          console.log(data)
           that.admins = data.admins
         })
         .catch(err => {

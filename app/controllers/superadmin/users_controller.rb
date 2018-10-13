@@ -1,10 +1,11 @@
 class Superadmin::UsersController < ApplicationController
+  #before_action :authenticate_user!, except: [:index]
 
   def index
     @admins = Role.where(keyword: 'admin').first.users
     respond_to do |format|
       format.html
-      format.json { render json: { admins: @admins, status: 200 } }
+      format.json { render json: { admins: @admins, status: 200 }, include: :user_creation }
     end
   end
 
@@ -16,7 +17,7 @@ class Superadmin::UsersController < ApplicationController
     if @admin.save
       user_creation.user = @admin
       user_creation.save
-      render json: { user: @admin, link: "#{request.protocol + request.host}/invited/#{user_creation.creation_token}", status: 200 }
+      render json: { user: @admin, link: "#{request.protocol + request.host_with_port}/invited/#{user_creation.creation_token}", status: 200 }
     else
       render json: { errors: @admin.errors, status: 500 }
     end

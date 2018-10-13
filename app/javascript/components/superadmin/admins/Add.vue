@@ -6,12 +6,12 @@
     <template slot="content">
       <div>
         <label for="email">Correo electrónico:</label>
-        <input type="mail" class="input" name="email" v-model="user.email" />
+        <input type="mail" class="input is-medium" name="email" v-model="email" />
       </div>
     </template>
     <template slot="footer">
       <button class="button is-danger" @click="$emit('close')"><i class="fa fa-times"></i>Cancelar</button>
-      <button class="button is-link" :class="{ 'is-loading' : saving }" @click="save"><i class="fa fa-plus"></i>Invitar</button>
+      <button class="button is-link" :class="{ 'is-loading' : saving }" @click="save" :disabled="validEmail"><i class="fa fa-plus"></i>Invitar</button>
     </template>
   </app-modal>
 </template>
@@ -23,9 +23,7 @@
     name: 'admin-add',
     data() {
       return {
-        user: {
-          email: ''
-        },
+        email: '',
         saving: false
       }
     },
@@ -35,7 +33,7 @@
         e.preventDefault()
         const that = this
         this.saving = true
-        this.$axios.post(`/superadmin/admins`, this.user)
+        this.$axios.post(`/superadmin/admins`,{ email: this.email })
         .then(({data}) => {
           if(data.status === 200){
             that.saving = false
@@ -49,7 +47,6 @@
             this.$emit('update-users')
           } else {
             that.saving = false
-            console.log(data.errors.email)
             that.$swal({
               type: 'error',
               title: 'Error',
@@ -68,6 +65,12 @@
           })
         })
         
+      }
+    },
+    computed: {
+      validEmail() {
+        var emailRegEx = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        return !emailRegEx.test(this.email)
       }
     },
     watch: {

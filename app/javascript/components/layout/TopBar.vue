@@ -32,7 +32,7 @@
             </div>
           </div>
           <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
+            <a class="navbar-link menu-name">
               {{ user.name }} {{ user.lastname }}
             </a>
             <div class="navbar-dropdown ">

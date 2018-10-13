@@ -5,5 +5,10 @@ Rails.application.routes.draw do
 
   namespace :superadmin do
     resources :users, path: :admins
-  end 
+  end
+
+
+
+  get '/invited/:creation_token', to: 'invite#edit'
+  put '/invited/:id', to: 'invite#update'
 end

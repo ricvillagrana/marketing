@@ -23,4 +23,9 @@ class User < ApplicationRecord
   def self.fullname
     "#{self.name} #{self.lastname}"
   end
+
+  def self.pending?
+    user_creation != nil
+  end
+
 end
