@@ -38,13 +38,13 @@
       </tbody>
     </table>
     <company-form
-      :open="editOptions.open" 
-      :id="editOptions.company_id" 
-      @close="editOptions.open = false" 
+      :open="editOptions.open"
+      :company_id="editOptions.company_id"
+      @close="editOptions.open = false"
       @update-companies="fetchCompanies"></company-form>
     <company-form
-      :open="addOptions.open" 
-      @close="addOptions.open = false" 
+      :open="addOptions.open"
+      @close="addOptions.open = false"
       @update-companies="fetchCompanies"></company-form>
   </div>
 </template>

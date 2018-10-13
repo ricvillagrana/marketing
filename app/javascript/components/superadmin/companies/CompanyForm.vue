@@ -7,35 +7,38 @@
       <div>
         <label for="name">Nombre de la empresa:</label>
         <input type="text" class="input is-medium" :class="{ 'is-danger': errors.name }" name="name" v-model="company.name" />
-        <span class="has-text-danger is-small">{{ errors.name}}</span><br />
+        <span class="has-text-danger is-small">{{ errors.name }}</span><br />
 
         <label for="description">Descripción:</label>
         <textarea class="textarea is-medium" :class="{ 'is-danger': errors.description }" name="description" v-model="company.description"></textarea>
-        <span class="has-text-danger is-small">{{ errors.description}}</span><br />
+        <span class="has-text-danger is-small">{{ errors.description }}</span><br />
+
+        <label for="user_id">Administrador:</label>
+        <admin-selector @user-selected="company.user_id = $event" :user_id="company.user_id"></admin-selector>
 
         <label for="contact_name">Nombre de contacto:</label>
         <input type="text" class="input is-medium" :class="{ 'is-danger': errors.contact_name }" name="contact_name" v-model="company.contact_name" />
-        <span class="has-text-danger is-small">{{ errors.contact_name}}</span><br />
+        <span class="has-text-danger is-small">{{ errors.contact_name }}</span><br />
 
         <label for="phone">Teléfono:</label>
         <input type="number" class="input is-medium" :class="{ 'is-danger': errors.phone }" name="phone" v-model="company.phone" />
-        <span class="has-text-danger is-small">{{ errors.phone}}</span><br />
+        <span class="has-text-danger is-small">{{ errors.phone }}</span><br />
 
         <label for="email">Correo electrónico:</label>
         <input type="email" class="input is-medium" :class="{ 'is-danger': errors.email }" name="email" v-model="company.email" />
-        <span class="has-text-danger is-small">{{ errors.email}}</span><br />
+        <span class="has-text-danger is-small">{{ errors.email }}</span><br />
 
         <label for="address">Dirección:</label>
         <input type="text" class="input is-medium" :class="{ 'is-danger': errors.address }" name="address" v-model="company.address" />
-        <span class="has-text-danger is-small">{{ errors.address}}</span><br />
+        <span class="has-text-danger is-small">{{ errors.address }}</span><br />
 
         <label for="init_hour">Hora de inicio de labores:</label>
         <input type="time" class="input is-medium" :class="{ 'is-danger': errors.init_hour }" name="init_hour" v-model="company.init_hour" />
-        <span class="has-text-danger is-small">{{ errors.init_hour}}</span><br />
+        <span class="has-text-danger is-small">{{ errors.init_hour }}</span><br />
 
         <label for="final_hour">Hora de final de labores:</label>
         <input type="time" class="input is-medium" :class="{ 'is-danger': errors.final_hour }" name="final_hour" v-model="company.final_hour" />
-        <span class="has-text-danger is-small">{{ errors.final_hour}}</span><br />
+        <span class="has-text-danger is-small">{{ errors.final_hour }}</span><br />
       </div>
     </template>
     <template slot="footer">
@@ -47,13 +50,16 @@
 
 <script>
   import AppModal from '../../app/AppModal'
+  import AdminSelector from './AdminSelector'
+
   export default {
-    components: {AppModal},
+    components: {AppModal, AdminSelector},
     name: 'company-form',
     data() {
       return {
         company: {
           id: '',
+          user_id: '',
           name: '',
           description: '',
           contact_name: '',
@@ -67,13 +73,13 @@
         saving: false
       }
     },
-    props: ['open', 'id'],
+    props: ['open', 'company_id'],
     methods: {
       save: function (e) {
         e.preventDefault()
         const that = this
         this.saving = true
-        if (this.id) {
+        if (this.company_id) {
           this.$axios.put(`/superadmin/companies/${this.company.id}`, { ...this.company })
           .then(({data}) => {
             if(data.status === 200){
@@ -180,11 +186,12 @@
       }
     },
     watch: {
-      id: function () {
+      company_id: function () {
         const that = this
-        this.$axios.get(`/superadmin/companies/${this.id}`)
+        this.$axios.get(`/superadmin/companies/${this.company_id}`)
         .then(({data}) => {
           that.company.id = data.company.id
+          that.company.user_id = data.company.user_id
           that.company.name = data.company.name
           that.company.description = data.company.description
           that.company.contact_name = data.company.contact_name
