@@ -32,8 +32,8 @@
           <td>
             <div class="buttons has-addons">
               <!--<a class="button is-link"><i class="fa fa-eye"></i></a>-->
-              <a class="button is-warning" @click="editUser(company)"><i class="fa fa-edit"></i></a>
-              <a class="button is-danger" @click="deleteUser(company)"><i class="fa fa-times"></i></a>
+              <a class="button is-warning" @click="editCompany(company)"><i class="fa fa-edit"></i></a>
+              <a class="button is-danger" @click="deleteCompany(company)"><i class="fa fa-times"></i></a>
             </div>
           </td>
         </tr>
@@ -90,7 +90,7 @@
       deleteCompany: function (company) {
         const that = this
         this.$swal({
-          title: `Se eliminará el usuario ${company.name}`,
+          title: `Se eliminará la empresa ${company.name}`,
           text: "No se podrá recuprar",
           type: 'warning',
           showCancelButton: true,
@@ -110,7 +110,7 @@
                 that.$swal({
                   type: 'success',
                   title: 'Elminado',
-                  text: 'El usuario se eliminó de manera corrects.',
+                  text: 'La empresa se eliminó de manera correcta.',
                 })
               }
               that.fetchCompanies()
@@ -119,7 +119,7 @@
               that.$swal({
                 type: 'error',
                 title: 'Error',
-                text: 'No se pudo eliminar al usuario.',
+                text: 'No se pudo eliminar la empresa.',
                 footer: `Error: ${err}`
               })
             })

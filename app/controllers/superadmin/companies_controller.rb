@@ -26,16 +26,16 @@ class Superadmin::CompaniesController < ApplicationController
   end
 
   def update
-    @company = User.find(params[:id])
+    @company = Company.find(params[:id])
     if @company.update!(company_params)
-      render json: { user: @company, status: 200 }
+      render json: { company: @company, status: 200 }
     else
       render json: { status: 500 }
     end
   end
 
   def destroy
-    @company = User.find(params[:id])
+    @company = Company.find(params[:id])
     if @company.destroy
       render json: { status: 200 }
     else

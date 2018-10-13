@@ -108,7 +108,7 @@
                 that.$swal({
                   type: 'success',
                   title: 'Elminado',
-                  text: 'El usuario se eliminó de manera corrects.',
+                  text: 'El usuario se eliminó de manera correcta.',
                 })
               }
               that.fetchAdmins()
