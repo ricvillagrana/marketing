@@ -6,6 +6,8 @@ class User < ApplicationRecord
 
   has_and_belongs_to_many :roles
 
+  has_one :user_creation
+
   has_and_belongs_to_many :campaigns
   has_many :companies
 
@@ -21,4 +23,9 @@ class User < ApplicationRecord
   def self.fullname
     "#{self.name} #{self.lastname}"
   end
+
+  def self.pending?
+    user_creation != nil
+  end
+
 end
