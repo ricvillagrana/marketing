@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   namespace :superadmin do
     resources :users, path: :admins
+    resources :companies
   end
 
 

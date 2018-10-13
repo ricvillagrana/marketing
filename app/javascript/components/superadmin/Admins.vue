@@ -26,7 +26,7 @@
           <td>{{ admin.lastname }}</td>
           <td>{{ admin.username }}</td>
           <td>{{ admin.email }}</td>
-          <td>{{ admin.created_at }}</td>
+          <td>{{ $datetime(admin.created_at) }}</td>
           <td @click="showLink(`${base_url}/invited/${admin.user_creation.creation_token}`)">{{ admin.user_creation ? 'Link de invitación' : '' }}</td>
           <td>
             <div class="buttons has-addons">
@@ -108,7 +108,7 @@
                 that.$swal({
                   type: 'success',
                   title: 'Elminado',
-                  text: 'El usuario se eliminó de manera corrects.',
+                  text: 'El usuario se eliminó de manera correcta.',
                 })
               }
               that.fetchAdmins()

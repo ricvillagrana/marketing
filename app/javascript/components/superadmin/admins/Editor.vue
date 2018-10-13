@@ -61,7 +61,7 @@
               title: 'Guardado',
               text: `El usuario ${data.user.username} se actualizó correctamente`
             })
-            this.$emit('update-users')
+            this.$emit('update-companies')
           }
         })
         .catch(err => {

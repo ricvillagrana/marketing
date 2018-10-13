@@ -12,16 +12,31 @@ import Vue from 'vue/dist/vue.esm'
 import Notifications from 'vue-notification'
 import axios from 'axios'
 import swal from 'sweetalert2'
+import moment from 'moment'
 import VCalendar from 'v-calendar'
 import 'v-calendar/lib/v-calendar.min.css';
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$swal = swal;
+Vue.prototype.$moment = moment;
+Vue.prototype.$inputTime = function (time) {
+  return moment(time).utcOffset(0).format('HH:mm:ss')
+}
+Vue.prototype.$time = function (time) {
+  return moment(time).utcOffset(0).format('h:mm:ss A')
+}
+Vue.prototype.$date = function (date) {
+  return moment(date).utcOffset(0).format('YYYY-MM-DD')
+}
+Vue.prototype.$datetime = function (datetime) {
+  return moment(datetime).utcOffset(0).format('DD/MM/YYYY h:mm:ss A')
+}
 
 // Import of own components
 import Login from '../components/sessions/Login'
 import Register from '../components/sessions/Register'
 import Layout from '../components/layout/Layout'
+import SuperadminCompanies from '../components/superadmin/Companies'
 import SuperadminAdmins from '../components/superadmin/Admins'
 import AppModal from '../components/app/AppModal'
 
@@ -30,6 +45,7 @@ Vue.use('login', Login)
 Vue.use('register', Register)
 Vue.use('layout', Layout)
 Vue.use('superadmin-admins', SuperadminAdmins)
+Vue.use('superadmin-companies', SuperadminCompanies)
 
 // Registration of App components
 Vue.use('app-modal', AppModal)
@@ -45,7 +61,9 @@ document.addEventListener('turbolinks:load', () => {
     el: '#app',
     components: {
       // Project
-      Login, Register, Layout, SuperadminAdmins,
+      Login, Register, Layout, 
+      
+      SuperadminAdmins, SuperadminCompanies,
       
       // App
       AppModal
