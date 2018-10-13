@@ -23,7 +23,7 @@ Vue.prototype.$inputTime = function (time) {
   return moment(time).utcOffset(0).format('HH:mm:ss')
 }
 Vue.prototype.$time = function (time) {
-  return moment(time).utcOffset(0).format('h:mm:ss A')
+  return moment(time).utcOffset(0).format('h:mm A')
 }
 Vue.prototype.$date = function (date) {
   return moment(date).utcOffset(0).format('YYYY-MM-DD')
