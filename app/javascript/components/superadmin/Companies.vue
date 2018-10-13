@@ -10,7 +10,6 @@
         <tr class="has-text-weight-bold">
           <td>Nombre</td>
           <td>Administrador</td>
-          <td>Descripción</td>
           <td>Nombre de contacto</td>
           <td>Teléfono</td>
           <td>Correo electrónico</td>
@@ -23,7 +22,6 @@
         <tr v-for="(company, key) in companies" :key="key">
           <td>{{ company.name }}</td>
           <td>{{ company.admin ? company.admin.name : '[Sin asignar]' }}</td>
-          <td>{{ company.description }}</td>
           <td>{{ company.contact_name }}</td>
           <td>{{ company.phone }}</td>
           <td>{{ company.email }}</td>

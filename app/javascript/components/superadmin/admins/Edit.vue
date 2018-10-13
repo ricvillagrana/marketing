@@ -32,7 +32,7 @@
   import AppModal from '../../app/AppModal'
   export default {
     components: {AppModal},
-    name: 'admin-editor',
+    name: 'admin-edit',
     data() {
       return {
         user: {
@@ -61,7 +61,7 @@
               title: 'Guardado',
               text: `El usuario ${data.user.username} se actualizó correctamente`
             })
-            this.$emit('update-companies')
+            that.$emit('update-users')
           }
         })
         .catch(err => {

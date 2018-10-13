@@ -38,11 +38,11 @@
         </tr>
       </tbody>
     </table>
-    <admin-editor
+    <admin-edit
       :open="editOptions.open" 
       :id="editOptions.user_id" 
       @close="editOptions.open = false" 
-      @update-users="fetchAdmins"></admin-editor>
+      @update-users="fetchAdmins"></admin-edit>
     <admin-add
       :open="addOptions.open" 
       @close="addOptions.open = false" 
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-  import AdminEditor from './admins/Editor'
+  import AdminEdit from './admins/Edit'
   import AdminAdd from './admins/Add'
 
   export default {
@@ -74,7 +74,7 @@
       this.fetchAdmins()
     },
     components: {
-      AdminEditor, AdminAdd
+      AdminEdit, AdminAdd
     },
     methods: {
       addUser: function () {
