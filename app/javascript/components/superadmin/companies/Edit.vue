@@ -1,7 +1,7 @@
 <template>
   <app-modal :open='open' @close="$emit('close')">
     <template slot="header">
-      <p class="modal-card-title">Crear nueva empresa.</p>
+      <p class="modal-card-title">Editar empresa {{ company.name }}.</p>
     </template>
     <template slot="content">
       <div>
@@ -40,7 +40,7 @@
     </template>
     <template slot="footer">
       <button class="button is-danger" @click="$emit('close')"><i class="fa fa-times"></i>Cancelar</button>
-      <button class="button is-link" :class="{ 'is-loading' : saving }" @click="save" :disabled="!validate"><i class="fa fa-plus"></i>Crear</button>
+      <button class="button is-link" :class="{ 'is-loading' : saving }" @click="save" :disabled="!validate"><i class="fa fa-save"></i>Guardar</button>
     </template>
   </app-modal>
 </template>
@@ -49,10 +49,11 @@
   import AppModal from '../../app/AppModal'
   export default {
     components: {AppModal},
-    name: 'company-add',
+    name: 'company-edit',
     data() {
       return {
         company: {
+          id: '',
           name: '',
           description: '',
           contact_name: '',
@@ -66,21 +67,21 @@
         saving: false
       }
     },
-    props: ['open'],
+    props: ['open', 'id'],
     methods: {
       save: function (e) {
         e.preventDefault()
         const that = this
         this.saving = true
-        this.$axios.post(`/superadmin/companies`, { ...this.company })
+        this.$axios.put(`/superadmin/companies/${this.company.id}`, { ...this.company })
         .then(({data}) => {
           if(data.status === 200){
             that.saving = false
             that.$emit('close')
             that.$swal({
               type: 'success',
-              title: 'Empresa creada',
-              text: 'Se creó correctamente'
+              title: 'Empresa actualizada',
+              text: 'Se actualizó correctamente'
             })
             that.$emit('update-companies')
           } else {
@@ -88,7 +89,7 @@
             that.$swal({
               type: 'error',
               title: 'Error',
-              text: `No se pude crear la empresa.`,
+              text: `No se pude guardar la empresa.`,
               footer: `Error: admin ${data.errors.admin[0]}`
             })
           }
@@ -98,7 +99,7 @@
           that.$swal({
             type: 'error',
             title: 'Error',
-            text: `No se pude crear la empresa.`,
+            text: `No se pude guardar la empresa.`,
             footer: `Error ${err}`
           })
         }) 
@@ -143,6 +144,32 @@
         if (!final_hour) { this.errors.final_hour = "Debe ser una hora correcta" }
 
         return name && description && contact_name && phone && email && address && init_hour && final_hour
+      }
+    },
+    watch: {
+      id: function () {
+        const that = this
+        this.$axios.get(`/superadmin/companies/${this.id}`)
+        .then(({data}) => {
+          that.company.id = data.company.id
+          that.company.name = data.company.name
+          that.company.description = data.company.description
+          that.company.contact_name = data.company.contact_name
+          that.company.phone = data.company.phone
+          that.company.email = data.company.email
+          that.company.address = data.company.address
+          that.company.init_hour = that.$inputTime(data.company.init_hour)
+          that.company.final_hour = that.$inputTime(data.company.final_hour)
+          this.$swal.close()
+        })
+        .catch(err => {
+          that.$swal({
+            type: 'error',
+            title: 'Error',
+            text: 'No se pudo obtener la información del sevidor.',
+            footer: `Error: ${err}`
+          })
+        })
       }
     }
   }

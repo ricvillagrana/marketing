@@ -16,14 +16,14 @@
           <td>Correo electrónico</td>
           <td>Dirección</td>
           <td>Horarios</td>
-          <td>Opciones</td>
+          <td style="width: 150px;">Opciones</td>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(company, key) in companies" :key="key">
           <td>{{ company.name }}</td>
-          <td>{{ company.description }}</td>
           <td>{{ company.admin ? company.admin.name : '[Sin asignar]' }}</td>
+          <td>{{ company.description }}</td>
           <td>{{ company.contact_name }}</td>
           <td>{{ company.phone }}</td>
           <td>{{ company.email }}</td>
@@ -39,11 +39,11 @@
         </tr>
       </tbody>
     </table>
-    <!--<company-editor
+    <company-edit
       :open="editOptions.open" 
-      :id="editOptions.user_id" 
+      :id="editOptions.company_id" 
       @close="editOptions.open = false" 
-      @update-companies="fetchCompanies"></company-editor>-->
+      @update-companies="fetchCompanies"></company-edit>
     <company-add
       :open="addOptions.open" 
       @close="addOptions.open = false" 
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-  //import CompanyEditor from './companies/Editor'
+  import CompanyEdit from './companies/Edit'
   import CompanyAdd from './companies/Add'
 
   export default {
@@ -62,7 +62,7 @@
         companies: [],
         editOptions: {
           open: false,
-          user_id: 0
+          company_id: 0
         },
         addOptions: {
           open: false
@@ -75,8 +75,7 @@
       this.fetchCompanies()
     },
     components: {
-     // CompanyEditor, 
-     CompanyAdd
+     CompanyEdit, CompanyAdd
     },
     methods: {
       addCompany: function () {
@@ -84,7 +83,7 @@
         this.addOptions.open = true
       },
       editCompany: function ({id}) {
-        this.editOptions.user_id = id
+        this.editOptions.company_id = id
         this.editOptions.open = true
       },
       deleteCompany: function (company) {

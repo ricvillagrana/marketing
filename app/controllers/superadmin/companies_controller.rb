@@ -10,7 +10,7 @@ class Superadmin::CompaniesController < ApplicationController
   def create
     @company = Company.new(company_params)
     if @company.save
-      render json: { user: @company, status: 200 }
+      render json: { company: @company, status: 200 }
     else
       render json: { errors: @company.errors, status: 500 }
     end
@@ -19,7 +19,7 @@ class Superadmin::CompaniesController < ApplicationController
   def show
     @company = Company.find(params[:id])
     if @company
-      render json: { user: @company, status: 200 }
+      render json: { company: @company, status: 200 }
     else
       render json: { status: 500 }
     end

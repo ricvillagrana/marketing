@@ -19,6 +19,9 @@ import 'v-calendar/lib/v-calendar.min.css';
 Vue.prototype.$axios = axios;
 Vue.prototype.$swal = swal;
 Vue.prototype.$moment = moment;
+Vue.prototype.$inputTime = function (time) {
+  return moment(time).utcOffset(0).format('HH:mm:ss')
+}
 Vue.prototype.$time = function (time) {
   return moment(time).utcOffset(0).format('h:mm:ss A')
 }
