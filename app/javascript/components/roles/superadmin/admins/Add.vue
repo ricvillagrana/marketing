@@ -17,7 +17,8 @@
 </template>
 
 <script>
-  import AppModal from '../../app/AppModal'
+  import AppModal from '../../../app/AppModal'
+  
   export default {
     components: {AppModal},
     name: 'admin-add',

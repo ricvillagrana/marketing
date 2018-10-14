@@ -36,19 +36,31 @@ Vue.prototype.$datetime = function (datetime) {
 import Login from '../components/sessions/Login'
 import Register from '../components/sessions/Register'
 import Layout from '../components/layout/Layout'
-import SuperadminCompanies from '../components/superadmin/companies'
-import SuperadminAdmins from '../components/superadmin/admins'
+
+import SuperadminCompanies from '../components/roles/superadmin/companies'
+import SuperadminAdmins from '../components/roles/superadmin/admins'
+
+import AdminCompanies from '../components/roles/admin/companies'
+import AdminCompaniesShow from '../components/roles/admin/companies/show'
+
+// Import of App Components
 import AppModal from '../components/app/AppModal'
+import AppCard from '../components/app/AppCard'
 
 // Registration of own components
 Vue.use('login', Login)
 Vue.use('register', Register)
 Vue.use('layout', Layout)
+
 Vue.use('superadmin-admins', SuperadminAdmins)
 Vue.use('superadmin-companies', SuperadminCompanies)
 
+Vue.use('admin-companies', AdminCompanies)
+Vue.use('admin-companies-show', AdminCompaniesShow)
+
 // Registration of App components
 Vue.use('app-modal', AppModal)
+Vue.use('app-modal', AppCard)
 
 Vue.use(TurbolinksAdapter)
 Vue.use(Notifications)
@@ -64,9 +76,11 @@ document.addEventListener('turbolinks:load', () => {
       Login, Register, Layout, 
       
       SuperadminAdmins, SuperadminCompanies,
+
+      AdminCompanies, AdminCompaniesShow,
       
       // App
-      AppModal
+      AppModal, AppCard
     }
   })
 })

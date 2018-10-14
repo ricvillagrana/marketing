@@ -1,7 +1,7 @@
 <template>
   <app-modal :open='open' @close="$emit('close')">
     <template slot="header">
-      <p class="modal-card-title">Editar empresa {{ company.name }}.</p>
+      <p class="modal-card-title">Empresa {{ company.name }}</p>
     </template>
     <template slot="content">
       <div>
@@ -13,8 +13,10 @@
         <textarea class="textarea is-medium" :class="{ 'is-danger': errors.description }" name="description" v-model="company.description"></textarea>
         <span class="has-text-danger is-small">{{ errors.description }}</span><br />
 
-        <label for="user_id">Administrador:</label>
-        <admin-selector @user-selected="company.user_id = $event" :user_id="company.user_id"></admin-selector>
+        <div v-if="!noChangeAdmin">
+          <label for="user_id">Administrador:</label>
+          <admin-selector @user-selected="company.user_id = $event" :user_id="company.user_id"></admin-selector>
+        </div>
 
         <label for="contact_name">Nombre de contacto:</label>
         <input type="text" class="input is-medium" :class="{ 'is-danger': errors.contact_name }" name="contact_name" v-model="company.contact_name" />
@@ -49,7 +51,7 @@
 </template>
 
 <script>
-  import AppModal from '../../app/AppModal'
+  import AppModal from '../../../app/AppModal'
   import AdminSelector from './AdminSelector'
 
   export default {
@@ -73,7 +75,7 @@
         saving: false
       }
     },
-    props: ['open', 'company_id'],
+    props: ['open', 'company_id', 'noChangeAdmin'],
     methods: {
       save: function (e) {
         e.preventDefault()

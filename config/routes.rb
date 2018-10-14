@@ -8,6 +8,13 @@ Rails.application.routes.draw do
     resources :companies
   end
 
+  namespace :admin do
+    resources :users
+    resources :publications
+    resources :campaigns
+    resources :companies
+  end
+
 
 
   get '/invited/:creation_token', to: 'invite#edit'

@@ -1,47 +1,30 @@
 <template>
   <app-modal :open='open' @close="$emit('close')">
     <template slot="header">
-      <p class="modal-card-title">Modificando a {{ user.name }} {{ user.lastname }}</p>
+      <p class="modal-card-title">Invitar nuevo administrador.</p>
     </template>
     <template slot="content">
-      <form>
-        <label for="name">Usuario:</label>
-        <input type="text" class="input is-medium" name="username" v-model="user.username" />
-
-        <label for="name">Nombre:</label>
-        <input type="text" class="input is-medium" name="name" v-model="user.name" />
-
-        <label for="lastname">Apellido:</label>
-        <input type="text" class="input is-medium" name="lastname" v-model="user.lastname" />
-
+      <div>
         <label for="email">Correo electrónico:</label>
-        <input type="mail" class="input is-medium" name="email" v-model="user.email" />
-
-        <label for="brithday">Fecha de nacimiento:</label>
-        <input type="date" class="input is-medium" v-model="user.born_date">
-      </form>
+        <input type="mail" class="input is-medium" name="email" v-model="email" />
+      </div>
     </template>
     <template slot="footer">
       <button class="button is-danger" @click="$emit('close')"><i class="fa fa-times"></i>Cancelar</button>
-      <button class="button is-link" :class="{ 'is-loading' : saving }" @click="save"><i class="fa fa-save"></i>Guardar</button>
+      <button class="button is-link" :class="{ 'is-loading' : saving }" @click="save" :disabled="validEmail"><i class="fa fa-plus"></i>Invitar</button>
     </template>
   </app-modal>
 </template>
 
 <script>
-  import AppModal from '../../app/AppModal'
+  import AppModal from '../../../app/AppModal'
+  
   export default {
     components: {AppModal},
-    name: 'admin-edit',
+    name: 'campaign-add',
     data() {
       return {
-        user: {
-          username: '',
-          name: '',
-          lastname: '',
-          born_date: '',
-          email: ''
-        },
+        email: '',
         saving: false
       }
     },
@@ -51,7 +34,7 @@
         e.preventDefault()
         const that = this
         this.saving = true
-        this.$axios.put(`/superadmin/admins/${this.id}`, this.user)
+        this.$axios.post(`/admin/campaigns`,{ email: this.email })
         .then(({data}) => {
           if(data.status === 200){
             that.saving = false
@@ -59,9 +42,18 @@
             that.$swal({
               type: 'success',
               title: 'Guardado',
-              text: `El usuario ${data.user.username} se actualizó correctamente`
+              html: `El link de invitación para el usuario: 
+                <pre><code>${data.link}</code></pre>`
             })
             that.$emit('update-users')
+          } else {
+            that.saving = false
+            that.$swal({
+              type: 'error',
+              title: 'Error',
+              text: `El usuario no se pudo crear.`,
+              footer: `Error: email ${data.errors.email[0]}`
+            })
           }
         })
         .catch(err => {
@@ -69,16 +61,26 @@
           that.$swal({
             type: 'error',
             title: 'Error',
-            text: `El usuario no se pudo actualizar`,
+            text: `El usuario no se pudo crear.`,
             footer: `Error ${err}`
           })
         })
         
       }
     },
+    computed: {
+      validEmail() {
+        var emailRegEx = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        return !emailRegEx.test(this.email)
+      }
+    },
     watch: {
       id: function () {
         const that = this
+        this.$swal({
+          title: 'Cargando...',
+          onOpen: () => that.$swal.showLoading()
+        })
         this.$axios.get(`/superadmin/admins/${this.id}`)
         .then(({data}) => {
           that.user.username = data.user.username
