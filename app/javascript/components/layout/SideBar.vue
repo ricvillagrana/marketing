@@ -24,7 +24,7 @@
           <li><a>Publicaciones</a></li>
           <li><a>Campañas</a></li>
           <li><a href="/admin/companies">Empresas</a></li>
-          <li><a>Usuarios</a></li>
+          <li><a href="/admin/users">Usuarios</a></li>
         </ul>
       </div>
       <div v-if="roles.filter(role => role.keyword === 'cm').length !== 0">

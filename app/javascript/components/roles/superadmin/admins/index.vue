@@ -38,20 +38,20 @@
         </tr>
       </tbody>
     </table>
-    <admin-edit
+    <user-form
       :open="editOptions.open" 
-      :id="editOptions.user_id" 
+      :user_id="editOptions.user_id" 
       @close="editOptions.open = false" 
-      @update-users="fetchAdmins"></admin-edit>
-    <admin-add
-      :open="addOptions.open" 
+      @update-users="fetchAdmins"></user-form>
+    <user-form
+      :open="addOptions.open"
       @close="addOptions.open = false" 
-      @update-users="fetchAdmins"></admin-add>
+      @update-users="fetchAdmins"></user-form>
   </div>
 </template>
 
 <script>
-  import AdminEdit from './Edit'
+  import UserForm from './UserForm'
   import AdminAdd from './Add'
 
   export default {
@@ -74,7 +74,7 @@
       this.fetchAdmins()
     },
     components: {
-      AdminEdit, AdminAdd
+      UserForm, AdminAdd
     },
     methods: {
       addUser: function () {

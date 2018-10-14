@@ -32,16 +32,21 @@ Vue.prototype.$datetime = function (datetime) {
   return moment(datetime).utcOffset(0).format('DD/MM/YYYY h:mm:ss A')
 }
 
+let token = document.head.querySelector('meta[name="csrf-token"]');
+Vue.prototype.$axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+
 // Import of own components
 import Login from '../components/sessions/Login'
 import Register from '../components/sessions/Register'
 import Layout from '../components/layout/Layout'
 
+// Superadmin
 import SuperadminCompanies from '../components/roles/superadmin/companies'
 import SuperadminAdmins from '../components/roles/superadmin/admins'
-
+// Admin
 import AdminCompanies from '../components/roles/admin/companies'
 import AdminCompaniesShow from '../components/roles/admin/companies/show'
+import AdminUsers from '../components/roles/admin/users'
 
 // Import of App Components
 import AppModal from '../components/app/AppModal'
@@ -51,12 +56,13 @@ import AppCard from '../components/app/AppCard'
 Vue.use('login', Login)
 Vue.use('register', Register)
 Vue.use('layout', Layout)
-
+// Superadmin
 Vue.use('superadmin-admins', SuperadminAdmins)
 Vue.use('superadmin-companies', SuperadminCompanies)
-
+// Admin
 Vue.use('admin-companies', AdminCompanies)
 Vue.use('admin-companies-show', AdminCompaniesShow)
+Vue.use('admin-users', AdminUsers)
 
 // Registration of App components
 Vue.use('app-modal', AppModal)
@@ -77,7 +83,7 @@ document.addEventListener('turbolinks:load', () => {
       
       SuperadminAdmins, SuperadminCompanies,
 
-      AdminCompanies, AdminCompaniesShow,
+      AdminCompanies, AdminCompaniesShow, AdminUsers,
       
       // App
       AppModal, AppCard

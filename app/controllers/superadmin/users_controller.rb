@@ -1,5 +1,5 @@
 class Superadmin::UsersController < ApplicationController
-  #before_action :authenticate_user!, except: [:index]
+  before_action :authenticate_user!
 
   def index
     @admins = Role.where(keyword: 'admin').first.users
@@ -12,7 +12,8 @@ class Superadmin::UsersController < ApplicationController
   def create
     user_creation = UserCreation.new
     user_creation.generate_token
-    @admin = User.new(email: params[:email], password: user_creation.creation_token)
+    @admin = User.new(user_params)
+    @admin.password = user_creation.creation_token
     @admin.roles.append(Role.where(keyword: 'admin'))
     if @admin.save
       user_creation.user = @admin
