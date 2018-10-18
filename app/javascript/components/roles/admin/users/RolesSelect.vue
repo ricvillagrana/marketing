@@ -112,6 +112,12 @@
       roles: function () {
         return this.serverRoles.filter(role => !this.userRoles.map(userRole => userRole.id).includes(role.id))
       }
+    },
+    watch: {
+      user_id: function () {
+        this.fetchServerRoles()
+        this.fetchUserRoles()
+      }
     }
   }
 </script>
