@@ -13,12 +13,12 @@ import Notifications from 'vue-notification'
 import axios from 'axios'
 import swal from 'sweetalert2'
 import moment from 'moment'
-import VCalendar from 'v-calendar'
 import 'v-calendar/lib/v-calendar.min.css';
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$swal = swal;
 Vue.prototype.$moment = moment;
+Vue.prototype.$base_url = window.location.origin
 Vue.prototype.$inputTime = function (time) {
   return moment(time).utcOffset(0).format('HH:mm:ss')
 }
@@ -26,35 +26,50 @@ Vue.prototype.$time = function (time) {
   return moment(time).utcOffset(0).format('h:mm A')
 }
 Vue.prototype.$date = function (date) {
-  return moment(date).utcOffset(0).format('YYYY-MM-DD')
+  return moment(date).utcOffset(0).format('DD/MM/YYYY')
 }
 Vue.prototype.$datetime = function (datetime) {
   return moment(datetime).utcOffset(0).format('DD/MM/YYYY h:mm:ss A')
 }
 
+let token = document.head.querySelector('meta[name="csrf-token"]');
+Vue.prototype.$axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+
 // Import of own components
 import Login from '../components/sessions/Login'
 import Register from '../components/sessions/Register'
 import Layout from '../components/layout/Layout'
-import SuperadminCompanies from '../components/superadmin/Companies'
-import SuperadminAdmins from '../components/superadmin/Admins'
+
+// Superadmin
+import SuperadminCompanies from '../components/roles/superadmin/companies'
+import SuperadminAdmins from '../components/roles/superadmin/admins'
+// Admin
+import AdminCompanies from '../components/roles/admin/companies'
+import AdminCompaniesShow from '../components/roles/admin/companies/show'
+import AdminUsers from '../components/roles/admin/users'
+
+// Import of App Components
 import AppModal from '../components/app/AppModal'
+import AppCard from '../components/app/AppCard'
 
 // Registration of own components
 Vue.use('login', Login)
 Vue.use('register', Register)
 Vue.use('layout', Layout)
+// Superadmin
 Vue.use('superadmin-admins', SuperadminAdmins)
 Vue.use('superadmin-companies', SuperadminCompanies)
+// Admin
+Vue.use('admin-companies', AdminCompanies)
+Vue.use('admin-companies-show', AdminCompaniesShow)
+Vue.use('admin-users', AdminUsers)
 
 // Registration of App components
 Vue.use('app-modal', AppModal)
+Vue.use('app-modal', AppCard)
 
 Vue.use(TurbolinksAdapter)
 Vue.use(Notifications)
-Vue.use(VCalendar, {
-  firstDayOfWeek: 1
-});
 
 document.addEventListener('turbolinks:load', () => {
   const app = new Vue({
@@ -64,9 +79,11 @@ document.addEventListener('turbolinks:load', () => {
       Login, Register, Layout, 
       
       SuperadminAdmins, SuperadminCompanies,
+
+      AdminCompanies, AdminCompaniesShow, AdminUsers,
       
       // App
-      AppModal
+      AppModal, AppCard
     }
   })
 })

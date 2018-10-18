@@ -20,6 +20,9 @@ class User < ApplicationRecord
   has_many :notifications, class_name: 'Notification', foreign_key: 'reciever_id'
   has_many :notifications_sended, class_name: 'Notification', foreign_key: 'sender_id'
 
+  has_many :users
+  belongs_to :admin, class_name: 'User', foreign_key: 'user_id', optional: true
+
   def self.fullname
     "#{self.name} #{self.lastname}"
   end

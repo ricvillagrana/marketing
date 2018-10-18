@@ -53,6 +53,9 @@ html, body {
 .fa {
   margin-right: 5px;
 }
+.fa-0-8x {
+  font-size: 80% !important;
+}
 .fa-normal {
   margin-right: 0px;
 }
@@ -80,6 +83,10 @@ html, body {
   min-width: 170px;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .is-notification-counter{
   margin-top: -10px;
   margin-left: 10px;
@@ -90,4 +97,36 @@ html, body {
   background-color: #3273dc;
   color: #fff;
   transition-duration: 0.2s;
+}
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.columns { // Bulma wrapping
+  flex-wrap: wrap;
+}
+
+
+// App
+.app-card {
+  box-sizing: border-box;
+  background: white;
+  box-shadow: 0 5px 15px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+  border-radius: 4px;
+  transition-duration: 0.2s;
+  &:hover {
+    box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+  }
+}
+.app-card-shadowless {
+  border-color: #ccc;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 0px 0px rgba(50,50,93,.1), 0 0px 0px rgba(0,0,0,.07);
+  &:hover {
+    border-color: #fff;
+    box-shadow: 0 5px 15px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+  }
 }

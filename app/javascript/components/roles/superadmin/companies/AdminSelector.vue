@@ -4,7 +4,7 @@
       <div class="dropdown-trigger">
         <div v-if="selected" class="py-15">
           <strong>{{ selected.name }} {{ selected.lastname }}</strong> - {{ selected.username }}
-          <button class="button is-rounded is-link" @click="editAdmin"><i class="fa fa-edit fa-normal"></i></button>
+          <a @click="editAdmin"><i class="fa fa-pencil fa-normal"></i></a>
         </div>
         <div v-else>
           <input type="text" class="input is-medium" name="user_id" id="search-admin" v-model="words" />

@@ -17,10 +17,11 @@
 </template>
 
 <script>
-  import AppModal from '../../app/AppModal'
+  import AppModal from '../../../app/AppModal'
+  
   export default {
     components: {AppModal},
-    name: 'admin-add',
+    name: 'campaign-add',
     data() {
       return {
         email: '',
@@ -33,7 +34,7 @@
         e.preventDefault()
         const that = this
         this.saving = true
-        this.$axios.post(`/superadmin/admins`,{ email: this.email })
+        this.$axios.post(`/admin/campaigns`,{ email: this.email })
         .then(({data}) => {
           if(data.status === 200){
             that.saving = false
@@ -44,7 +45,7 @@
               html: `El link de invitación para el usuario: 
                 <pre><code>${data.link}</code></pre>`
             })
-            that.$emit('update-users')
+            that.$emit('update-campaign')
           } else {
             that.saving = false
             that.$swal({

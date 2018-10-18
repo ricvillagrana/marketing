@@ -8,6 +8,17 @@ Rails.application.routes.draw do
     resources :companies
   end
 
+  namespace :admin do
+    resources :users
+    get '/users/:id/roles/', to: 'users#roles'
+    put '/users/:id/roles/append', to: 'users#roles_append'
+    delete '/users/:id/roles/remove/:role_id', to: 'users#roles_remove'
+    resources :publications
+    resources :campaigns
+    resources :companies
+  end
+
+  get '/roles', to: 'roles#index'
 
 
   get '/invited/:creation_token', to: 'invite#edit'

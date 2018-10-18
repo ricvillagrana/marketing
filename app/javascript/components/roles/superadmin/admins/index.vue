@@ -27,7 +27,16 @@
           <td>{{ admin.username }}</td>
           <td>{{ admin.email }}</td>
           <td>{{ $datetime(admin.created_at) }}</td>
-          <td @click="showLink(`${base_url}/invited/${admin.user_creation.creation_token}`)">{{ admin.user_creation ? 'Link de invitación' : '' }}</td>
+          <td>
+            <div class="tags has-addons pointer" v-if="!admin.user_creation">
+              <span class="tag">Activo</span>
+              <span class="tag is-success">✔</span>
+            </div>
+            <div class="tags has-addons pointer" @click="showLink(`${$base_url}/invited/${admin.user_creation.creation_token}`)" v-else>
+              <span class="tag">Inactivo</span>
+              <span class="tag is-warning">Link de nvitación</span>
+            </div>
+          </td>
           <td>
             <div class="buttons has-addons">
               <!--<a class="button is-link"><i class="fa fa-eye"></i></a>-->
@@ -38,21 +47,21 @@
         </tr>
       </tbody>
     </table>
-    <admin-edit
+    <user-form
       :open="editOptions.open" 
-      :id="editOptions.user_id" 
+      :user_id="editOptions.user_id" 
       @close="editOptions.open = false" 
-      @update-users="fetchAdmins"></admin-edit>
-    <admin-add
-      :open="addOptions.open" 
+      @update-users="fetchAdmins"></user-form>
+    <user-form
+      :open="addOptions.open"
       @close="addOptions.open = false" 
-      @update-users="fetchAdmins"></admin-add>
+      @update-users="fetchAdmins"></user-form>
   </div>
 </template>
 
 <script>
-  import AdminEdit from './admins/Edit'
-  import AdminAdd from './admins/Add'
+  import UserForm from './UserForm'
+  import AdminAdd from './Add'
 
   export default {
     name: 'superadmin-admins',
@@ -66,7 +75,6 @@
         addOptions: {
           open: false
         },
-        base_url: window.location.origin
       }
     },
     props: ['users'],
@@ -74,7 +82,7 @@
       this.fetchAdmins()
     },
     components: {
-      AdminEdit, AdminAdd
+      UserForm, AdminAdd
     },
     methods: {
       addUser: function () {

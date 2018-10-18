@@ -3,9 +3,9 @@
     <top-bar :user="user"/>
     <div class="columns h-100 side-bar">
       <side-bar :roles="user.roles"/>
-      <div class="column is-main-content">
+      <app-card class="column is-main-content">
         <slot></slot>
-      </div>
+      </app-card>
     </div>
   </div>
 </template>
@@ -13,11 +13,12 @@
 <script>
   import TopBar from './TopBar'
   import SideBar from './SideBar'
+  import AppCard from '../app/AppCard'
 
   export default {
     name: 'layout',
     components: {
-      TopBar, SideBar
+      TopBar, SideBar, AppCard
     },
     props: ['notice', 'alert', 'user'],
     mounted() {

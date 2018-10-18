@@ -1,0 +1,155 @@
+<template>
+  <div>
+    <button class="button is-link is-rounded is-pulled-right" @click="addOptions.open = true"><i class="fa fa-plus"></i>Añadir usuario</button>
+    <p class="title is-2">Usuarios</p>
+    <p v-if="!users">No hay usuarios aún, agrega uno.</p>
+    <table v-else class="table is-bordered is-striped is-hoverable is-fullwidth">
+      <thead>
+        <tr class="has-text-weight-bold">
+          <!--<td>Imagen</td>-->
+          <td>Nombre</td>
+          <td>Apellido</td>
+          <td>Usuario</td>
+          <td>Correo electŕonico</td>
+          <td>Se unió</td>
+          <td>Roles</td>
+          <td>Estatus</td>
+          <td>Opciones</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(user, key) in users" :key="key">
+          <td>{{ user.name }}</td>
+          <td>{{ user.lastname }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ $datetime(user.created_at) }}</td>
+          <td>
+            <div class="tags">
+              <span class="tag is-link" v-for="(role, key) in user.roles" :key="`role-${key}`">{{ role.name }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="tags has-addons pointer" v-if="!user.user_creation">
+              <span class="tag">Activo</span>
+              <span class="tag is-success">✔</span>
+            </div>
+            <div class="tags has-addons pointer" @click="showLink(`${$base_url}/invited/${user.user_creation.creation_token}`)" v-else>
+              <span class="tag">Inactivo</span>
+              <span class="tag is-warning">Link de nvitación</span>
+            </div>
+          </td>
+          <td>
+            <div class="buttons has-addons">
+              <a class="button is-warning" @click="editUser(user)"><i class="fa fa-edit"></i></a>
+              <a class="button is-danger" @click="deleteUser(user)"><i class="fa fa-times"></i></a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <user-form
+      :open="addOptions.open"
+      @close="addOptions.open = false" 
+      @update-user="fetchUsers"></user-form>
+    <user-form
+      :open="editOptions.open"
+      :user_id="editOptions.user_id" 
+      @close="editOptions.open = false" 
+      @update-user="fetchUsers"></user-form>
+  </div>
+</template>
+
+<script>
+  import AppCard from '../../../app/AppCard'
+  import UserForm from './UserForm'
+
+  export default {
+    name: 'admin-users',
+    components: {
+      AppCard, UserForm
+    },
+    data() {
+      return {
+        users: [],
+        addOptions: {
+          open: false
+        },
+        editOptions: {
+          open: false,
+          user_id: 0
+        }
+      }
+    },
+    beforeMount() {
+      this.fetchUsers()
+    },
+    methods: {
+      fetchUsers: function () {
+        const that = this
+        this.$axios.get('/admin/users.json')
+        .then(({data}) => {
+          that.users = data.users
+        })
+        .catch(err => {
+          that.$swal({
+            type: 'error',
+            title: 'Error',
+            text: 'No se pudo actualizar la lista de usuarios.',
+            footer: `Error: ${err}`
+          })
+        })
+      },
+      editUser: function ({id}) {
+        this.editOptions.user_id = id
+        this.editOptions.open = true
+      },
+      deleteUser: function (user) {
+        const that = this
+        this.$swal({
+          title: `Se eliminará el usuario ${user.name}`,
+          text: "No se podrá recuprar",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Eliminar',
+          cancelButtonText: 'No, cancelar',
+          cancelButtonColor: 'red',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.value) {
+            this.$swal({
+              title: 'Eliminando...',
+              onOpen: () => that.$swal.showLoading()
+            })
+            this.$axios.delete(`/superadmin/admins/${user.id}`)
+            .then(({data}) => {
+              if (data.status == 200) {
+                that.$swal({
+                  type: 'success',
+                  title: 'Elminado',
+                  text: 'El usuario se eliminó de manera correcta.',
+                })
+              }
+              that.fetchUsers()
+            })
+            .catch(err => {
+              that.$swal({
+                type: 'error',
+                title: 'Error',
+                text: 'No se pudo eliminar al usuario.',
+                footer: `Error: ${err}`
+              })
+            })
+          }
+        })
+      },
+      showLink: function (link) {
+        this.$swal({
+          type: 'info',
+          title: 'Link de invitación',
+          html: `<pre><code>${link}</code></pre>`
+        })
+      }
+    }
+  }
+</script>

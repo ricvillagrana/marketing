@@ -1,6 +1,6 @@
 <template>
-  <div class="column is-2 is-sidebar-menu is-hidden-mobile">
-    <aside class="menu">
+  <app-card class="column is-2 is-sidebar-menu is-hidden-mobile">
+    <div class="menu">
       <p class="menu-label">
         Roles
       </p>
@@ -21,10 +21,10 @@
           Administrador
         </p>
         <ul class="menu-list">
-          <li><a>Empresas</a></li>
-          <li><a>Campañas</a></li>
           <li><a>Publicaciones</a></li>
-          <li><a>Usuarios</a></li>
+          <li><a>Campañas</a></li>
+          <li><a href="/admin/companies">Empresas</a></li>
+          <li><a href="/admin/users">Usuarios</a></li>
         </ul>
       </div>
       <div v-if="roles.filter(role => role.keyword === 'cm').length !== 0">
@@ -63,12 +63,15 @@
           <li><a>Campañas</a></li>
         </ul>
       </div>
-    </aside>
-  </div>
+    </div>
+  </app-card>
 </template>
 
 <script>
+  import AppCard from '../app/AppCard'
+
   export default {
+    components: {AppCard},
     name: 'sedie-bar',
     props: ['roles']
   }
