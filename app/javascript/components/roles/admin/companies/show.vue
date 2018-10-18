@@ -2,9 +2,9 @@
   <div v-if="company">
     <div>
       <p class="title is-2">
-        <a href="/admin/companies"><i class="fa fa-arrow-left"></i></a>
+        <a href="/admin/companies"><i class="fa fa-arrow-left fa-0-8x"></i></a>
         {{ company.name }}
-        <a class="ml-15" @click="editCompany"><i class="fa fa-pencil"></i></a>
+        <a class="ml-15" @click="editCompany"><i class="fa fa-pencil fa-0-8x"></i></a>
       </p>
       <p class="title is-5">Administrador: {{ company.admin.name }} {{ company.admin.lastname }}</p>
       <table class="table is-bordered is-striped is-fullwidth">
@@ -68,7 +68,7 @@
         company: null,
         editOptions: {
           open: false,
-          company: 0
+          company_id: 0
         }
       }
     },

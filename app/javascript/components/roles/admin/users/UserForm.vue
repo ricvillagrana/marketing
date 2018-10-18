@@ -67,7 +67,7 @@
                 title: 'Guardado',
                 text: `El usuario ${data.user.username} se actualizó correctamente`
               })
-              that.$emit('update-users')
+              that.$emit('update-user')
             }
           })
           .catch(err => {
@@ -91,7 +91,7 @@
                 html: `El link de invitación para el usuario: 
                   <pre><code>${data.link}</code></pre>`
               })
-              that.$emit('update-users')
+              that.$emit('update-user')
             } else {
               that.saving = false
               that.$swal({
@@ -129,7 +129,7 @@
     watch: {
       user_id: function () {
         const that = this
-        this.$axios.get(`/admin/users/${this.user_id}`)
+        this.$axios.get(`/admin/users/${this.user_id}.json`)
         .then(({data}) => {
           that.user.id = data.user.id
           that.user.username = data.user.username

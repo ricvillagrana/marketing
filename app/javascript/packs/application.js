@@ -26,7 +26,7 @@ Vue.prototype.$time = function (time) {
   return moment(time).utcOffset(0).format('h:mm A')
 }
 Vue.prototype.$date = function (date) {
-  return moment(date).utcOffset(0).format('YYYY-MM-DD')
+  return moment(date).utcOffset(0).format('DD/MM/YYYY')
 }
 Vue.prototype.$datetime = function (datetime) {
   return moment(datetime).utcOffset(0).format('DD/MM/YYYY h:mm:ss A')
@@ -47,6 +47,7 @@ import SuperadminAdmins from '../components/roles/superadmin/admins'
 import AdminCompanies from '../components/roles/admin/companies'
 import AdminCompaniesShow from '../components/roles/admin/companies/show'
 import AdminUsers from '../components/roles/admin/users'
+import AdminUsersShow from '../components/roles/admin/users/show'
 
 // Import of App Components
 import AppModal from '../components/app/AppModal'
@@ -63,6 +64,7 @@ Vue.use('superadmin-companies', SuperadminCompanies)
 Vue.use('admin-companies', AdminCompanies)
 Vue.use('admin-companies-show', AdminCompaniesShow)
 Vue.use('admin-users', AdminUsers)
+Vue.use('admin-users-show', AdminUsersShow)
 
 // Registration of App components
 Vue.use('app-modal', AppModal)
@@ -83,7 +85,7 @@ document.addEventListener('turbolinks:load', () => {
       
       SuperadminAdmins, SuperadminCompanies,
 
-      AdminCompanies, AdminCompaniesShow, AdminUsers,
+      AdminCompanies, AdminCompaniesShow, AdminUsers, AdminUsersShow,
       
       // App
       AppModal, AppCard

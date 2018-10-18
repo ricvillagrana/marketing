@@ -25,10 +25,9 @@ class Admin::UsersController < ApplicationController
 
   def show
     @user = current_user.users.find(params[:id])
-    if @user
-      render json: { user: @user, status: 200 }
-    else
-      render json: { status: 500 }
+    respond_to do |format|
+      format.html
+      format.json { render json: { user: @user, status: 200 }, include: :roles }
     end
   end
 
@@ -48,6 +47,27 @@ class Admin::UsersController < ApplicationController
     else
       render json: { status: 500 }
     end
+  end
+
+  def roles
+    user = User.find(params[:id])
+    @roles = user.roles
+    render json: { roles: @roles, status: 500 }
+  end
+
+  def roles_append
+    user = User.find(params[:id])
+    user.roles.append(Role.find(params[:role_id]))
+    user.save
+    render json: { user: user, status: 500 }
+  end
+
+  def roles_remove
+
+    user = User.find(params[:id])
+    user.roles.delete(params[:role_id])
+    user.save
+    render json: { user: user, status: 500 }
   end
 
   private
