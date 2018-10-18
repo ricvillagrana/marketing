@@ -5,7 +5,7 @@ class Admin::UsersController < ApplicationController
     @users = current_user.users
     respond_to do |format|
       format.html
-      format.json { render json: { users: @users, status: 200 }, include: :roles }
+      format.json { render json: { users: @users, status: 200 }, include: [:roles, :user_creation] }
     end
   end
 

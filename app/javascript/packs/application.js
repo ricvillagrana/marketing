@@ -13,12 +13,12 @@ import Notifications from 'vue-notification'
 import axios from 'axios'
 import swal from 'sweetalert2'
 import moment from 'moment'
-import VCalendar from 'v-calendar'
 import 'v-calendar/lib/v-calendar.min.css';
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$swal = swal;
 Vue.prototype.$moment = moment;
+Vue.prototype.$base_url = window.location.origin
 Vue.prototype.$inputTime = function (time) {
   return moment(time).utcOffset(0).format('HH:mm:ss')
 }
@@ -47,7 +47,6 @@ import SuperadminAdmins from '../components/roles/superadmin/admins'
 import AdminCompanies from '../components/roles/admin/companies'
 import AdminCompaniesShow from '../components/roles/admin/companies/show'
 import AdminUsers from '../components/roles/admin/users'
-import AdminUsersShow from '../components/roles/admin/users/show'
 
 // Import of App Components
 import AppModal from '../components/app/AppModal'
@@ -64,7 +63,6 @@ Vue.use('superadmin-companies', SuperadminCompanies)
 Vue.use('admin-companies', AdminCompanies)
 Vue.use('admin-companies-show', AdminCompaniesShow)
 Vue.use('admin-users', AdminUsers)
-Vue.use('admin-users-show', AdminUsersShow)
 
 // Registration of App components
 Vue.use('app-modal', AppModal)
@@ -72,9 +70,6 @@ Vue.use('app-modal', AppCard)
 
 Vue.use(TurbolinksAdapter)
 Vue.use(Notifications)
-Vue.use(VCalendar, {
-  firstDayOfWeek: 1
-});
 
 document.addEventListener('turbolinks:load', () => {
   const app = new Vue({
@@ -85,7 +80,7 @@ document.addEventListener('turbolinks:load', () => {
       
       SuperadminAdmins, SuperadminCompanies,
 
-      AdminCompanies, AdminCompaniesShow, AdminUsers, AdminUsersShow,
+      AdminCompanies, AdminCompaniesShow, AdminUsers,
       
       // App
       AppModal, AppCard

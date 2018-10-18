@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="box mt-25">
     <div class="field is-grouped is-grouped-multiline">
       <div class="control" v-for="(role, key) in userRoles" :key="`role-select-${key}`">
         <div class="tags has-addons">
@@ -11,12 +11,12 @@
     <span>Selecciona un nuevo rol a añadir:</span>
     <div class="dropdown" :class="{ 'is-active' : dropdownActive }">
       <div class="dropdown-trigger">
-        <button class="button is-outlined" aria-haspopup="true" aria-controls="dropdown-menu" @click="dropdownActive = !dropdownActive">
+        <a class="button is-outlined" aria-haspopup="true" aria-controls="dropdown-menu" @click="dropdownActive = !dropdownActive">
           <span>Roles</span>
           <span class="icon is-small">
             <i class="fa fa-angle-down" aria-hidden="true"></i>
           </span>
-        </button>
+        </a>
       </div>
       <div class="dropdown-menu" id="dropdown-menu" role="menu">
         <div class="dropdown-content">

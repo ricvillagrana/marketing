@@ -27,7 +27,16 @@
           <td>{{ admin.username }}</td>
           <td>{{ admin.email }}</td>
           <td>{{ $datetime(admin.created_at) }}</td>
-          <td @click="showLink(`${base_url}/invited/${admin.user_creation.creation_token}`)">{{ admin.user_creation ? 'Link de invitación' : '' }}</td>
+          <td>
+            <div class="tags has-addons pointer" v-if="!admin.user_creation">
+              <span class="tag">Activo</span>
+              <span class="tag is-success">✔</span>
+            </div>
+            <div class="tags has-addons pointer" @click="showLink(`${$base_url}/invited/${admin.user_creation.creation_token}`)" v-else>
+              <span class="tag">Inactivo</span>
+              <span class="tag is-warning">Link de nvitación</span>
+            </div>
+          </td>
           <td>
             <div class="buttons has-addons">
               <!--<a class="button is-link"><i class="fa fa-eye"></i></a>-->
@@ -66,7 +75,6 @@
         addOptions: {
           open: false
         },
-        base_url: window.location.origin
       }
     },
     props: ['users'],

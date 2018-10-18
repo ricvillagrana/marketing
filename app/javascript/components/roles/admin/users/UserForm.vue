@@ -14,6 +14,8 @@
         <label for="lastname">Apellido:</label>
         <input type="text" class="input is-medium" name="lastname" v-model="user.lastname" />
 
+        <roles-select v-if="user.id" :user_id="user.id"></roles-select>
+
         <label for="email">Correo electrónico:</label>
         <input type="mail" class="input is-medium" name="email" v-model="user.email" />
         <span class="has-text-danger is-small">{{ errors.email }}</span><br />
@@ -31,13 +33,17 @@
 
 <script>
   import AppModal from '../../../app/AppModal'
+  import RolesSelect from './RolesSelect'
   
   export default {
-    components: {AppModal},
+    components: {
+      AppModal, RolesSelect
+    },
     name: 'user-form',
     data() {
       return {
         user: {
+          id: null,
           username: '',
           name: '',
           lastname: '',
