@@ -41,11 +41,11 @@
       :open="editOptions.open"
       :company_id="editOptions.company_id"
       @close="editOptions.open = false"
-      @update-companies="fetchCompanies"></company-form>
+      @update-company="fetchCompanies"></company-form>
     <company-form
       :open="addOptions.open"
       @close="addOptions.open = false"
-      @update-companies="fetchCompanies"></company-form>
+      @update-company="fetchCompanies"></company-form>
   </div>
 </template>
 

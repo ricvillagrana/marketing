@@ -92,7 +92,7 @@
                 title: 'Empresa actualizada',
                 text: 'Se actualizó correctamente'
               })
-              that.$emit('update-companies')
+              that.$emit('update-company')
             } else {
               that.saving = false
               that.$swal({
@@ -123,7 +123,7 @@
                 title: 'Empresa creada',
                 text: 'Se creó correctamente'
               })
-              that.$emit('update-companies')
+              that.$emit('update-company')
             } else {
               that.saving = false
               that.$swal({

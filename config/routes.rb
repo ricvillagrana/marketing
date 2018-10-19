@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   devise_for :users
   root 'main#index'
 
@@ -9,13 +8,18 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :companies do
+      resources :campaigns, controller: 'companies/campaigns' do
+        resources :publications, controller: 'companies/campaigns/publications'
+      end
+    end
+
     resources :users
     get '/users/:id/roles/', to: 'users#roles'
     put '/users/:id/roles/append', to: 'users#roles_append'
     delete '/users/:id/roles/remove/:role_id', to: 'users#roles_remove'
-    resources :publications
-    resources :campaigns
-    resources :companies
+
+    get '/community_managers', to: 'users#community_managers'
   end
 
   get '/roles', to: 'roles#index'

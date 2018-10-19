@@ -49,6 +49,7 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  # Roles
   def roles
     user = User.find(params[:id])
     @roles = user.roles
@@ -68,6 +69,15 @@ class Admin::UsersController < ApplicationController
     user.roles.delete(params[:role_id])
     user.save
     render json: { user: user, status: 500 }
+  end
+
+  # Community Manager
+  def community_managers
+    @community_managers = Role.where(keyword: 'cm').first.users.where(admin: current_user)
+    respond_to do |format|
+      format.html
+      format.json { render json: { community_managers: @community_managers, status: 200 } }
+    end
   end
 
   private

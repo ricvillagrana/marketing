@@ -31,12 +31,14 @@
           </tr>
         </tbody>
       </table>
-      <button class="button is-link is-rounded is-pulled-right" @click="addOptions.open = true"><i class="fa fa-plus"></i>Añadir Campaña</button>
-      <p class="title is-4">Campañas</p>
     </div>
-    <div class="columns">
+    <div class="my-15">
+      <button class="button is-link is-rounded is-pulled-right" @click="addOptions.open = true"><i class="fa fa-plus"></i>Añadir Campaña</button>
+      <p class="title is-2">Campañas</p>
+    </div>
+    <div class="columns is-is-fullwidth">
       <div class="column is-4" v-for="(campaign, key) in company.campaigns" :key="key">
-        <app-card>
+        <app-card shadowless="true">
           <p class="title is-4">{{ campaign.name }}</p>
           <div slot="footer" class="flex-end">
             <button class="button is-link is-rounded">Ver</button>
@@ -45,23 +47,31 @@
       </div>
     </div>
 
+    <campaign-form v-if="company"
+      :open="addOptions.open"
+      :noChangeAdmin="true"
+      :company_id="company.id"
+      @close="addOptions.open = false"
+      @update-company="fetchCompany"></campaign-form>
+    
     <company-form v-if="company"
       :open="editOptions.open"
       :company_id="editOptions.company_id"
       :noChangeAdmin="true"
       @close="editOptions.open = false"
-      @update-companies="fetchCompany"></company-form>
+      @update-company="fetchCompany"></company-form>
   </div>
 </template>
 
 <script>
   import AppCard from '../../../app/AppCard'
   import CompanyForm from '../../superadmin/companies/CompanyForm'
+  import CampaignForm from './CampaignForm'
 
   export default {
     name: 'admin-companies',
     components: {
-      AppCard, CompanyForm
+      AppCard, CompanyForm, CampaignForm
     },
     data() {
       return {
@@ -69,6 +79,9 @@
         editOptions: {
           open: false,
           company_id: 0
+        },
+        addOptions: {
+          open: false
         }
       }
     },
