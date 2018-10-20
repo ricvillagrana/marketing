@@ -13,6 +13,8 @@ Rails.application.routes.draw do
         resources :publications, controller: 'companies/campaigns/publications'
       end
     end
+    
+    resources :campaigns
 
     resources :users
     get '/users/:id/roles/', to: 'users#roles'

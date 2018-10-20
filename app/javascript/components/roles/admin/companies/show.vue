@@ -40,8 +40,10 @@
       <div class="column is-4" v-for="(campaign, key) in company.campaigns" :key="key">
         <app-card shadowless="true">
           <p class="title is-4">{{ campaign.name }}</p>
+          <p class="title is-6">Community manager: {{ campaign.community_manager.name }}</p>
+          <p>Objetivo: {{ campaign.objetive }}</p>
           <div slot="footer" class="flex-end">
-            <button class="button is-link is-rounded">Ver</button>
+            <button class="button is-link is-rounded">Ver más</button>
           </div>
         </app-card>
       </div>

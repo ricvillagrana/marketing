@@ -20,7 +20,7 @@ class Admin::CompaniesController < ApplicationController
     @company = current_user.companies.find(params[:id])
     respond_to do |format|
       format.html
-      format.json { render json: { company: @company, status: 200 }, include: [:admin, :campaigns] }
+      format.json { render json: { company: @company, status: 200 }, include: [:admin, campaigns: { include: :community_manager } ] }
     end
   end
 
