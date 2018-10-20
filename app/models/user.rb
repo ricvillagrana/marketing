@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_one :user_creation
 
   has_and_belongs_to_many :campaigns
+  has_many :campaigns_admin, class_name: 'Campaign', foreign_key: 'community_manager_id'
   has_many :companies
 
   has_many :node_user

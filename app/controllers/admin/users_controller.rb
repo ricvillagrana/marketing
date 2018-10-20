@@ -5,7 +5,7 @@ class Admin::UsersController < ApplicationController
     @users = current_user.users
     respond_to do |format|
       format.html
-      format.json { render json: { users: @users, status: 200 }, include: [:roles, :user_creation] }
+      format.json { render json: { users: @users, status: 200 }, include: [:roles, :user_creation, :campaigns, :campaigns_admin] }
     end
   end
 
@@ -42,7 +42,9 @@ class Admin::UsersController < ApplicationController
 
   def destroy
     @user = current_user.users.find(params[:id])
-    if @user.destroy
+    if @user.campaigns.size > 0 or @user.campaigns_admin.size > 0
+      render json: { message: 'No se puede eliminar, tiene campañas asignadas', status: 500 }
+    elsif @user.destroy
       render json: { status: 200 }
     else
       render json: { status: 500 }

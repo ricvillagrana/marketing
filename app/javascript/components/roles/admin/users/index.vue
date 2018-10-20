@@ -8,22 +8,19 @@
         <tr class="has-text-weight-bold">
           <!--<td>Imagen</td>-->
           <td>Nombre</td>
-          <td>Apellido</td>
           <td>Usuario</td>
           <td>Correo electŕonico</td>
-          <td>Se unió</td>
           <td>Roles</td>
           <td>Estatus</td>
+          <td>Campañas</td>
           <td>Opciones</td>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(user, key) in users" :key="key">
-          <td>{{ user.name }}</td>
-          <td>{{ user.lastname }}</td>
-          <td>{{ user.username }}</td>
+          <td>{{ user.name }} {{ user.lastname }}</td>
+          <td>@{{ user.username }}</td>
           <td>{{ user.email }}</td>
-          <td>{{ $datetime(user.created_at) }}</td>
           <td>
             <div class="tags">
               <span class="tag is-link" v-for="(role, key) in user.roles" :key="`role-${key}`">{{ role.name }}</span>
@@ -38,6 +35,10 @@
               <span class="tag">Inactivo</span>
               <span class="tag is-warning">Link de nvitación</span>
             </div>
+          </td>
+          <td>
+            Administra: {{ user.campaigns_admin.length }} <br />
+            Participa: {{ user.campaigns.length }}
           </td>
           <td>
             <div class="buttons has-addons">
@@ -121,13 +122,20 @@
               title: 'Eliminando...',
               onOpen: () => that.$swal.showLoading()
             })
-            this.$axios.delete(`/superadmin/admins/${user.id}`)
+            this.$axios.delete(`/admin/users/${user.id}`)
             .then(({data}) => {
               if (data.status == 200) {
                 that.$swal({
                   type: 'success',
                   title: 'Elminado',
                   text: 'El usuario se eliminó de manera correcta.',
+                })
+              } else {
+                that.$swal({
+                  type: 'error',
+                  title: 'Error',
+                  text: 'No se pudo eliminar al usuario.',
+                  footer: `Error: ${data.message}`
                 })
               }
               that.fetchUsers()
