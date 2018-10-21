@@ -9,7 +9,10 @@ class Admin::CampaignsController < ApplicationController
 
   def show
     @campaign = Campaign.find(params[:id])
-    render json: { campaign: @campaign, status: 200 }
+    respond_to do |format|
+      format.html
+      format.json { render json: { campaign: @campaign, status: 200 }, include: [:community_manager, :company ] }
+    end
   end
 
   def create

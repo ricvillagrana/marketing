@@ -1,7 +1,7 @@
 <template>
   <div>
     <button class="button is-link is-rounded is-pulled-right" @click="addOptions.open = true"><i class="fa fa-plus"></i>Añadir usuario</button>
-    <p class="title is-2">Usuarios</p>
+    <p class="title is-3">Usuarios</p>
     <p v-if="!users">No hay usuarios aún, agrega uno.</p>
     <table v-else class="table is-bordered is-striped is-hoverable is-fullwidth">
       <thead>

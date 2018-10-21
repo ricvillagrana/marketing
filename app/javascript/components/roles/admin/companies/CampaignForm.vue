@@ -6,11 +6,11 @@
     <template slot="content">
       <div>
         <label for="name">Nombre de la campaña:</label>
-        <input type="text" class="input is-medium" name="name" :class="{ 'is-danger': errors.name }" v-model="campaign.name" />
+        <input type="text" class="input " name="name" :class="{ 'is-danger': errors.name }" v-model="campaign.name" />
         <span class="has-text-danger is-small">{{ errors.name }}</span><br />
 
         <label for="objetive">Objetivo:</label>
-        <textarea class="textarea is-medium" name="objetive" :class="{ 'is-danger': errors.objetive }" v-model="campaign.objetive"></textarea>
+        <textarea class="textarea " name="objetive" :class="{ 'is-danger': errors.objetive }" v-model="campaign.objetive"></textarea>
         <span class="has-text-danger is-small">{{ errors.objetive }}</span><br />
 
         <label for="cm">Community Manager:</label>
@@ -20,18 +20,18 @@
         ></cm-select>
 
         <label for="init_date">Fecha de inicio:</label>
-        <input type="date" min="2018-01-01" class="input is-medium" name="init_date" :class="{ 'is-danger': errors.init_date }" v-model="campaign.init_date" />
+        <input type="date" min="2018-01-01" class="input " name="init_date" :class="{ 'is-danger': errors.init_date }" v-model="campaign.init_date" />
         <span class="has-text-danger is-small">{{ errors.init_date }}</span><br />
 
         <label for="finish_date">Fecha de finalización:</label>
-        <input type="date" min="2018-01-01" class="input is-medium" name="finish_date" :class="{ 'is-danger': errors.finish_date }" v-model="campaign.finish_date" />
+        <input type="date" min="2018-01-01" class="input" name="finish_date" :class="{ 'is-danger': errors.finish_date }" v-model="campaign.finish_date" />
         <span class="has-text-danger is-small">{{ errors.finish_date }}</span><br />
 
       </div>
     </template>
     <template slot="footer">
       <button class="button is-danger" @click="close()"><i class="fa fa-times"></i>Cancelar</button>
-      <button class="button is-link" :class="{ 'is-loading' : saving }" @click="save" :disabled="!validate"><i class="fa fa-plus"></i>Crear</button>
+      <button class="button is-link" :class="{ 'is-loading' : saving }" @click="save" :disabled="!validate"><i class="fa fa-save"></i>Guardar</button>
     </template>
   </app-modal>
 </template>
@@ -66,32 +66,61 @@
         e.preventDefault()
         const that = this
         this.saving = true
-        this.$axios.post(`/admin/companies/${this.company_id}/campaigns`, { campaign: this.campaign })
-        .then(({data}) => {
-          if(data.status === 200){
+        if (!this.id) {
+          this.$axios.post(`/admin/companies/${this.company_id}/campaigns`, { campaign: this.campaign })
+          .then(({data}) => {
+            if(data.status === 200) {
+              that.saving = false
+              that.close()
+              that.$emit('update-company')
+            } else {
+              that.saving = false
+              console.log(data)
+              that.$swal({
+                type: 'error',
+                title: 'Error',
+                text: `No se pudo crear la campaña.`,
+                footer: `Error: el Community Manager debe existir`
+              })
+            }
+          })
+          .catch(err => {
             that.saving = false
-            that.close()
-            that.$emit('update-company')
-          } else {
-            that.saving = false
-            console.log(data)
             that.$swal({
               type: 'error',
               title: 'Error',
               text: `No se pudo crear la campaña.`,
-              footer: `Error: el Community Manager debe existir`
+              footer: `Error ${err}`
             })
-          }
-        })
-        .catch(err => {
-          that.saving = false
-          that.$swal({
-            type: 'error',
-            title: 'Error',
-            text: `No se pudo crear la campaña.`,
-            footer: `Error ${err}`
           })
-        }) 
+        } else {
+          this.$axios.put(`/admin/campaigns/${this.campaign.id}`, { campaign: this.campaign })
+          .then(({data}) => {
+            if(data.status === 200) {
+              that.saving = false
+              that.close()
+              that.$emit('update-campaign')
+            } else {
+              that.saving = false
+              console.log(data)
+              that.$swal({
+                type: 'error',
+                title: 'Error',
+                text: `No se pudo modificar la campaña.`,
+                footer: `Error: el Community Manager debe existir`
+              })
+            }
+          })
+          .catch(err => {
+            that.saving = false
+            that.$swal({
+              type: 'error',
+              title: 'Error',
+              text: `No se pudo modificar la campaña.`,
+              footer: `Error ${err}`
+            })
+          })
+        }
       },
       close: function () {
         this.reset()
@@ -99,6 +128,7 @@
       },
       reset: function () {
         this.campaign = {
+          id: '',
           name: '',
           objetive: '',
           init_date: '',
@@ -141,18 +171,17 @@
     watch: {
       id: function () {
         const that = this
-        this.$swal({
-          title: 'Cargando...',
-          onOpen: () => that.$swal.showLoading()
-        })
-        this.$axios.get(`/admin/companies/${this.id}`)
+        this.$axios.get(`/admin/campaigns/${this.id}.json`)
         .then(({data}) => {
-          that.user.username = data.user.username
-          that.user.name = data.user.name
-          that.user.lastname = data.user.lastname
-          that.user.born_date = data.user.born_date
-          that.user.email = data.user.email
-          this.$swal.close()
+          that.campaign.id = data.campaign.id
+          that.campaign.name = data.campaign.name
+          that.campaign.objetive = data.campaign.objetive
+          that.campaign.init_date = data.campaign.init_date
+          that.campaign.finish_date = data.campaign.finish_date
+          that.campaign.image = data.campaign.image
+          that.campaign.finished = data.campaign.finished
+          that.campaign.deleted = data.campaign.deleted
+          that.campaign.community_manager_id = data.campaign.community_manager_id
         })
         .catch(err => {
           that.$swal({

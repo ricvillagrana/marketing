@@ -3,7 +3,7 @@
     <top-bar :user="user"/>
     <div class="columns h-100 side-bar">
       <side-bar :roles="user.roles"/>
-      <app-card class="column is-main-content">
+      <app-card class="column is-main-content content is-small">
         <slot></slot>
       </app-card>
     </div>

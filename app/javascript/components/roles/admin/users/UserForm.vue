@@ -6,22 +6,22 @@
     <template slot="content">
       <form>
         <label for="name">Usuario:</label>
-        <input type="text" class="input is-medium" name="username" v-model="user.username" />
+        <input type="text" class="input" name="username" v-model="user.username" />
 
         <label for="name">Nombre:</label>
-        <input type="text" class="input is-medium" name="name" v-model="user.name" />
+        <input type="text" class="input" name="name" v-model="user.name" />
 
         <label for="lastname">Apellido:</label>
-        <input type="text" class="input is-medium" name="lastname" v-model="user.lastname" />
+        <input type="text" class="input" name="lastname" v-model="user.lastname" />
 
         <roles-select v-if="user.id" :user_id="user.id"></roles-select>
 
         <label for="email">Correo electrónico:</label>
-        <input type="mail" class="input is-medium" name="email" v-model="user.email" />
+        <input type="mail" class="input" name="email" v-model="user.email" />
         <span class="has-text-danger is-small">{{ errors.email }}</span><br />
 
         <label for="brithday">Fecha de nacimiento:</label>
-        <input type="date" class="input is-medium" v-model="user.born_date">
+        <input type="date" class="input" v-model="user.born_date">
       </form>
     </template>
     <template slot="footer">

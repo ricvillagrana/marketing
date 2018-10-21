@@ -121,10 +121,7 @@ html, body {
   }
 }
 .app-card-shadowless {
-  border-color: #ccc;
-  border-style: solid;
-  border-width: 1px;
-  box-shadow: 0 0px 0px rgba(50,50,93,.1), 0 0px 0px rgba(0,0,0,.07);
+  box-shadow: 0 5px 15px rgba(50,50,93,.1), 0 1px 1px rgba(0,0,0,.07);
   &:hover {
     border-color: #fff;
     box-shadow: 0 5px 15px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);

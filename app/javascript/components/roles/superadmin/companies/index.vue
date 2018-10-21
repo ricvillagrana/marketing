@@ -1,7 +1,7 @@
 <template>
   <div>
     <button class="button is-link is-rounded is-pulled-right" @click="addOptions.open = true"><i class="fa fa-plus"></i>Añadir Empresa</button>
-    <p class="title is-2">Empresas</p>
+    <p class="title is-3">Empresas</p>
     <div v-if="companies.length === 0">
       <p class="title is-3">No hay empresas registrades.</p>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <button class="button is-link is-rounded is-pulled-right" @click="addOptions.open = true"><i class="fa fa-plus"></i>Invitar Administrador</button>
-    <p class="title is-2">Administradores</p>
+    <p class="title is-3">Administradores</p>
     <table class="table is-bordered is-striped is-hoverable is-fullwidth">
       <thead>
         <tr class="has-text-weight-bold">

@@ -48,6 +48,7 @@ import AdminCompanies from '../components/roles/admin/companies'
 import AdminCompaniesShow from '../components/roles/admin/companies/show'
 import AdminUsers from '../components/roles/admin/users'
 import AdminCampaigns from '../components/roles/admin/campaigns'
+import AdminCampaignsShow from '../components/roles/admin/campaigns/show'
 
 // Import of App Components
 import AppModal from '../components/app/AppModal'
@@ -65,6 +66,7 @@ Vue.use('admin-companies', AdminCompanies)
 Vue.use('admin-companies-show', AdminCompaniesShow)
 Vue.use('admin-users', AdminUsers)
 Vue.use('admin-campaigns', AdminCampaigns)
+Vue.use('admin-campaigns-show', AdminCampaignsShow)
 
 // Registration of App components
 Vue.use('app-modal', AppModal)
@@ -82,7 +84,7 @@ document.addEventListener('turbolinks:load', () => {
       
       SuperadminAdmins, SuperadminCompanies,
 
-      AdminCompanies, AdminCompaniesShow, AdminUsers, AdminCampaigns,
+      AdminCompanies, AdminCompaniesShow, AdminUsers, AdminCampaigns, AdminCampaignsShow,
       
       // App
       AppModal, AppCard

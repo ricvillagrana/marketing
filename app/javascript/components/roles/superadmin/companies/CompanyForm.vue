@@ -6,11 +6,11 @@
     <template slot="content">
       <div>
         <label for="name">Nombre de la empresa:</label>
-        <input type="text" class="input is-medium" :class="{ 'is-danger': errors.name }" name="name" v-model="company.name" />
+        <input type="text" class="input" :class="{ 'is-danger': errors.name }" name="name" v-model="company.name" />
         <span class="has-text-danger is-small">{{ errors.name }}</span><br />
 
         <label for="description">Descripción:</label>
-        <textarea class="textarea is-medium" :class="{ 'is-danger': errors.description }" name="description" v-model="company.description"></textarea>
+        <textarea class="textarea" :class="{ 'is-danger': errors.description }" name="description" v-model="company.description"></textarea>
         <span class="has-text-danger is-small">{{ errors.description }}</span><br />
 
         <div v-if="!noChangeAdmin">
@@ -19,27 +19,27 @@
         </div>
 
         <label for="contact_name">Nombre de contacto:</label>
-        <input type="text" class="input is-medium" :class="{ 'is-danger': errors.contact_name }" name="contact_name" v-model="company.contact_name" />
+        <input type="text" class="input" :class="{ 'is-danger': errors.contact_name }" name="contact_name" v-model="company.contact_name" />
         <span class="has-text-danger is-small">{{ errors.contact_name }}</span><br />
 
         <label for="phone">Teléfono:</label>
-        <input type="number" class="input is-medium" :class="{ 'is-danger': errors.phone }" name="phone" v-model="company.phone" />
+        <input type="number" class="input" :class="{ 'is-danger': errors.phone }" name="phone" v-model="company.phone" />
         <span class="has-text-danger is-small">{{ errors.phone }}</span><br />
 
         <label for="email">Correo electrónico:</label>
-        <input type="email" class="input is-medium" :class="{ 'is-danger': errors.email }" name="email" v-model="company.email" />
+        <input type="email" class="input" :class="{ 'is-danger': errors.email }" name="email" v-model="company.email" />
         <span class="has-text-danger is-small">{{ errors.email }}</span><br />
 
         <label for="address">Dirección:</label>
-        <input type="text" class="input is-medium" :class="{ 'is-danger': errors.address }" name="address" v-model="company.address" />
+        <input type="text" class="input" :class="{ 'is-danger': errors.address }" name="address" v-model="company.address" />
         <span class="has-text-danger is-small">{{ errors.address }}</span><br />
 
         <label for="init_hour">Hora de inicio de labores:</label>
-        <input type="time" class="input is-medium" :class="{ 'is-danger': errors.init_hour }" name="init_hour" v-model="company.init_hour" />
+        <input type="time" class="input" :class="{ 'is-danger': errors.init_hour }" name="init_hour" v-model="company.init_hour" />
         <span class="has-text-danger is-small">{{ errors.init_hour }}</span><br />
 
         <label for="final_hour">Hora de final de labores:</label>
-        <input type="time" class="input is-medium" :class="{ 'is-danger': errors.final_hour }" name="final_hour" v-model="company.final_hour" />
+        <input type="time" class="input" :class="{ 'is-danger': errors.final_hour }" name="final_hour" v-model="company.final_hour" />
         <span class="has-text-danger is-small">{{ errors.final_hour }}</span><br />
       </div>
     </template>

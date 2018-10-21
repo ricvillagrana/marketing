@@ -1,11 +1,11 @@
 <template>
   <div>
-    <p class="title is-2">Empresas</p>
+    <p class="title is-3">Empresas</p>
     <div class="columns">
-      <div class="column is-4" v-for="(company, key) in companies" :key="key">
+      <div class="column is-6" v-for="(company, key) in companies" :key="key">
         <app-card shadowless="true">
           <p class="title is-4">{{ company.name }}</p>
-          <span class="has-text-weight-light">{{ company.description }}</span>
+          <span class="">{{ company.description }}</span>
           <div slot="footer" class="flex-end">
             <a class="button is-link is-rounded" :href="`/admin/companies/${company.id}`">Ver más</a>
           </div>
