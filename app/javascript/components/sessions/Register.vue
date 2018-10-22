@@ -72,7 +72,7 @@
         })
         .then(({data}) => {
           if (data.status === 200){
-            window.location = '/'
+            that.$redirect('/')
           }
         })
         .catch(err => {

@@ -35,7 +35,9 @@ class Admin::CompaniesController < ApplicationController
 
   def destroy
     @company = current_user.companies.find(params[:id])
-    if @company.destroy
+    if @company.campaigns.size > 0
+      render json: { message: 'No se puede eliminar, tiene campañas asignadas', status: 500 }
+    elsif @company.destroy
       render json: { status: 200 }
     else
       render json: { status: 500 }

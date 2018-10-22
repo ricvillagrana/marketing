@@ -19,6 +19,7 @@ Vue.prototype.$axios = axios;
 Vue.prototype.$swal = swal;
 Vue.prototype.$moment = moment;
 Vue.prototype.$base_url = window.location.origin
+Vue.prototype.$redirect = path => window.location = path 
 Vue.prototype.$inputTime = function (time) {
   return moment(time).utcOffset(0).format('HH:mm:ss')
 }

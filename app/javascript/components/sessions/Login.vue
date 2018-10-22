@@ -43,7 +43,7 @@
         })
         .then(response => {
           console.log(response.data)
-          window.location = '/'
+          that.$redirect('/')
         })
         .catch(err => {
           that.error = err

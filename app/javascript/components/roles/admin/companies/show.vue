@@ -4,7 +4,12 @@
       <p class="title is-3">
         <a href="/admin/companies"><i class="fa fa-arrow-left fa-0-8x"></i></a>
         {{ company.name }}
-        <a class="ml-15" @click="editCompany"><i class="fa fa-pencil fa-0-8x"></i></a>
+        <app-dropdown
+        :title="dropdown.title"
+        :color="dropdown.color"
+        :options="dropdown.options"
+        @edit="editCompany"
+        @delete="deleteCompany"></app-dropdown>
       </p>
       <p class="title is-5">Administrador: {{ company.admin.name }} {{ company.admin.lastname }}</p>
       <table class="table is-bordered is-striped is-fullwidth">
@@ -67,13 +72,14 @@
 
 <script>
   import AppCard from '../../../app/AppCard'
+  import AppDropdown from '../../../app/AppDropdown'
   import CompanyForm from '../../superadmin/companies/CompanyForm'
   import CampaignForm from './CampaignForm'
 
   export default {
     name: 'admin-companies',
     components: {
-      AppCard, CompanyForm, CampaignForm
+      AppCard, AppDropdown, CompanyForm, CampaignForm
     },
     data() {
       return {
@@ -84,6 +90,24 @@
         },
         addOptions: {
           open: false
+        },
+        dropdown: {
+          title: '',
+          color: 'light',
+          options: [
+            {
+              name: 'Editar',
+              icon: 'pencil',
+              shouldEmit: 'edit',
+              class: 'has-text-link'
+            },
+            {
+              name: 'Eliminar',
+              icon: 'times',
+              shouldEmit: 'delete',
+              class: 'has-text-danger'
+            }
+          ]
         }
       }
     },
@@ -95,6 +119,53 @@
       editCompany: function () {
         this.editOptions.open = true
         this.editOptions.company_id = this.company.id
+      },
+      deleteCompany: function () {
+        const that = this
+        this.$swal({
+          title: `Se eliminará la empresa ${that.company.name}`,
+          text: "No se podrá recuprar",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Eliminar',
+          cancelButtonText: 'No, cancelar',
+          cancelButtonColor: 'red',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.value) {
+            this.$swal({
+              title: 'Eliminando...',
+              onOpen: () => that.$swal.showLoading()
+            })
+            this.$axios.delete(`/admin/companies/${that.company.id}`)
+            .then(({data}) => {
+              if (data.status == 200) {
+                that.$swal({
+                  type: 'success',
+                  title: 'Elminado',
+                  text: 'La empresa se eliminó de manera correcta.',
+                })
+                that.$redirect('/admin/companies')
+              } else {
+                that.$swal({
+                  type: 'error',
+                  title: 'Error',
+                  text: 'No se pudo eliminar la empresa.',
+                  footer: `Error: ${data.message}`
+                })
+              }
+              that.fetchCompany()
+            })
+            .catch(err => {
+              that.$swal({
+                type: 'error',
+                title: 'Error',
+                text: 'No se pudo eliminar la empresa.',
+                footer: `Error: ${err}`
+              })
+            })
+          }
+        })
       },
       fetchCompany: function () {
         const that = this
