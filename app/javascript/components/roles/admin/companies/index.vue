@@ -3,7 +3,7 @@
     <p class="title is-3">Empresas</p>
     <div class="columns">
       <div class="column is-6" v-for="(company, key) in companies" :key="key">
-        <app-card shadowless="true">
+        <app-card nested="true">
           <p class="title is-4">{{ company.name }}</p>
           <span class="">{{ company.description }}</span>
           <div slot="footer" class="flex-end">
