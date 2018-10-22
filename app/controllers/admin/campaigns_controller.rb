@@ -31,7 +31,11 @@ class Admin::CampaignsController < ApplicationController
 
   def destroy
     @campaign = Campaign.find(params[:id])
-    render json: { status: 200 } if @campaign.destroy
+    if @campaign.destroy
+      render json: { status: 200 }
+    else
+      render json: { status: 500 }
+    end
   end
 
   private

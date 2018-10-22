@@ -5,11 +5,11 @@
         <a href="/admin/companies"><i class="fa fa-arrow-left fa-0-8x"></i></a>
         {{ company.name }}
         <app-dropdown
-        :title="dropdown.title"
-        :color="dropdown.color"
-        :options="dropdown.options"
-        @edit="editCompany"
-        @delete="deleteCompany"></app-dropdown>
+          :title="dropdown.title"
+          :color="dropdown.color"
+          :options="dropdown.options"
+          @edit="editCompany"
+          @delete="deleteCompany"></app-dropdown>
       </p>
       <p class="title is-5">Administrador: {{ company.admin.name }} {{ company.admin.lastname }}</p>
       <table class="table is-bordered is-striped is-fullwidth">
@@ -154,7 +154,6 @@
                   footer: `Error: ${data.message}`
                 })
               }
-              that.fetchCompany()
             })
             .catch(err => {
               that.$swal({
