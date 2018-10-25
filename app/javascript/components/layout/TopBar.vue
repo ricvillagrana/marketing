@@ -36,7 +36,7 @@
               {{ user.name }} {{ user.lastname }}
             </a>
             <div class="navbar-dropdown ">
-              <a class="navbar-item ">
+              <a href="/profile" class="navbar-item ">
                 Perfil
               </a>
               <hr class="navbar-divider">

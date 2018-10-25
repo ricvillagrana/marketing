@@ -2,7 +2,7 @@ class InviteController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    @user.user_creation.destroy
+    @user.user_creation.destroy if @user.user_creation
     if @user.update!(user_params)
       render json: { user: @user, status: 200 }
     else

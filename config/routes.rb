@@ -20,6 +20,10 @@ Rails.application.routes.draw do
 
   get '/roles', to: 'roles#index'
 
+  # route for user profile 
+
+  get '/profile', to: 'profile#index'
+ 
 
   get '/invited/:creation_token', to: 'invite#edit'
   put '/invited/:id', to: 'invite#update'
