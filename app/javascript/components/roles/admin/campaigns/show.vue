@@ -1,6 +1,6 @@
 <template>
   <div v-if="campaign">
-    <div>
+    <div class="mb-30">
       <p class="title is-3">
         <a :href="`/admin/companies/${campaign.company.id}`"><i class="fa fa-arrow-left fa-0-8x"></i></a>
         {{ campaign.name }} <span v-if="campaign.finished" class="tag">Finalizada</span>
@@ -30,6 +30,8 @@
       </table>
     </div>
 
+    <campaign-users></campaign-users>
+
     <campaign-form v-if="campaign"
       :open="editOptions.open"
       :noChangeAdmin="true"
@@ -44,11 +46,12 @@
   import AppCard from '../../../app/AppCard'
   import AppDropdown from '../../../app/AppDropdown'
   import CampaignForm from '../companies/CampaignForm'
+  import CampaignUsers from './Users'
 
   export default {
     name: 'admin-campaigns-show',
     components: {
-      AppCard, AppDropdown, CampaignForm
+      AppCard, AppDropdown, CampaignForm, CampaignUsers
     },
     data() {
       return {

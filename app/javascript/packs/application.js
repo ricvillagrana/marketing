@@ -13,7 +13,6 @@ import Notifications from 'vue-notification'
 import axios from 'axios'
 import swal from 'sweetalert2'
 import moment from 'moment'
-import 'v-calendar/lib/v-calendar.min.css';
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$swal = swal;

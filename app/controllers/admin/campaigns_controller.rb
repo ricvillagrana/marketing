@@ -3,7 +3,7 @@ class Admin::CampaignsController < ApplicationController
     @companies = current_user.companies
     respond_to do |format|
       format.html
-      format.json { render json: { companies: @companies, status: 200 }, include: [:admin, campaigns: { include: :community_manager } ] }
+      format.json { render json: { companies: @companies, status: 200 }, include: [:admin, campaigns: { include: :community_manager }] }
     end
   end
 
@@ -11,7 +11,7 @@ class Admin::CampaignsController < ApplicationController
     @campaign = Campaign.find(params[:id])
     respond_to do |format|
       format.html
-      format.json { render json: { campaign: @campaign, status: 200 }, include: [:community_manager, :company ] }
+      format.json { render json: { campaign: @campaign, status: 200 }, include: [:community_manager, :company, :users] }
     end
   end
 
