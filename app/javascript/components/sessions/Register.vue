@@ -19,13 +19,17 @@
           <label for="brithday">Fecha de nacimiento:</label>
           <input type="date" class="input" v-model="currentUser.born_date">
 
-          <label for="password">Contraseña:</label>
-          <input type="password" class="input" v-model="currentUser.password">
+          <div v-if="!registered">
 
-          <label for="password_confirmation">Confirmación de contraseña:</label>
-          <input type="password" class="input" v-model="currentUser.password_confirmation">
+            <label for="password">Contraseña:</label>
+            <input type="password" class="input" v-model="currentUser.password">
 
-          <button class="button is-link mt-20" :class="{ 'is-loading' : saving }" @click="save" :disabled="disabled"><i class="fa fa-save"></i>Guardar</button>
+            <label for="password_confirmation">Confirmación de contraseña:</label>
+            <input type="password" class="input" v-model="currentUser.password_confirmation">
+
+          </div>
+
+          <button class="button is-link mt-20" :class="{ 'is-loading' : saving }" @click="save" :disabled="!enabled"><i class="fa fa-save"></i>Guardar</button>
         </form>
         <a href="/">Login</a>
       </div>
@@ -36,7 +40,7 @@
 <script>
   export default {
     name: 'register',
-    props: ['user'],
+    props: ['user','registered'],
     data() {
       return {
         currentUser: {
@@ -65,14 +69,35 @@
         e.preventDefault()
         const that = this
         this.saving = true
-        this.$axios.put(`/invited/${this.currentUser.id}`, {
-          user: {
+        let user = null
+        if(this.registered){
+          user = {
+            id: this.currentUser.id,
+            username: this.currentUser.username,
+            name: this.currentUser.name,
+            lastname: this.currentUser.lastname,
+            born_date: this.currentUser.born_date,
+            email: this.currentUser.email
+          }
+        }else{
+          user= {
             ...this.currentUser
           }
-        })
+        }
+        this.$axios.put(`/invited/${this.currentUser.id}`, {user})
         .then(({data}) => {
           if (data.status === 200){
             that.$redirect('/')
+            that.saving = false
+            if(that.registered){
+              that.$swal({
+                type: 'success',
+                title: 'Éxito',
+                text: 'El usuario fue modificado'
+              })
+            }else{
+              that.$redirect('/')
+            }
           }
         })
         .catch(err => {
@@ -86,8 +111,16 @@
       }
     },
     computed: {
-      disabled() {
-        return this.currentUser.password !== this.currentUser.password_confirmation || this.currentUser.password.length < 6
+      enabled() {
+        let password = true
+        if(!this.registered) {
+          password = this.currentUser.password == this.currentUser.password_confirmation && this.currentUser.password.length >= 6
+        }
+        const name = this.currentUser.name.length >= 2
+        const username = this.currentUser.username.length >= 3
+
+        return password && name && username
+
       }
     }
   }
