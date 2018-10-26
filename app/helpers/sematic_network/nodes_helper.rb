@@ -1,0 +1,2 @@
+module SematicNetwork::NodesHelper
+end
