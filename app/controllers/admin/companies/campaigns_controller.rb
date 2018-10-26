@@ -1,4 +1,5 @@
 class Admin::Companies::CampaignsController < ApplicationController
+  before_action :authenticate_user!
   def index
     @campaigns = Company.find(params[:company_id]).campaigns
     render json: { campaigns: @campaigns }

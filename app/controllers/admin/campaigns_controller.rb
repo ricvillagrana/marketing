@@ -1,4 +1,5 @@
 class Admin::CampaignsController < ApplicationController
+  before_action :authenticate_user!
   def index
     @companies = current_user.companies
     respond_to do |format|
@@ -32,6 +33,32 @@ class Admin::CampaignsController < ApplicationController
   def destroy
     @campaign = Campaign.find(params[:id])
     if @campaign.destroy
+      render json: { status: 200 }
+    else
+      render json: { status: 500 }
+    end
+  end
+
+  def all_users
+    @company = Company.find(params[:company_id])
+    render json: { users: @company.users, status: 200 }, include: [:roles]
+  end
+
+  def add_user
+    campaign = Campaign.find(params[:campaign_id])
+    user = User.find(params[:user_id])
+    campaign.users.append(user) unless campaign.users.include?(user)
+    if campaign.save
+      render json: { status: 200 }
+    else
+      render json: { status: 500 }
+    end
+  end
+
+  def remove_user
+    campaign = Campaign.find(params[:campaign_id])
+    campaign.users.delete(params[:user_id]) if campaign.users.include?(User.find(params[:user_id]))
+    if campaign.save
       render json: { status: 200 }
     else
       render json: { status: 500 }

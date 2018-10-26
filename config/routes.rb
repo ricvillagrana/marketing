@@ -13,8 +13,12 @@ Rails.application.routes.draw do
         resources :publications, controller: 'companies/campaigns/publications'
       end
     end
-    
+
     resources :campaigns
+
+    get '/campaigns_users/:company_id', to: 'campaigns#all_users'
+    post '/campaigns_users', to: 'campaigns#add_user'
+    delete '/campaigns_users/:campaign_id/:user_id', to: 'campaigns#remove_user'
 
     resources :users
     get '/users/:id/roles/', to: 'users#roles'

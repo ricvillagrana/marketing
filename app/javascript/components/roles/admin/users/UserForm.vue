@@ -42,14 +42,7 @@
     name: 'user-form',
     data() {
       return {
-        user: {
-          id: null,
-          username: '',
-          name: '',
-          lastname: '',
-          born_date: '',
-          email: ''
-        },
+        user: null,
         errors: {
           email: ''
         },
@@ -57,7 +50,20 @@
       }
     },
     props: ['open', 'user_id', 'company_id'],
+    beforeMount() {
+      this.userReset()
+    },
     methods: {
+      userReset: function () {
+        this.user = {
+          id: null,
+          username: '',
+          name: '',
+          lastname: '',
+          born_date: '',
+          email: ''
+        }
+      },
       save: function (e) {
         e.preventDefault()
         const that = this
@@ -74,6 +80,7 @@
                 text: `El usuario ${data.user.username} se actualizó correctamente`
               })
               that.$emit('update-user')
+              that.userReset()
             }
           })
           .catch(err => {
@@ -101,6 +108,7 @@
                   <pre><code>${data.link}</code></pre>`
               })
               that.$emit('update-user')
+              that.userReset()
             } else {
               that.saving = false
               that.$swal({

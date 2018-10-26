@@ -30,7 +30,11 @@
       </table>
     </div>
 
-    <campaign-users></campaign-users>
+    <campaign-users
+      :users="campaign.users"
+      :community_manager_id="campaign.community_manager.id"
+      :campaign_id="campaign.id"
+      :company_id="campaign.company_id"></campaign-users>
 
     <campaign-form v-if="campaign"
       :open="editOptions.open"

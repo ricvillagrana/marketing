@@ -1,4 +1,5 @@
-class Admin::CompaniesController < ApplicationController  
+class Admin::CompaniesController < ApplicationController
+  before_action :authenticate_user!
   def index
     @companies = current_user.companies
     respond_to do |format|
