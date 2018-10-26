@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     put '/users/:id/roles/append', to: 'users#roles_append'
     delete '/users/:id/roles/remove/:role_id', to: 'users#roles_remove'
 
-    get '/community_managers', to: 'users#community_managers'
+    get '/community_managers/:company_id', to: 'users#community_managers'
   end
 
   get '/roles', to: 'roles#index'

@@ -2,15 +2,15 @@ class Admin::UsersController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @users = current_user.users
+    @companies = current_user.companies
     respond_to do |format|
       format.html
-      format.json { render json: { users: @users, status: 200 }, include: [:roles, :user_creation, :campaigns, :campaigns_admin] }
+      format.json { render json: { companies: @companies, status: 200 }, include:  [ users: { include: [:roles, :user_creation, :campaigns, :campaigns_admin] } ] }
     end
   end
 
   def create
-    @user = current_user.users.new(user_params)
+    @user = current_company.users.new(user_params)
     user_creation = UserCreation.new
     user_creation.generate_token
     @user.password = user_creation.creation_token
@@ -24,7 +24,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def show
-    @user = current_user.users.find(params[:id])
+    @user = User.find(params[:id])
     respond_to do |format|
       format.html
       format.json { render json: { user: @user, status: 200 }, include: :roles }
@@ -32,7 +32,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def update
-    @user = current_user.users.find(params[:id])
+    @user = User.find(params[:id])
     if @user.update!(user_params)
       render json: { user: @user, status: 200 }
     else
@@ -41,7 +41,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def destroy
-    @user = current_user.users.find(params[:id])
+    @user = User.find(params[:id])
     if @user.campaigns.size > 0 or @user.campaigns_admin.size > 0
       render json: { message: 'No se puede eliminar, tiene campañas asignadas', status: 500 }
     elsif @user.destroy
@@ -49,6 +49,11 @@ class Admin::UsersController < ApplicationController
     else
       render json: { status: 500 }
     end
+  end
+
+
+  def current_company
+    Company.find(params[:company_id])
   end
 
   # Roles
@@ -75,7 +80,7 @@ class Admin::UsersController < ApplicationController
 
   # Community Manager
   def community_managers
-    @community_managers = Role.where(keyword: 'cm').first.users.where(admin: current_user)
+    @community_managers = Role.where(keyword: 'cm').first.users.where(company_id: params[:company_id])
     respond_to do |format|
       format.html
       format.json { render json: { community_managers: @community_managers, status: 200 } }
@@ -85,6 +90,6 @@ class Admin::UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :lastname, :email, :username, :born_date)
+    params.require(:user).permit(:name, :lastname, :email, :username, :born_date, :company_id)
   end
 end

@@ -56,7 +56,7 @@
         saving: false
       }
     },
-    props: ['open', 'user_id'],
+    props: ['open', 'user_id', 'company_id'],
     methods: {
       save: function (e) {
         e.preventDefault()
@@ -86,7 +86,10 @@
             })
           })
         } else {
-          this.$axios.post(`/admin/users`, this.user)
+          this.$axios.post(`/admin/users`, {
+            ...this.user,
+            company_id: this.company_id
+          })
           .then(({data}) => {
             if(data.status === 200){
               that.saving = false

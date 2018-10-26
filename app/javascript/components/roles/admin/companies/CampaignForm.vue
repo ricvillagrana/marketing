@@ -16,6 +16,7 @@
         <label for="cm">Community Manager:</label>
         <cm-select
           :user_id="campaign.community_manager_id"
+          :company_id="company_id"
           @user-selected="campaign.community_manager_id = $event"
         ></cm-select>
 

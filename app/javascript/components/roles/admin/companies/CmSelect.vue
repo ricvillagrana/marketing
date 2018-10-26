@@ -31,7 +31,7 @@
         words: ''
       }
     },
-    props: ['user_id'],
+    props: ['user_id', 'company_id'],
     mounted() {
       this.fetchUsers()
     },
@@ -49,18 +49,20 @@
       },
       fetchUsers: function () {
         const that = this
-        this.$axios.get('/admin/community_managers.json')
-        .then(({data}) => {
-          that.users = data.community_managers
-        })
-        .catch(err => {
-          that.$swal({
-            type: 'error',
-            title: 'Error',
-            text: 'No se pudo actualizar la lista de usiarios.',
-            footer: `Error: ${err}`
+        if (this.company_id) {
+          this.$axios.get(`/admin/community_managers/${this.company_id}.json`)
+          .then(({data}) => {
+            that.users = data.community_managers
           })
-        })
+          .catch(err => {
+            that.$swal({
+              type: 'error',
+              title: 'Error',
+              text: 'No se pudo actualizar la lista de usiarios.',
+              footer: `Error: ${err}`
+            })
+          })
+        }
       }
     },
     computed: {
