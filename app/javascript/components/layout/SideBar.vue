@@ -33,7 +33,7 @@
         </p>
         <ul class="menu-list">
           <li><a>Publicaciones</a></li>
-          <li><a>Campañas</a></li>
+          <li><a href="/community_manager/campaigns">Campañas</a></li>
         </ul>
       </div>
       <div v-if="roles.filter(role => role.keyword === 'cg').length !== 0">

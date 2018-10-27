@@ -1,5 +1,5 @@
 class Superadmin::UsersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :should_be_superadmin!
 
   def index
     @admins = Role.where(keyword: 'admin').first.users

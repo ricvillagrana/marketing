@@ -1,5 +1,6 @@
 class Admin::CompaniesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :should_be_admin!
+  
   def index
     @companies = current_user.companies
     respond_to do |format|

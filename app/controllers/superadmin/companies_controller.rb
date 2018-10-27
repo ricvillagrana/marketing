@@ -1,5 +1,6 @@
 class Superadmin::CompaniesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :should_be_superadmin!
+  
   def index
     @companies = Company.all
     respond_to do |format|
