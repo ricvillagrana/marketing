@@ -16,6 +16,7 @@
       return {
         semantic_network: null,
         nodesRaw: [],
+        vis: null
       }
     },
     beforeMount() {
@@ -50,7 +51,8 @@
     },
     computed: {
       nodes: function () {
-        return this.nodesRaw.map(node => ({ id: node.id, label: node.name }))
+        return this.nodesRaw.map(node => this.nodesRaw.indexOf(node) === 0 ? { id: node.id, label: node.name, size: 50, color: '#ffdd57', font: {color: 'black'}} : { id: node.id, label: node.name })
+          
       },
       edges: function () {
         return this.nodesRaw.map(node => ({ from: node.node_id, to: node.id }))
@@ -58,13 +60,23 @@
     },
     watch: {
       nodes: function () {
-        new vis.Network(
+        this.vis = new vis.Network(
           document.getElementById('semantic-network'),
           {
             nodes: this.nodes,
             edges: this.edges
           }, 
-          {});
+          {
+            nodes: {
+              color: '#3273dc',
+              font: {
+                color: 'white'
+              },
+              shape: 'circle'
+            }
+          }
+        )
+        this.vis.on('click', node => this.$emit('node-selected', node.nodes[0]))
       } 
     }
   }

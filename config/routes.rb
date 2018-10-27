@@ -30,6 +30,7 @@ Rails.application.routes.draw do
 
   namespace :community_manager do
     resources :campaigns
+    resources :nodes, only: [:show, :update, :destroy]
     resources :publications
 
     get '/campaigns/semantic_network/:id', to: 'campaigns#semantic_network'

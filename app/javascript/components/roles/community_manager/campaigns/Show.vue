@@ -24,10 +24,19 @@
       </table>
     </div>
     
-    <semantic-network
-      :campaign_id="campaign.id"
-      :node_id="campaign.semantic_network"></semantic-network>
-      
+    <div class="columns">
+      <div class="column">
+        <semantic-network
+          :campaign_id="campaign.id"
+          :node_id="campaign.semantic_network"
+          @node-selected="fetchNode($event)"></semantic-network>
+      </div>
+      <div class="column">
+        <node
+          :node="node"></node>
+      </div>
+    </div>    
+
   </div>
 </template>
 
@@ -35,15 +44,17 @@
   import AppCard from '../../../app/AppCard'
   import AppDropdown from '../../../app/AppDropdown'
   import SemanticNetwork from './SemanticNetwork'
+  import Node from './Node'
 
   export default {
     name: 'admin-campaigns-show',
     components: {
-      AppCard, AppDropdown, SemanticNetwork
+      AppCard, AppDropdown, SemanticNetwork, Node
     },
     data() {
       return {
-        campaign: null
+        campaign: null,
+        node: null
       }
     },
     props: ['campaign_id'],
@@ -56,6 +67,21 @@
         this.$axios.get(`/community_manager/campaigns/${this.campaign_id}.json`)
         .then(({data}) => {
           that.campaign = data.campaign
+        })
+        .catch(err => {
+          that.$swal({
+            type: 'error',
+            title: 'Error',
+            text: 'No se pudo obtener la información.',
+            footer: `Error: ${err}`
+          })
+        })
+      },
+      fetchNode: function(id) {
+        const that = this
+        if (id) this.$axios.get(`/community_manager/nodes/${id}.json`)
+        .then(({data}) => {
+          that.node = data.node
         })
         .catch(err => {
           that.$swal({
