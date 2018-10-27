@@ -1,5 +1,4 @@
 class CommunityManager::CampaignsController < ApplicationController
-
   before_action :authenticate_user!, :should_be_communty_manager!
 
   def index

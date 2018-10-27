@@ -5,7 +5,7 @@
         <a :href="`/community_manager/campaigns`"><i class="fa fa-arrow-left fa-0-8x"></i></a>
         {{ campaign.name }} <span v-if="campaign.finished" class="tag">Finalizada</span>
       </p>
-      <p class="title is-5">Community Manager: {{ campaign.community_manager.name }} {{ campaign.community_manager.lastname }}</p>
+      <p class="title is-5">Empresa: {{ campaign.company.name }}</p>
       <table class="table is-bordered is-striped is-fullwidth">
         <tbody>
           <tr>
@@ -23,19 +23,9 @@
         </tbody>
       </table>
     </div>
-    
-    <div class="columns">
-      <div class="column">
-        <semantic-network
-          :campaign_id="campaign.id"
-          :node_id="campaign.semantic_network"
-          @node-selected="fetchNode($event)"></semantic-network>
-      </div>
-      <div class="column">
-        <node
-          :node="node"></node>
-      </div>
-    </div>    
+    <semantic-network
+      :campaign_id="campaign.id"
+      :node_id="campaign.semantic_network"></semantic-network>
 
   </div>
 </template>
@@ -44,12 +34,11 @@
   import AppCard from '../../../app/AppCard'
   import AppDropdown from '../../../app/AppDropdown'
   import SemanticNetwork from './SemanticNetwork'
-  import Node from './Node'
 
   export default {
     name: 'admin-campaigns-show',
     components: {
-      AppCard, AppDropdown, SemanticNetwork, Node
+      AppCard, AppDropdown, SemanticNetwork
     },
     data() {
       return {
@@ -67,21 +56,6 @@
         this.$axios.get(`/community_manager/campaigns/${this.campaign_id}.json`)
         .then(({data}) => {
           that.campaign = data.campaign
-        })
-        .catch(err => {
-          that.$swal({
-            type: 'error',
-            title: 'Error',
-            text: 'No se pudo obtener la información.',
-            footer: `Error: ${err}`
-          })
-        })
-      },
-      fetchNode: function(id) {
-        const that = this
-        if (id) this.$axios.get(`/community_manager/nodes/${id}.json`)
-        .then(({data}) => {
-          that.node = data.node
         })
         .catch(err => {
           that.$swal({
