@@ -7,7 +7,9 @@
       <div class="column is-4">
         <node
           :node="node"
-          @add-child="addChild"></node>
+          @add-child="addChild"
+          @should-refresh="fetchSemanticNetwork"
+          @select="selectedNode = $event"></node>
       </div>
     </div>
   </div>
@@ -44,30 +46,16 @@
       },
       addChild: function (father) {
         const that = this
-        this.$swal.mixin({
+        this.$swal({
+          title: 'Nombre del nodo',
           input: 'text',
-          confirmButtonText: 'Next &rarr;',
           showCancelButton: true,
-          progressSteps: ['1']
-        }).queue([
-          {
-            title: 'Nombre del nodo',
-            text: 'Elige un nombre que describa al nodo'
-          }
-        ]).then((result) => {
-          let node = null
-          if (result.value) {
-            node = {
-              name: result.value[0]
-            }
-          }
-          if (node) {
+          preConfirm: (value) => {
             this.$axios.post('/community_manager/nodes', {
               father_id: father.id,
-              node
+              node: {name: value}
             }).then(({data}) => {
               that.nodesRaw.push(data.node)
-              //that.vis.redraw()
             })
             .catch(err => {
               console.log(err)
@@ -80,6 +68,7 @@
         this.$axios.get(`/community_manager/campaigns/semantic_network/${this.campaign_id}.json`)
         .then(({data}) => {
           that.semantic_network = data
+          that.selectedNode = null
           that.processSemanticNetwork()
         })
         .catch(err => {
