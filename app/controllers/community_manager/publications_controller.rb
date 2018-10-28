@@ -14,9 +14,9 @@ class CommunityManager::PublicationsController < ApplicationController
 
   def dig_publications(node, publications = [])
     if node.children.empty?
-      publications + [{publications: node.publications, of: node.name }]
+      publications + [{ publications: node.publications, of: node.name }]
     else
-      node.children.map {|child| dig_publications(child) }
+      node.children.map { |child| dig_publications(child) }
     end
     publications
   end

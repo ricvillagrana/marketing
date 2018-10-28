@@ -28,9 +28,10 @@
       :node_id="campaign.semantic_network"
       @selected-node="selectedNode = $event"></semantic-network>
         
-      <publications
-        v-if="campaign"
-        :node_id="selectedNode"></publications>
+    <publications
+      v-if="campaign"
+      :community_manager_id="campaign.community_manager.id"
+      :node_id="selectedNode"></publications>
 
   </div>
 </template>

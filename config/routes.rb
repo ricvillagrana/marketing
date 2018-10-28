@@ -30,10 +30,13 @@ Rails.application.routes.draw do
 
   namespace :community_manager do
     resources :campaigns 
-    resources :nodes, only: [:show, :create, :update, :destroy] do
-    resources :publications, controller: 'nodes/publications'
-  end
-    resources :publications
+    resources :nodes, only: %i[show create update destroy] do
+      resources :publications, controller: 'nodes/publications'
+    end
+
+    resources :publications do
+      resources :tasks, only: %i[show create update destroy], controller: 'publications/tasks'
+    end
 
     get '/campaigns/semantic_network/:id', to: 'campaigns#semantic_network'
   end

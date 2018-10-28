@@ -164,7 +164,7 @@ ActiveRecord::Schema.define(version: 20181014051332) do
     t.integer "publication_id"
     t.integer "user_id"
     t.integer "creator_id"
-    t.string "title"
+    t.string "name"
     t.text "content"
     t.datetime "deadeline"
     t.datetime "created_at", null: false

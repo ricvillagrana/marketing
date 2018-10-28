@@ -83,8 +83,10 @@
         this.semanticNetworkNodes(this.semantic_network)
       },
       semanticNetworkNodes: function (semantic_network) {
-        semantic_network.children.map(node => this.nodesRaw.push(node))
-        semantic_network.children.map(node => this.semanticNetworkNodes(node))
+        if (semantic_network.children) {
+          semantic_network.children.map(node => this.nodesRaw.push(node))
+          semantic_network.children.map(node => this.semanticNetworkNodes(node))
+        }
       }
     },
     watch: {

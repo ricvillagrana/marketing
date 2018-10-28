@@ -1,25 +1,17 @@
 <template>
-  <app-modal :open='open' @close="$emit('close')">
+  <app-modal :open='open' @close="$emit('close')" v-if="publication">
     <template slot="header">
-      <p class="modal-card-title">{{ user.name }} {{ user.lastname }}</p>
+      <p class="modal-card-title">Nueva Publicación</p>
     </template>
     <template slot="content">
       <form>
-        <label for="name">Usuario:</label>
-        <input type="text" class="input" name="username" v-model="user.username" />
-
         <label for="name">Nombre:</label>
-        <input type="text" class="input" name="name" v-model="user.name" />
+        <input type="text" class="input" name="name" v-model="publication.name" />
+        <span class="has-text-danger is-small">{{ errors.publication.name }}</span><br />
 
-        <label for="lastname">Apellido:</label>
-        <input type="text" class="input" name="lastname" v-model="user.lastname" />
-
-        <label for="email">Correo electrónico:</label>
-        <input type="mail" class="input" name="email" v-model="user.email" />
-        <span class="has-text-danger is-small">{{ errors.email }}</span><br />
-
-        <label for="brithday">Fecha de nacimiento:</label>
-        <input type="date" class="input" v-model="user.born_date">
+        <label for="name">Tarea para el Community Manager:</label>
+        <textarea type="text" class="textarea" name="name" v-model="task.content"></textarea>
+        <span class="has-text-danger is-small">{{ errors.task.content }}</span><br />
       </form>
     </template>
     <template slot="footer">
@@ -39,128 +31,69 @@
     },
     data() {
       return {
-        user: null,
+        publication: {
+          name: ''
+        },
+        task: {
+          name: `Nueva publicación creada`,
+          content: ''
+        },
         errors: {
-          email: ''
+          task: {
+            content: ''
+          },
+          publication: {
+            name: ''
+          }
         },
         saving: false
       }
     },
-    props: ['open', 'node_id'],
-    beforeMount() {
-      this.userReset()
-    },
+    props: ['open', 'node_id', 'community_manager_id'],
     methods: {
-      userReset: function () {
-        this.user = {
-          id: null,
-          username: '',
-          name: '',
-          lastname: '',
-          born_date: '',
-          email: ''
-        }
-      },
       save: function (e) {
         e.preventDefault()
         const that = this
-        this.saving = true
-        if (this.user_id) {
-          this.$axios.put(`/admin/users/${this.user.id}`, this.user)
-          .then(({data}) => {
-            if(data.status === 200){
-              that.saving = false
-              that.$emit('close')
-              that.$swal({
-                type: 'success',
-                title: 'Guardado',
-                text: `El usuario ${data.user.username} se actualizó correctamente`
-              })
-              that.$emit('update-user')
-              that.userReset()
-            }
+        this.$axios.post(`/community_manager/nodes/${this.node_id}/publications`, { publication: this.publication })
+        .then(result => {
+          console.log(result)
+          that.$axios.post(`/community_manager/publications/${result.data.publication.id}/tasks`, { task: that.task, community_manager_id: that.community_manager_id })
+          .then((result) => {
+
           })
           .catch(err => {
-            that.saving = false
             that.$swal({
               type: 'error',
               title: 'Error',
-              text: `El usuario no se pudo actualizar`,
-              footer: `Error ${err}`
+              text: 'No se pudo crear la tarea.',
+              footer: `Error: ${err}`
             })
           })
-        } else {
-          this.$axios.post(`/admin/users`, {
-            ...this.user,
-            company_id: this.company_id
-          })
-          .then(({data}) => {
-            if(data.status === 200){
-              that.saving = false
-              that.$emit('close')
-              that.$swal({
-                type: 'success',
-                title: 'Guardado',
-                html: `El link de invitación para el usuario: 
-                  <pre><code>${data.link}</code></pre>`
-              })
-              that.$emit('update-user')
-              that.userReset()
-            } else {
-              that.saving = false
-              that.$swal({
-                type: 'error',
-                title: 'Error',
-                text: `El usuario no se pudo crear.`,
-                footer: `Error: ${data}`
-              })
-            }
-          })
-          .catch(err => {
-            that.saving = false
-            that.$swal({
-              type: 'error',
-              title: 'Error',
-              text: `El usuario no se pudo crear.`,
-              footer: `Error ${err}`
-            })
-          })
-        }  
-      }
-    },
-    computed: {
-      validate: function () {
-        this.errors = []
-
-        // email
-        var emailRegEx = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        const email = emailRegEx.test(this.user.email)
-        if (!email) { this.errors.email = "Debe ser un email válido" }
-
-        return email
-      }
-    },
-    watch: {
-      user_id: function () {
-        const that = this
-        this.$axios.get(`/admin/users/${this.user_id}.json`)
-        .then(({data}) => {
-          that.user.id = data.user.id
-          that.user.username = data.user.username
-          that.user.name = data.user.name
-          that.user.lastname = data.user.lastname
-          that.user.born_date = data.user.born_date
-          that.user.email = data.user.email
-          this.$swal.close()
         })
         .catch(err => {
           that.$swal({
             type: 'error',
             title: 'Error',
-            text: 'No se pudo obtener la información del sevidor.',
+            text: 'No se pudo crear la puublicación.',
             footer: `Error: ${err}`
           })
         })
+      }
+    },
+    computed: {
+      validate: function () {
+        this.errors.task.content = ''
+        this.errors.publication.name = ''
+
+        // task.content
+        const content = this.task.content.length !== 0
+        if (!content) { this.errors.task.content = "Debe contener algo" }
+
+         // publication.name
+        const name = this.publication.name.length !== 0
+        if (!name) { this.errors.publication.name = "Debe contener algo" }
+
+        return content && name
       }
     }
   }

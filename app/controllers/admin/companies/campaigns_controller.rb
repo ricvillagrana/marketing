@@ -13,6 +13,7 @@ class Admin::Companies::CampaignsController < ApplicationController
 
   def create
     @campaign = Company.find(params[:company_id]).campaigns.new(campaign_params)
+    @campaign.semantic_network = Node.new(name: 'Red semántica')
     if @campaign.save
       render json: { campaign: @campaign, status: 200 }
     else

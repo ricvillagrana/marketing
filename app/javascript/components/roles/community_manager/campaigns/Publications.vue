@@ -1,10 +1,11 @@
 <template>
   <app-card nested="true" margin="0" v-if="node_id && node.children && node.children.length === 0">
+    <button class="button is-link is-rounded is-pulled-right" @click="form.add.open = true">Agregar</button>
     <p class="title is-3">Publicaciones del nodo {{ node.name }}</p>
     <div class="columns is-is-fullwidth" v-if="node.publications.length !== 0">
       <div class="column is-4" v-for="(publication, key) in node.publications" :key="key">
         <app-card>
-          <p class="title is-4">{{ publication.content }}</p>
+          <p class="title is-4">{{ publication.name }}</p>
           <p>{{ publication.content }}</p>
           <div slot="footer" class="flex-end">
           <a :href="`/community_manager/publications/${publication.id}`" class="button is-link is-rounded">Ver más</a>
@@ -19,6 +20,7 @@
     <publication-form
       :open="form.add.open"
       :node_id="node_id"
+      :community_manager_id="community_manager_id"
       @close="form.add.open = false"></publication-form>
   </app-card>
 </template>
@@ -32,7 +34,7 @@
     components: {
       AppCard, PublicationForm
     },
-    props: ['node_id'],
+    props: ['node_id', 'community_manager_id'],
     data() {
       return {
         node: [],
