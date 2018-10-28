@@ -25,7 +25,12 @@
     </div>
     <semantic-network
       :campaign_id="campaign.id"
-      :node_id="campaign.semantic_network"></semantic-network>
+      :node_id="campaign.semantic_network"
+      @selected-node="selectedNode = $event"></semantic-network>
+        
+      <publications
+        v-if="campaign"
+        :node_id="selectedNode"></publications>
 
   </div>
 </template>
@@ -34,16 +39,17 @@
   import AppCard from '../../../app/AppCard'
   import AppDropdown from '../../../app/AppDropdown'
   import SemanticNetwork from './SemanticNetwork'
+  import Publications from './Publications'
 
   export default {
     name: 'admin-campaigns-show',
     components: {
-      AppCard, AppDropdown, SemanticNetwork
+      AppCard, AppDropdown, SemanticNetwork, Publications
     },
     data() {
       return {
         campaign: null,
-        node: null
+        selectedNode: null,
       }
     },
     props: ['campaign_id'],

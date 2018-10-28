@@ -1,7 +1,7 @@
 <template>
   <div>
     <top-bar :user="user"/>
-    <div class="columns h-100 side-bar">
+    <div class="columns h-100 p-25">
       <side-bar :roles="user.roles"/>
       <app-card class="column is-main-content content is-small">
         <slot></slot>

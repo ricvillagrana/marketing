@@ -5,7 +5,7 @@ class CommunityManager::NodesController < ApplicationController
     @node = Node.find(params[:id])
     respond_to do |format|
       format.html
-      format.json { render json: { node: @node, statuis: 200 }, include: [:children, :campaign, :father] }
+      format.json { render json: { node: @node, statuis: 200 }, include: [:children, :campaign, :father, :publications] }
     end
   end
 

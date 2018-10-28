@@ -131,8 +131,8 @@ ActiveRecord::Schema.define(version: 20181014051332) do
   create_table "publications", force: :cascade do |t|
     t.integer "publication_status_id"
     t.integer "node_id"
+    t.text "name"
     t.text "content"
-    t.text "image"
     t.date "publication_date"
     t.boolean "published", default: false
     t.string "fb_id"

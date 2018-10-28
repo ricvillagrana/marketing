@@ -4,8 +4,8 @@ class CreatePublications < ActiveRecord::Migration[5.1]
       t.references :publication_status, foreign_key: true
       t.references :node, foreign_key: true
 
+      t.text :name, null: true
       t.text :content, null: true
-      t.text :image, null: true
       t.date :publication_date, null: true
       t.boolean :published, default: false
 

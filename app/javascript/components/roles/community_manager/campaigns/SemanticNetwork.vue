@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="columns">
-      <div class="column is-8">
-        <div id="semantic-network" @contextmenu="handleRightClick" class="semantic-network"></div>
-      </div>
-      <div class="column is-4">
+    <div class="columns m-0">
+      <app-card class="column is-8" nested="true" padding="0" margin="0">
+        <div id="semantic-network" class="semantic-network"></div>
+      </app-card>
+      <div class="column is-4 height-inherit">
         <node
-          :node="node"
+          :node_id="selectedNode ? selectedNode : null"
           @add-child="addChild"
           @should-refresh="fetchSemanticNetwork"
           @select="selectedNode = $event"></node>
@@ -18,11 +18,12 @@
 <script>
   import vis from 'vis'
   import Node from './Node'
+  import AppCard from '../../../app/AppCard'
 
   export default {
     name: 'semantic-network',
     props: ['campaign_id', 'node_id'],
-    components: { vis, Node },
+    components: { vis, Node, AppCard },
     data() {
       return {
         semantic_network: null,
@@ -30,8 +31,7 @@
         vis: null,
         nodes: [],
         edges: [],
-        selectedNode: 0,
-        node: null
+        selectedNode: null
       }
     },
     beforeMount() {
@@ -40,9 +40,6 @@
     methods: {
       handleRightClick: function (e) {
         e.preventDefault()
-      },
-      handleRightClickOnNode: function () {
-        
       },
       addChild: function (father) {
         const that = this
@@ -116,19 +113,7 @@
         this.vis.on('oncontext', node => this.handleRightClickOnNode('node-right-click', { id: node.nodes[0], position: node.pointer.canvas }))
       },
       selectedNode: function () {
-        const that = this
-        if (this.selectedNode) this.$axios.get(`/community_manager/nodes/${this.selectedNode}.json`)
-        .then(({data}) => {
-          that.node = data.node
-        })
-        .catch(err => {
-          that.$swal({
-            type: 'error',
-            title: 'Error',
-            text: 'No se pudo obtener la información.',
-            footer: `Error: ${err}`
-          })
-        })
+        this.$emit('selected-node', this.selectedNode)
       }
     }
   }

@@ -2,7 +2,7 @@
   <div v-if="campaigns">
     <p class="title is-3">Campañas</p>
     <div class="columns is-is-fullwidth">
-      <div class="column is-3" v-for="(campaign, key) in campaigns" :key="key">
+      <div class="column is-4" v-for="(campaign, key) in campaigns" :key="key">
         <app-card nested="true">
           <p class="title is-4">{{ campaign.name }}</p>
           <p class="title is-6">Empresa: {{ campaign.company.name }}</p>
