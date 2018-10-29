@@ -17,6 +17,7 @@
         <layout :alert="'<%= alert %>'" :notice="'<%= notice %>'" :user="<%= current_user.to_json(include: :roles) %>">
           <%= yield %>
         </layout>
+       
       <% else %>
         <%= yield %>
       <% end %>

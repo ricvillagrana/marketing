@@ -6,7 +6,9 @@
       <app-card class="column is-main-content content is-small">
         <slot></slot>
       </app-card>
+      <chat></chat>
     </div>
+ 
   </div>
 </template>
 
@@ -14,11 +16,12 @@
   import TopBar from './TopBar'
   import SideBar from './SideBar'
   import AppCard from '../app/AppCard'
+  import Chat from './Chat'
 
   export default {
     name: 'layout',
     components: {
-      TopBar, SideBar, AppCard
+      TopBar, SideBar, AppCard, Chat
     },
     props: ['notice', 'alert', 'user'],
     mounted() {
