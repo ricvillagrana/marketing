@@ -1,7 +1,7 @@
 class Admin::CompaniesController < ApplicationController
   before_action :authenticate_user!
   def index
-    @companies = current_user.companies
+    @companies = current_user.companies_admin
     respond_to do |format|
       format.html
       format.json { render json: { companies: @companies, status: 200 }, include: :admin }
@@ -18,7 +18,7 @@ class Admin::CompaniesController < ApplicationController
   end
 
   def show
-    @company = current_user.companies.find(params[:id])
+    @company = current_user.companies_admin.find(params[:id])
     respond_to do |format|
       format.html
       format.json { render json: { company: @company, status: 200 }, include: [:admin, campaigns: { include: :community_manager } ] }
@@ -26,7 +26,7 @@ class Admin::CompaniesController < ApplicationController
   end
 
   def update
-    @company = current_user.companies.find(params[:id])
+    @company = current_user.companies_admin.find(params[:id])
     if @company.update!(company_params)
       render json: { company: @company, status: 200 }
     else
@@ -35,7 +35,7 @@ class Admin::CompaniesController < ApplicationController
   end
 
   def destroy
-    @company = current_user.companies.find(params[:id])
+    @company = current_user.companies_admin.find(params[:id])
     if @company.campaigns.size > 0
       render json: { message: 'No se puede eliminar, tiene campañas asignadas', status: 500 }
     elsif @company.destroy

@@ -2,7 +2,8 @@ class Superadmin::UsersController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @admins = User.where.not(username: 'admin')
+    @admins = User.where.not(username: 'admin') #.map {|user| user.roles.include?(Role.where(keyword: 'admin').first) ? user : nil}
+    # @admins.delete nil
     respond_to do |format|
       format.html
       format.json { render json: { admins: @admins, status: 200 }, include: :user_creation }

@@ -32,7 +32,7 @@
 <script>
   export default {
     name: 'roles-select',
-    props: ['user_id'],
+    props: ['company_id', 'user_id'],
     data() {
       return {
         serverRoles: [],
@@ -50,7 +50,7 @@
     methods: {
       append: function (role_id) {
         this.$axios.put(
-          `/admin/users/${this.user_id}/roles/append`,
+          `/admin/company/${this.company_id}/users/${this.user_id}/roles/append`,
           { role_id }
         ).then(({data}) => {
           this.userRoles.push(this.roles.filter(role => role.id === role_id).pop())
@@ -65,7 +65,7 @@
       },
       remove: function (role_id) {
         this.$axios.delete(
-          `/admin/users/${this.user_id}/roles/remove/${role_id}`,
+          `/admin/company/${this.company_id}/users/${this.user_id}/roles/remove/${role_id}`,
         ).then(({data}) => {
         this.userRoles = this.userRoles.filter((role => role.id !== role_id))
         }).catch(err => {
@@ -94,7 +94,7 @@
       },
       fetchUserRoles: function () {
         const that = this
-        this.$axios.get(`/admin/users/${this.user_id}/roles`)
+        this.$axios.get(`/admin/company/${this.company_id}/users/${this.user_id}/roles`)
         .then(({data}) => {
           that.userRoles = data.roles
         })

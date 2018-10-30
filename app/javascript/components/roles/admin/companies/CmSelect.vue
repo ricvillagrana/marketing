@@ -67,16 +67,16 @@
     },
     computed: {
       usersFiltered: function () {
-        return this.users.filter(users => (this.words.length === 0 ? null :
-          new RegExp(this.words.toLowerCase()).test(users.name.toLowerCase()) ||
-          new RegExp(this.words.toLowerCase()).test(users.lastname.toLowerCase()) ||
-          new RegExp(this.words.toLowerCase()).test(users.username.toLowerCase())
+        return this.users.filter(user => (this.words.length === 0 ? null :
+          new RegExp(this.words.toLowerCase()).test(user.name.toLowerCase()) ||
+          new RegExp(this.words.toLowerCase()).test(user.lastname.toLowerCase()) ||
+          new RegExp(this.words.toLowerCase()).test(user.username.toLowerCase())
         ))
       }
     },
     watch: {
       user_id: function () {
-        this.selected = this.users.filter(users => users.id === this.user_id).pop()
+        this.selected = this.users.filter(user => user.id === this.user_id).pop()
       }
     }
   }

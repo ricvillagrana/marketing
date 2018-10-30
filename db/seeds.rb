@@ -39,13 +39,6 @@ Role.create([
   }
   ])
 
-<<<<<<< Updated upstream
-admin = User.new(
-  email: 'admin@admin.com', 
-  password: '123456',
-  name: 'Administrator',
-  username: 'admin'
-=======
 PublicationStatus.create(
   [
     {
@@ -177,7 +170,5 @@ kiosko.admin = User.find(2)
     objetive: 'Objetivo de la campaña es lograr hacer que la gente de más likes a la página y vender más.',
     init_date: '2018-12-31',
     finish_date: '2019-12-31'
->>>>>>> Stashed changes
   )
-admin.roles.append(Role.first)
-admin.save
+end

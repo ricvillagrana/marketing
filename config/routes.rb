@@ -21,9 +21,9 @@ Rails.application.routes.draw do
     delete '/campaigns_users/:campaign_id/:user_id', to: 'campaigns#remove_user'
 
     resources :users
-    get '/users/:id/roles/', to: 'users#roles'
-    put '/users/:id/roles/append', to: 'users#roles_append'
-    delete '/users/:id/roles/remove/:role_id', to: 'users#roles_remove'
+    get '/company/:company_id/users/:user_id/roles/', to: 'users#roles'
+    put '/company/:company_id/users/:user_id/roles/append', to: 'users#roles_append'
+    delete '/company/:company_id/users/:user_id/roles/remove/:role_id', to: 'users#roles_remove'
 
     get '/community_managers/:company_id', to: 'users#community_managers'
   end

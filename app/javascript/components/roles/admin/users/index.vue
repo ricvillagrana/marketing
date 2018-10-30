@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(company, key) in companies" :key="`company-${key}`">
+    <div v-for="(company, key) in companies" :key="`company-${key}`" class="mb-25">
       <button class="button is-link is-rounded is-pulled-right" @click="handleAddUser(company)"><i class="fa fa-plus"></i>Añadir usuario</button>
       <p class="title is-3">Usuarios de {{ company.name }}</p>
       <p v-if="!company.users">Aún no hay usuarios, agrega uno.</p>
@@ -18,13 +18,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(user, key) in company.users" :key="key">
+          <tr v-for="(user, key) in company.users" :key="key" v-if="!user.companies_user.roles.some(isAdmin)">
             <td>{{ user.name }} {{ user.lastname }}</td>
             <td>@{{ user.username }}</td>
             <td>{{ user.email }}</td>
             <td>
               <div class="tags">
-                <span class="tag is-link" v-for="(role, key) in user.roles" :key="`role-${key}`">{{ role.name }}</span>
+                <span class="tag is-link" v-for="(role, key) in user.companies_user.roles" :key="`role-${key}`">{{ role.name }}</span>
               </div>
             </td>
             <td>
@@ -43,24 +43,26 @@
             </td>
             <td>
               <div class="buttons has-addons">
-                <a class="button is-warning" @click="handleEditUser(user)"><i class="fa fa-edit"></i></a>
+                <a class="button is-warning" @click="handleEditUser(user, company)"><i class="fa fa-edit"></i></a>
                 <a class="button is-danger" @click="handleDeleteUser(user)"><i class="fa fa-times"></i></a>
               </div>
             </td>
           </tr>
         </tbody>
       </table>
-      <user-form
-        :open="addOptions.open"
-        :company_id="addOptions.company_id"
-        @close="addOptions.open = false" 
-        @update-user="fetchCompanies"></user-form>
-      <user-form
-        :open="editOptions.open"
-        :user_id="editOptions.user_id" 
-        @close="editOptions.open = false" 
-        @update-user="fetchCompanies"></user-form>
     </div>
+    <user-form 
+      :open="addOptions.open"
+      :company_id="addOptions.company_id"
+      @close="addOptions.open = false" 
+      @update-user="fetchCompanies"></user-form>
+
+    <user-form
+      :open="editOptions.open"
+      :user_id="editOptions.user_id"
+      :company_id="editOptions.company_id"
+      @close="editOptions.open = false" 
+      @update-user="fetchCompanies"></user-form>
   </div>
 </template>
 
@@ -82,7 +84,8 @@
         },
         editOptions: {
           open: false,
-          user_id: 0
+          user_id: 0,
+          company_id: 0
         }
       }
     },
@@ -90,6 +93,7 @@
       this.fetchCompanies()
     },
     methods: {
+      isAdmin: role => role.keyword === 'superadmin' || role.keyword === 'admin',
       fetchCompanies: function () {
         const that = this
         this.$axios.get('/admin/users.json')
@@ -109,8 +113,9 @@
         this.addOptions.company_id = id
         this.addOptions.open = true
       },
-      handleEditUser: function ({id}) {
-        this.editOptions.user_id = id
+      handleEditUser: function (user, company) {
+        this.editOptions.company_id = company.id
+        this.editOptions.user_id = user.id
         this.editOptions.open = true
       },
       handleDeleteUser: function (user) {

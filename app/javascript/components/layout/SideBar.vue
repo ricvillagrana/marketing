@@ -73,6 +73,6 @@
   export default {
     components: {AppCard},
     name: 'sedie-bar',
-    props: ['roles']
+    props: ['roles'],
   }
 </script>

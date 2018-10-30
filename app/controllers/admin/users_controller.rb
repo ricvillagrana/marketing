@@ -3,10 +3,6 @@ class Admin::UsersController < ApplicationController
 
   def index
     @companies = current_user.companies
-    respond_to do |format|
-      format.html
-      format.json { render json: { companies: @companies, status: 200 }, include:  [ users: { include: [:roles, :user_creation, :campaigns, :campaigns_admin] } ] }
-    end
   end
 
   def create
@@ -58,32 +54,35 @@ class Admin::UsersController < ApplicationController
 
   # Roles
   def roles
-    user = User.find(params[:id])
-    @roles = user.roles
+    cu = CompaniesUsers.where('user_id = ? and company_id = ?', params[:user_id], params[:company_id]).first
+    @roles = cu.roles
     render json: { roles: @roles, status: 500 }
   end
 
   def roles_append
-    user = User.find(params[:id])
-    user.roles.append(Role.find(params[:role_id]))
-    user.save
-    render json: { user: user, status: 500 }
+    cu = CompaniesUsers.where('user_id = ? and company_id = ?', params[:user_id], params[:company_id]).first
+    cu.roles.append(Role.find(params[:role_id]))
+    if cu.save
+      render json: { user: cu, status: 200 }
+    end
   end
 
   def roles_remove
-
-    user = User.find(params[:id])
-    user.roles.delete(params[:role_id])
-    user.save
-    render json: { user: user, status: 500 }
+    cu = CompaniesUsers.where('user_id = ? and company_id = ?', params[:user_id], params[:company_id]).first
+    cu.roles.delete(params[:role_id])
+    if cu.save
+      render json: { user: user, status: 500 }
+    end
   end
 
   # Community Manager
   def community_managers
-    @community_managers = Role.where(keyword: 'cm').first.users.where(company_id: params[:company_id])
+    cm_role = Role.where(keyword: 'cm').first
+    @community_managers = CompaniesUsers.where(company_id: params[:company_id]).map {|user| user.roles.include?(cm_role) ? user : nil }
+    @community_managers.delete nil
     respond_to do |format|
       format.html
-      format.json { render json: { community_managers: @community_managers, status: 200 } }
+      format.json { render json: { community_managers: @community_managers.map {|cu| cu.user}, status: 200 } }
     end
   end
 
