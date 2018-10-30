@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181014051332) do
+ActiveRecord::Schema.define(version: 20181030031500) do
 
   create_table "campaigns", force: :cascade do |t|
     t.integer "company_id"
@@ -62,6 +62,22 @@ ActiveRecord::Schema.define(version: 20181014051332) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_companies_on_user_id"
+  end
+
+  create_table "companies_users", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "company_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_companies_users_on_company_id"
+    t.index ["user_id"], name: "index_companies_users_on_user_id"
+  end
+
+  create_table "companies_users_roles", force: :cascade do |t|
+    t.integer "role_id"
+    t.integer "companies_users_id"
+    t.index ["companies_users_id"], name: "index_companies_users_roles_on_companies_users_id"
+    t.index ["role_id"], name: "index_companies_users_roles_on_role_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -151,13 +167,6 @@ ActiveRecord::Schema.define(version: 20181014051332) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["keyword"], name: "index_roles_on_keyword", unique: true
-  end
-
-  create_table "roles_users", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "role_id"
-    t.index ["role_id"], name: "index_roles_users_on_role_id"
-    t.index ["user_id"], name: "index_roles_users_on_user_id"
   end
 
   create_table "tasks", force: :cascade do |t|
