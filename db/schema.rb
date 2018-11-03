@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181012145748) do
+ActiveRecord::Schema.define(version: 20181030022032) do
 
   create_table "campaigns", force: :cascade do |t|
     t.integer "company_id"
@@ -69,13 +69,6 @@ ActiveRecord::Schema.define(version: 20181012145748) do
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_companies_users_on_company_id"
     t.index ["user_id"], name: "index_companies_users_on_user_id"
-  end
-
-  create_table "companies_users_roles", force: :cascade do |t|
-    t.integer "role_id"
-    t.integer "companies_users_id"
-    t.index ["companies_users_id"], name: "index_companies_users_roles_on_companies_users_id"
-    t.index ["role_id"], name: "index_companies_users_roles_on_role_id"
   end
 
   create_table "messages", force: :cascade do |t|

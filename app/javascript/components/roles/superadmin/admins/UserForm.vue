@@ -7,6 +7,7 @@
       <form>
         <label for="name">Usuario:</label>
         <input type="text" class="input" name="username" v-model="user.username" />
+        <span class="has-text-danger is-small">{{ errors.username }}</span><br />
 
         <label for="name">Nombre:</label>
         <input type="text" class="input" name="name" v-model="user.name" />
@@ -18,10 +19,10 @@
         <input type="mail" class="input" name="email" v-model="user.email" />
         <span class="has-text-danger is-small">{{ errors.email }}</span><br />
 
-        <label for="comapny">Selecciona una Empresa</label>
+        <label v-if="user_id" for="comapny">Selecciona una Empresa</label>
         <company-selector
+          v-if="user_id"
           :company_id="user.company_id"
-          :user_id="user.id"
           @selected="user.company_id = $event"></company-selector>
 
         <label for="brithday">Fecha de nacimiento:</label>
@@ -54,7 +55,8 @@
           company_id: 0
         },
         errors: {
-          email: ''
+          email: '',
+          username: ''
         },
         saving: false
       }
@@ -132,7 +134,11 @@
         const email = emailRegEx.test(this.user.email)
         if (!email) { this.errors.email = "Debe ser un email válido" }
 
-        return email
+        // username
+         const username = this.user.username.length >= 3
+        if (!username) { this.errors.username = "Debe ser un usuario válido, 3 o más caracteres" }
+
+        return email && username
       }
     },
     watch: {

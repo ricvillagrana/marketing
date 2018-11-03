@@ -162,9 +162,6 @@ kiosko.users.append(User.where(username: 'rvillagrana').first)
 kiosko.users.append(User.where(username: 'blarios').first)
 kiosko.users.append(User.where(username: 'westrada').first)
 kiosko.users.append(User.where(username: 'pjaime').first)
-u = User.find(2)
-u.company = kiosko
-u.save
 
 7.times do |n|
   campaign = kiosko.campaigns.new(

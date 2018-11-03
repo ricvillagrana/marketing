@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   belongs_to :role, optional: true
   belongs_to :company, optional: true
-  belongs_to :works_on, class_name: 'Company', foreign_key: 'works_on_id', optional: true
+  belongs_to :works_on, class_name: 'Company', optional: true
 
   has_one :user_creation
 

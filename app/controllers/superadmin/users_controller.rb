@@ -2,7 +2,7 @@ class Superadmin::UsersController < ApplicationController
   before_action :authenticate_user!, :should_be_superadmin!
 
   def index
-    @admins = User.where.not(username: 'admin') #.map {|user| user.roles.include?(Role.where(keyword: 'admin').first) ? user : nil}
+    @admins = User.where(role: Role.where(keyword: 'admin').first)
     # @admins.delete nil
     respond_to do |format|
       format.html
