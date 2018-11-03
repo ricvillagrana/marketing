@@ -22,12 +22,30 @@ class User < ApplicationRecord
   has_many :notifications, class_name: 'Notification', foreign_key: 'reciever_id'
   has_many :notifications_sended, class_name: 'Notification', foreign_key: 'sender_id'
 
-  def self.fullname
-    "#{self.name} #{self.lastname}"
+  def fullname
+    "#{name} #{lastname}"
   end
 
-  def self.pending?
+  def pending?
     user_creation != nil
+  end
+
+  def companies
+    new_companies = []
+    companies_raw.each do |c|
+      new_companies.push(c) unless new_companies.any? { |r| r.id == c.id }
+    end
+    new_companies
+  end
+
+  def roles
+    if companies != []
+      result = []
+      companies_user.map(&:roles).reduce([]) { |f, s| f + s }.each {|cu| result.any?{|r| r.id == cu.id} ? nil : result.push(cu) }
+      result
+    else
+      username == 'admin' ? [Role.where(keyword: 'superadmin').first] : []
+    end
   end
 
 end

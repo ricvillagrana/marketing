@@ -11,6 +11,9 @@ class Superadmin::CompaniesController < ApplicationController
 
   def create
     @company = Company.new(company_params)
+    @company.users.append(User.find(params[:user_id]))
+    @company.save
+    @company.companies_user.where(user_id: params[:user_id]).first.roles.append(Role.where(keyword: 'admin').first)
     if @company.save
       render json: { company: @company, status: 200 }
     else
@@ -29,6 +32,12 @@ class Superadmin::CompaniesController < ApplicationController
 
   def update
     @company = Company.find(params[:id])
+    @company.users.append(User.find(params[:user_id]))
+    user = @company.companies_user.where(user_id: params[:user_id]).first
+    unless user.roles.include?(Role.where(keyword: 'admin').first)
+      user.roles.append(Role.where(keyword: 'admin').first)
+    end
+    @company.save
     if @company.update!(company_params)
       render json: { company: @company, status: 200 }
     else

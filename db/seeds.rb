@@ -88,7 +88,7 @@ users = User.create(
       role: Role.where(keyword: 'admin').first
     },
     {
-      email: 'ricardo@app.com',
+      email: 'ricardo@app.com', 
       password: '123456',
       name: 'Ricardo',
       lastname: 'Villagrana',

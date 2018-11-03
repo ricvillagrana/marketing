@@ -43,7 +43,9 @@ class Admin::CampaignsController < ApplicationController
 
   def all_users
     @company = Company.find(params[:company_id])
-    render json: { users: @company.users, status: 200 }, include: [:roles]
+    users = []
+    @company.users.each {|u| u.roles.include?(Role.second) ? nil : users.push(u) }
+    render json: { users: users, status: 200 }, include: [:roles]
   end
 
   def add_user
