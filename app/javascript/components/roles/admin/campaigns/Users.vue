@@ -10,7 +10,7 @@
             v-for="(element, key) in inCampaign"
             :key="`designer-stored-${key}`"
             :user_id="element.id">
-            <b>{{element.name}}</b> - <span class="tag" v-for="(role, key) in element.roles" :key="`role-${key}`">{{ role.name }}</span>
+            <b>{{element.name}}</b> - <span class="tag">{{ element.role.name }}</span>
           </div>
         </draggable>
       </app-card>
@@ -22,7 +22,7 @@
             v-for="(element, key) in inServer"
             :key="`designer-server-${key}`"
             :user_id="element.id">
-            <b>{{element.name}}</b> - <span class="tag" v-for="(role, key) in element.roles" :key="`role-${key}`">{{ role.name }}</span>
+            <b>{{element.name}}</b> - <span class="tag">{{ element.role.name }}</span>
           </div>
         </draggable>
       </app-card>
@@ -99,7 +99,7 @@
         const that = this
         this.$axios.get(`/admin/campaigns_users/${this.company_id}`)
         .then(({data}) => {
-          that.allUsers = data.users.filter(user => !this.isAdmin(user.roles))
+          that.allUsers = data.users.filter(user => !this.isAdmin(user.role))
           that.checkCampaignUsers()
         })
         .catch(err => {

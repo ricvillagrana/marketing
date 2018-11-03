@@ -8,9 +8,11 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :companies do
-      resources :campaigns, controller: 'companies/campaigns' do
-        resources :publications, controller: 'companies/campaigns/publications'
+    get '/company', to: 'companies#index'
+    put '/company', to: 'companies#update'
+    namespace :company do
+      resources :campaigns, controller: 'campaigns' do
+        resources :publications, controller: 'campaigns/publications'
       end
     end
 
@@ -21,9 +23,6 @@ Rails.application.routes.draw do
     delete '/campaigns_users/:campaign_id/:user_id', to: 'campaigns#remove_user'
 
     resources :users
-    get '/company/:company_id/users/:user_id/roles/', to: 'users#roles'
-    put '/company/:company_id/users/:user_id/roles/append', to: 'users#roles_append'
-    delete '/company/:company_id/users/:user_id/roles/remove/:role_id', to: 'users#roles_remove'
 
     get '/community_managers/:company_id', to: 'users#community_managers'
   end

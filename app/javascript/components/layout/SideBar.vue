@@ -22,8 +22,8 @@
         </p>
         <ul class="menu-list">
           <li><a>Publicaciones</a></li>
-          <li><a href="/admin/campaigns">Campañas</a></li>
-          <li><a href="/admin/companies">Empresas</a></li>
+          <!-- <li><a href="/admin/campaigns">Campañas</a></li> -->
+          <li><a href="/admin/company">Empresa</a></li>
           <li><a href="/admin/users">Usuarios</a></li>
         </ul>
       </div>

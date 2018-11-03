@@ -112,12 +112,12 @@ users = User.create(
       role: Role.where(keyword: 'designer').first
     },
     {
-      email: 'admin@app.com',
+      email: 'pvilli@app.com',
       password: '123456',
       name: 'Paul',
       lastname: 'Jaime',
       username: 'pjaime',
-      role: Role.where(keyword: 'gc').first
+      role: Role.where(keyword: 'cg').first
     },
   ]
 )

@@ -52,7 +52,6 @@ import SuperadminCompanies from '../components/roles/superadmin/companies'
 import SuperadminAdmins from '../components/roles/superadmin/admins'
 // Admin
 import AdminCompanies from '../components/roles/admin/companies'
-import AdminCompaniesShow from '../components/roles/admin/companies/show'
 import AdminUsers from '../components/roles/admin/users'
 import AdminCampaigns from '../components/roles/admin/campaigns'
 import AdminCampaignsShow from '../components/roles/admin/campaigns/show'
@@ -76,7 +75,6 @@ Vue.use('superadmin-companies', SuperadminCompanies)
 
 // Admin
 Vue.use('admin-companies', AdminCompanies)
-Vue.use('admin-companies-show', AdminCompaniesShow)
 Vue.use('admin-users', AdminUsers)
 Vue.use('admin-campaigns', AdminCampaigns)
 Vue.use('admin-campaigns-show', AdminCampaignsShow)
@@ -100,7 +98,7 @@ document.addEventListener('turbolinks:load', () => {
       SuperadminAdmins, SuperadminCompanies,
 
       // Admin
-      AdminCompanies, AdminCompaniesShow, AdminUsers, AdminCampaigns, AdminCampaignsShow,
+      AdminCompanies, AdminUsers, AdminCampaigns, AdminCampaignsShow,
       
       // Community Manager
       CommunityManagerCampaigns, CommunityManagerCampaignsShow,

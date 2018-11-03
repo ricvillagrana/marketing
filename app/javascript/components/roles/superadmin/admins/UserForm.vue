@@ -79,6 +79,7 @@
                 text: `El usuario ${data.user.username} se actualizó correctamente`
               })
               that.$emit('update-users')
+              that.user.company_id = 0
             }
           })
           .catch(err => {
@@ -103,6 +104,7 @@
                   <pre><code>${data.link}</code></pre>`
               })
               that.$emit('update-users')
+              that.user.company_id = 0
             } else {
               that.saving = false
               that.$swal({
