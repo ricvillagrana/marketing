@@ -1,13 +1,13 @@
 <template>
-  <app-card class="column is-2 is-sidebar-menu is-hidden-mobile">
+  <app-card class="column is-2 is-sidebar-menu">
     <div class="menu">
       <p class="menu-label">
-        Roles
+        Rol
       </p>
       <div class="tags">
-        <span class="tag is-link" v-for="(role, key) in roles" :key="key">{{ role.name }}</span>
+        <span class="tag is-link">{{ role.name }}</span>
       </div>
-      <div v-if="roles.filter(role => role.keyword === 'superadmin').length !== 0">
+      <div v-if="role.keyword === 'superadmin'">
         <p class="menu-label">
           Súper admin
         </p>
@@ -16,7 +16,7 @@
           <li><a href="/superadmin/companies">Gestionar Empresas</a></li>
         </ul>
       </div>
-      <div v-if="roles.filter(role => role.keyword === 'admin').length !== 0">
+      <div v-if="role.keyword === 'admin'">
         <p class="menu-label">
           Administrador
         </p>
@@ -27,7 +27,7 @@
           <li><a href="/admin/users">Usuarios</a></li>
         </ul>
       </div>
-      <div v-if="roles.filter(role => role.keyword === 'cm').length !== 0">
+      <div v-if="role.keyword === 'cm'">
         <p class="menu-label">
           Community Manager
         </p>
@@ -36,7 +36,7 @@
           <li><a href="/community_manager/campaigns">Campañas</a></li>
         </ul>
       </div>
-      <div v-if="roles.filter(role => role.keyword === 'cg').length !== 0">
+      <div v-if="role.keyword === 'cg'">
         <p class="menu-label">
           Generador de contenido
         </p>
@@ -45,7 +45,7 @@
           <li><a>Campañas</a></li>
         </ul>
       </div>
-      <div v-if="roles.filter(role => role.keyword === 'designer').length !== 0">
+      <div v-if="role.keyword === 'designer'">
         <p class="menu-label">
           Diseñador
         </p>
@@ -54,7 +54,7 @@
           <li><a>Campañas</a></li>
         </ul>
       </div>
-      <div v-if="roles.filter(role => role.keyword === 'client').length !== 0">
+      <div v-if="role.keyword === 'client'">
         <p class="menu-label">
           Revisión
         </p>
@@ -73,6 +73,6 @@
   export default {
     components: {AppCard},
     name: 'sedie-bar',
-    props: ['roles']
+    props: ['role']
   }
 </script>

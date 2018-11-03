@@ -6,9 +6,9 @@
       <thead>
         <tr class="has-text-weight-bold">
           <!--<td>Imagen</td>-->
-          <td>Nombre</td>
-          <td>Apellido</td>
+          <td>Nombre completo</td>
           <td>Usuario</td>
+          <td>Empresa</td>
           <td>Correo electŕonico</td>
           <td>Se unió</td>
           <td>Estatus</td>
@@ -22,9 +22,9 @@
               <img :src="admin.image" :alt="admin.name" class="image is-32x32" />
             </figure>
           </td>-->
-          <td>{{ admin.name }}</td>
-          <td>{{ admin.lastname }}</td>
+          <td>{{ admin.name }} {{ admin.lastname }}</td>
           <td>{{ admin.username }}</td>
+          <td>{{ admin.company_id ? admin.company.name : '[Sin asignar]' }}</td>
           <td>{{ admin.email }}</td>
           <td>{{ $datetime(admin.created_at) }}</td>
           <td>
@@ -143,7 +143,7 @@
         const that = this
         this.$axios.get('/superadmin/admins.json')
         .then(({data}) => {
-          that.admins = data.admins
+          that.admins = data.admins.sort((a, b) => b.id - a.id)
         })
         .catch(err => {
           that.$swal({

@@ -5,7 +5,7 @@ class Superadmin::UsersController < ApplicationController
     @admins = Role.where(keyword: 'admin').first.users
     respond_to do |format|
       format.html
-      format.json { render json: { admins: @admins, status: 200 }, include: :user_creation }
+      format.json { render json: { admins: @admins, status: 200 }, include: [:user_creation, :company] }
     end
   end
 
@@ -14,7 +14,7 @@ class Superadmin::UsersController < ApplicationController
     user_creation.generate_token
     @admin = User.new(user_params)
     @admin.password = user_creation.creation_token
-    @admin.roles.append(Role.where(keyword: 'admin'))
+    @admin.role = Role.where(keyword: 'admin').first
     if @admin.save
       user_creation.user = @admin
       user_creation.save
@@ -54,6 +54,6 @@ class Superadmin::UsersController < ApplicationController
   private 
 
   def user_params
-    params.require(:user).permit(:name, :lastname, :email, :username, :born_date)
+    params.require(:user).permit(:name, :lastname, :email, :username, :born_date, :company_id)
   end
 end

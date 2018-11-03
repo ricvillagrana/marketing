@@ -70,54 +70,54 @@ PublicationStatus.create(
   ]
 )
 
-User.create(
+users = User.create(
   [
     {
-      email: 'admin@admin.com', 
+      email: 'admin@admin.com',
       password: '123456',
       name: 'Administrator',
       username: 'admin',
-      roles: [Role.where(keyword: 'superadmin').first]
+      role: Role.where(keyword: 'superadmin').first
     },
     {
-      email: 'jvalencia@app.com', 
+      email: 'jvalencia@app.com',
       password: '123456',
       name: 'Joel',
       lastname: 'Valencia',
       username: 'jvalencia',
-      roles: [Role.where(keyword: 'admin').first]
+      role: Role.where(keyword: 'admin').first
     },
     {
-      email: 'ricardo@app.com', 
+      email: 'ricardo@app.com',
       password: '123456',
       name: 'Ricardo',
       lastname: 'Villagrana',
       username: 'rvillagrana',
-      roles: [Role.where(keyword: 'cm').first]
+      role: Role.where(keyword: 'cm').first
     },
     {
-      email: 'blarios@app.com', 
+      email: 'blarios@app.com',
       password: '123456',
       name: 'Brando',
       lastname: 'Larios',
       username: 'blarios',
-      roles: [Role.where(keyword: 'cg').first]
+      role: Role.where(keyword: 'cg').first
     },
     {
-      email: 'westrada@app.com', 
+      email: 'westrada@app.com',
       password: '123456',
       name: 'Williams',
       lastname: 'Estrada',
       username: 'westrada',
-      roles: [Role.where(keyword: 'designer').first]
+      role: Role.where(keyword: 'designer').first
     },
     {
-      email: 'admin@app.com', 
+      email: 'admin@app.com',
       password: '123456',
       name: 'Paul',
       lastname: 'Jaime',
       username: 'pjaime',
-      roles: Role.where(keyword: 'gc')
+      role: Role.where(keyword: 'gc').first
     },
   ]
 )
@@ -162,7 +162,9 @@ kiosko.users.append(User.where(username: 'rvillagrana').first)
 kiosko.users.append(User.where(username: 'blarios').first)
 kiosko.users.append(User.where(username: 'westrada').first)
 kiosko.users.append(User.where(username: 'pjaime').first)
-kiosko.admin = User.find(2)
+u = User.find(2)
+u.company = kiosko
+u.save
 
 7.times do |n|
   campaign = kiosko.campaigns.new(

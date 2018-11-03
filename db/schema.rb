@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181014051332) do
+ActiveRecord::Schema.define(version: 20181012145748) do
 
   create_table "campaigns", force: :cascade do |t|
     t.integer "company_id"
@@ -47,7 +47,6 @@ ActiveRecord::Schema.define(version: 20181014051332) do
   end
 
   create_table "companies", force: :cascade do |t|
-    t.integer "user_id"
     t.string "name"
     t.text "description"
     t.string "contact_name"
@@ -61,7 +60,6 @@ ActiveRecord::Schema.define(version: 20181014051332) do
     t.boolean "deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_companies_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -153,13 +151,6 @@ ActiveRecord::Schema.define(version: 20181014051332) do
     t.index ["keyword"], name: "index_roles_on_keyword", unique: true
   end
 
-  create_table "roles_users", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "role_id"
-    t.index ["role_id"], name: "index_roles_users_on_role_id"
-    t.index ["user_id"], name: "index_roles_users_on_user_id"
-  end
-
   create_table "tasks", force: :cascade do |t|
     t.integer "publication_id"
     t.integer "user_id"
@@ -182,6 +173,9 @@ ActiveRecord::Schema.define(version: 20181014051332) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.integer "role_id"
+    t.integer "company_id"
+    t.integer "works_on_id"
     t.string "username"
     t.string "name"
     t.string "lastname"
@@ -203,10 +197,10 @@ ActiveRecord::Schema.define(version: 20181014051332) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
-    t.integer "company_id"
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["role_id"], name: "index_users_on_role_id"
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 

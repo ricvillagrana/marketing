@@ -2,7 +2,7 @@
   <div>
     <top-bar :user="user"/>
     <div class="columns h-100 p-25">
-      <side-bar :roles="user.roles"/>
+      <side-bar :role="user.role"/>
       <app-card class="column is-main-content content is-small">
         <slot></slot>
       </app-card>

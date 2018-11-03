@@ -48,7 +48,7 @@ class Superadmin::CompaniesController < ApplicationController
   private 
 
   def company_params
-    params.require(:company).permit(:name, :description, :contact_name, :phone, :email, :address, :init_hour, :final_hour, :user_id)
+    params.require(:company).permit(:name, :description, :contact_name, :phone, :email, :address, :init_hour, :final_hour)
   end
   
 end
