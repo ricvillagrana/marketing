@@ -1,5 +1,6 @@
 class Superadmin::CompaniesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :should_be_superadmin!
+  
   def index
     @companies = Company.all
     respond_to do |format|
@@ -56,7 +57,7 @@ class Superadmin::CompaniesController < ApplicationController
   private 
 
   def company_params
-    params.require(:company).permit(:name, :description, :contact_name, :phone, :email, :address, :init_hour, :final_hour, :user_id)
+    params.require(:company).permit(:name, :description, :contact_name, :phone, :email, :address, :init_hour, :final_hour)
   end
   
 end

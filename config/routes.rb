@@ -28,12 +28,23 @@ Rails.application.routes.draw do
     get '/community_managers/:company_id', to: 'users#community_managers'
   end
 
+  namespace :community_manager do
+    resources :campaigns 
+    resources :nodes, only: %i[show create update destroy] do
+      resources :publications, controller: 'nodes/publications'
+    end
+
+    resources :publications do
+      resources :tasks, only: %i[show create update destroy], controller: 'publications/tasks'
+    end
+
+    get '/campaigns/semantic_network/:id', to: 'campaigns#semantic_network'
+  end
+
   get '/roles', to: 'roles#index'
 
-  # route for user profile 
-
+  # Route for user profile
   get '/profile', to: 'profile#index'
- 
 
   get '/invited/:creation_token', to: 'invite#edit'
   put '/invited/:id', to: 'invite#update'

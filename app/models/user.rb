@@ -4,15 +4,14 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_and_belongs_to_many :companies_raw, class_name: 'Company'
-  has_many :companies_user, class_name: 'CompaniesUsers'
-  has_many :companies_admin, class_name: 'Company', foreign_key: 'user_id'
+  belongs_to :role, optional: true
+  belongs_to :company, optional: true
+  belongs_to :works_on, class_name: 'Company', foreign_key: 'works_on_id', optional: true
 
   has_one :user_creation
 
   has_and_belongs_to_many :campaigns
   has_many :campaigns_admin, class_name: 'Campaign', foreign_key: 'community_manager_id'
-  belongs_to :works_on, class_name: 'Company', foreign_key: 'company_id', optional: true
 
   has_many :node_user
   has_many :nodes, through: :node_user

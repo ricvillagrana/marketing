@@ -1,6 +1,10 @@
 class CreateUsers < ActiveRecord::Migration[5.1]
   def change
     create_table :users do |t|
+      t.references :role, null: true
+      t.references :company, null: true
+      t.integer :works_on_id, null: true
+
       t.string :username, null: true
       t.string :name, null: true
       t.string :lastname, null: true

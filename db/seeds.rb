@@ -6,38 +6,40 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Role.create([
-  {
-    name: 'Súper Admin', 
-    description: 'Administra la aplicación, así como a los demás administradores.',
-    keyword: 'superadmin'
-  },
-  {
-    name: 'Administrador', 
-    description: 'Administra Empresas, usuarios de las mismas y les asigna un CM',
-    keyword: 'admin'
-  },
-  {
-    name: 'Community Manager', 
-    description: 'Crea y gestiona campañas, asigna usuarios registrados en la Empresa a las campañas. Generaredes semánticas y publicaciones para las mismas. Publica en Facebook o programa las publicaciones.',
-    keyword: 'cm'
-  },
-  {
-    name: 'Generador de contenido', 
-    description: 'Crea contenido (text y multimedia si así lo desea) para las publicaciones.',
-    keyword: 'cg'
-  },
-  {
-    name: 'Diseñador', 
-    description: 'Genera contenido multimedia para las publicaciones.',
-    keyword: 'designer'
-  },
-  {
-    name: 'Cliente',
-    description: 'Puede ver resultados de las campañas.',
-    keyword: 'client'
-  }
-  ])
+Role.create(
+  [
+    {
+      name: 'Súper Admin', 
+      description: 'Administra la aplicación, así como a los demás administradores.',
+      keyword: 'superadmin'
+    },
+    {
+      name: 'Administrador', 
+      description: 'Administra Empresas, usuarios de las mismas y les asigna un CM',
+      keyword: 'admin'
+    },
+    {
+      name: 'Community Manager', 
+      description: 'Crea y gestiona campañas, asigna usuarios registrados en la Empresa a las campañas. Generaredes semánticas y publicaciones para las mismas. Publica en Facebook o programa las publicaciones.',
+      keyword: 'cm'
+    },
+    {
+      name: 'Generador de contenido', 
+      description: 'Crea contenido (text y multimedia si así lo desea) para las publicaciones.',
+      keyword: 'cg'
+    },
+    {
+      name: 'Diseñador', 
+      description: 'Genera contenido multimedia para las publicaciones.',
+      keyword: 'designer'
+    },
+    {
+      name: 'Cliente',
+      description: 'Puede ver resultados de las campañas.',
+      keyword: 'client'
+    }
+  ]
+)
 
 PublicationStatus.create(
   [
@@ -68,22 +70,22 @@ PublicationStatus.create(
   ]
 )
 
-User.create(
+users = User.create(
   [
     {
       email: 'admin@admin.com',
       password: '123456',
       name: 'Administrator',
       username: 'admin',
-      # roles: [Role.where(keyword: 'superadmin').first]
+      role: Role.where(keyword: 'superadmin').first
     },
     {
-      email: 'jvalencia@app.com', 
+      email: 'jvalencia@app.com',
       password: '123456',
       name: 'Joel',
       lastname: 'Valencia',
       username: 'jvalencia',
-      # roles: [Role.where(keyword: 'admin').first]
+      role: Role.where(keyword: 'admin').first
     },
     {
       email: 'ricardo@app.com', 
@@ -91,31 +93,31 @@ User.create(
       name: 'Ricardo',
       lastname: 'Villagrana',
       username: 'rvillagrana',
-      # roles: [Role.where(keyword: 'cm').first]
+      role: Role.where(keyword: 'cm').first
     },
     {
-      email: 'blarios@app.com', 
+      email: 'blarios@app.com',
       password: '123456',
       name: 'Brando',
       lastname: 'Larios',
       username: 'blarios',
-      # roles: [Role.where(keyword: 'cg').first]
+      role: Role.where(keyword: 'cg').first
     },
     {
-      email: 'westrada@app.com', 
+      email: 'westrada@app.com',
       password: '123456',
       name: 'Williams',
       lastname: 'Estrada',
       username: 'westrada',
-      # roles: [Role.where(keyword: 'designer').first]
+      role: Role.where(keyword: 'designer').first
     },
     {
-      email: 'admin@app.com', 
+      email: 'admin@app.com',
       password: '123456',
       name: 'Paul',
       lastname: 'Jaime',
       username: 'pjaime',
-      # roles: [Role.where(keyword: 'gc').first]
+      role: Role.where(keyword: 'gc').first
     },
   ]
 )
@@ -160,7 +162,9 @@ kiosko.users.append(User.where(username: 'rvillagrana').first)
 kiosko.users.append(User.where(username: 'blarios').first)
 kiosko.users.append(User.where(username: 'westrada').first)
 kiosko.users.append(User.where(username: 'pjaime').first)
-kiosko.admin = User.find(2)
+u = User.find(2)
+u.company = kiosko
+u.save
 
 7.times do |n|
   campaign = kiosko.campaigns.new(
@@ -171,4 +175,15 @@ kiosko.admin = User.find(2)
     init_date: '2018-12-31',
     finish_date: '2019-12-31'
   )
+  child = campaign.semantic_network.children.new(name: 'Child 1')
+  child.children.new(name: 'Subchild 1')
+  child.children.new(name: 'Subchild 2')
+  child.save
+  child = campaign.semantic_network.children.new(name: 'Child 2')
+  child.children.new(name: 'Subchild 1')
+  child.children.new(name: 'Subchild 2')
+  child.save
+  campaign.save
 end
+
+kiosko.save

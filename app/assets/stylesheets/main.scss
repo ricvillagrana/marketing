@@ -72,11 +72,12 @@ html, body {
 .w-center {
   justify-content: center;
 }
-.side-bar {
-  padding: 2.5rem;
-}
 .float-left {
   float: left;
+}
+
+.height-inherit {
+  height: inherit;
 }
 
 .menu-mane {
@@ -132,4 +133,10 @@ html, body {
   &:hover {
     box-shadow: 0 5px 15px rgba(50,50,93,.1), 0 5px 15px rgba(96, 96, 96, 0.07);
   }
+}
+
+.semantic-network {
+  width: 100%;
+  height: 500px;
+  // border: solid 2px #ccc;
 }

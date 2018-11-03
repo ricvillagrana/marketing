@@ -2,7 +2,7 @@
   <div>
     <top-bar :user="user"/>
     <div class="columns h-100 p-25">
-      <side-bar :roles="user.roles" v-if="user.roles.length !== 0" />
+      <side-bar :role="user.role"/>
       <app-card class="column is-main-content content is-small">
         <div class="title is-5 has-text-centered has-text-grey" v-if="user.roles.length === 0">No tienes empresas asignadas, pide al Súper Administrador que te asigne a una.</div>
         <slot></slot>

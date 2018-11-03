@@ -7,12 +7,19 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
+import Node from './proto/node'
+
+window.Node = Node
+
 import TurbolinksAdapter from 'vue-turbolinks'
 import Vue from 'vue/dist/vue.esm'
 import Notifications from 'vue-notification'
 import axios from 'axios'
 import swal from 'sweetalert2'
 import moment from 'moment'
+
+Vue.use(TurbolinksAdapter)
+Vue.use(Notifications)
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$swal = swal;
@@ -50,6 +57,10 @@ import AdminUsers from '../components/roles/admin/users'
 import AdminCampaigns from '../components/roles/admin/campaigns'
 import AdminCampaignsShow from '../components/roles/admin/campaigns/show'
 
+// Community Manager
+import CommunityManagerCampaigns from '../components/roles/community_manager/campaigns/'
+import CommunityManagerCampaignsShow from '../components/roles/community_manager/campaigns/Show'
+
 // Import of App Components
 import AppModal from '../components/app/AppModal'
 import AppCard from '../components/app/AppCard'
@@ -58,9 +69,11 @@ import AppCard from '../components/app/AppCard'
 Vue.use('login', Login)
 Vue.use('register', Register)
 Vue.use('layout', Layout)
+
 // Superadmin
 Vue.use('superadmin-admins', SuperadminAdmins)
 Vue.use('superadmin-companies', SuperadminCompanies)
+
 // Admin
 Vue.use('admin-companies', AdminCompanies)
 Vue.use('admin-companies-show', AdminCompaniesShow)
@@ -68,12 +81,13 @@ Vue.use('admin-users', AdminUsers)
 Vue.use('admin-campaigns', AdminCampaigns)
 Vue.use('admin-campaigns-show', AdminCampaignsShow)
 
+// Community Manager
+Vue.use('community-manager-campaigns', CommunityManagerCampaigns)
+Vue.use('community-manager-campaigns-show', CommunityManagerCampaignsShow)
+
 // Registration of App components
 Vue.use('app-modal', AppModal)
-Vue.use('app-modal', AppCard)
-
-Vue.use(TurbolinksAdapter)
-Vue.use(Notifications)
+Vue.use('app-card', AppCard)
 
 document.addEventListener('turbolinks:load', () => {
   const app = new Vue({
@@ -82,10 +96,15 @@ document.addEventListener('turbolinks:load', () => {
       // Project
       Login, Register, Layout, 
       
+      // Superadmin
       SuperadminAdmins, SuperadminCompanies,
 
+      // Admin
       AdminCompanies, AdminCompaniesShow, AdminUsers, AdminCampaigns, AdminCampaignsShow,
       
+      // Community Manager
+      CommunityManagerCampaigns, CommunityManagerCampaignsShow,
+
       // App
       AppModal, AppCard
     }

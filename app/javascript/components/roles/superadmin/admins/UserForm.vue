@@ -18,6 +18,12 @@
         <input type="mail" class="input" name="email" v-model="user.email" />
         <span class="has-text-danger is-small">{{ errors.email }}</span><br />
 
+        <label for="comapny">Selecciona una Empresa</label>
+        <company-selector
+          :company_id="user.company_id"
+          :user_id="user.id"
+          @selected="user.company_id = $event"></company-selector>
+
         <label for="brithday">Fecha de nacimiento:</label>
         <input type="date" class="input" v-model="user.born_date">
       </form>
@@ -31,18 +37,21 @@
 
 <script>
   import AppModal from '../../../app/AppModal'
+  import CompanySelector from './CompanySelectror'
   
   export default {
-    components: {AppModal},
+    components: {AppModal, CompanySelector},
     name: 'user-form',
     data() {
       return {
         user: {
+          id: 0,
           username: '',
           name: '',
           lastname: '',
           born_date: '',
-          email: ''
+          email: '',
+          company_id: 0
         },
         errors: {
           email: ''
@@ -131,12 +140,7 @@
         const that = this
         this.$axios.get(`/superadmin/admins/${this.user_id}`)
         .then(({data}) => {
-          that.user.id = data.user.id
-          that.user.username = data.user.username
-          that.user.name = data.user.name
-          that.user.lastname = data.user.lastname
-          that.user.born_date = data.user.born_date
-          that.user.email = data.user.email
+          that.user = data.user
           this.$swal.close()
         })
         .catch(err => {
