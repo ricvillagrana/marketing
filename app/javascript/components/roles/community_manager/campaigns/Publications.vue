@@ -21,6 +21,7 @@
       :open="form.add.open"
       :node_id="node_id"
       :community_manager_id="community_manager_id"
+      @should-update-publications="fetchPublications"
       @close="form.add.open = false"></publication-form>
   </app-card>
 </template>

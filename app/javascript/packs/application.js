@@ -7,10 +7,6 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-import Node from './proto/node'
-
-window.Node = Node
-
 import TurbolinksAdapter from 'vue-turbolinks'
 import Vue from 'vue/dist/vue.esm'
 import Notifications from 'vue-notification'
@@ -59,6 +55,7 @@ import AdminCampaignsShow from '../components/roles/admin/campaigns/show'
 // Community Manager
 import CommunityManagerCampaigns from '../components/roles/community_manager/campaigns/'
 import CommunityManagerCampaignsShow from '../components/roles/community_manager/campaigns/Show'
+import CommunityManagerPublications from '../components/roles/community_manager/publications/'
 
 // Import of App Components
 import AppModal from '../components/app/AppModal'
@@ -82,6 +79,7 @@ Vue.use('admin-campaigns-show', AdminCampaignsShow)
 // Community Manager
 Vue.use('community-manager-campaigns', CommunityManagerCampaigns)
 Vue.use('community-manager-campaigns-show', CommunityManagerCampaignsShow)
+Vue.use('community-manager-publications', CommunityManagerPublications)
 
 // Registration of App components
 Vue.use('app-modal', AppModal)
@@ -101,7 +99,7 @@ document.addEventListener('turbolinks:load', () => {
       AdminCompanies, AdminUsers, AdminCampaigns, AdminCampaignsShow,
       
       // Community Manager
-      CommunityManagerCampaigns, CommunityManagerCampaignsShow,
+      CommunityManagerCampaigns, CommunityManagerCampaignsShow, CommunityManagerPublications,
 
       // App
       AppModal, AppCard

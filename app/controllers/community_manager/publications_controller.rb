@@ -3,21 +3,27 @@ class CommunityManager::PublicationsController < ApplicationController
 
   def index
     @user = current_user
-    render json: { publications: publications_of(@user) }
+    respond_to do |format|
+      format.html
+      format.json { render json: { campaigns: cmpaigns_with_publications(@user) } }
+    end
   end
 
-  def publications_of(user)
+  def cmpaigns_with_publications(user)
     user.campaigns_admin.map do |campaign|
-      dig_publications(campaign.semantic_network)
+      { data: campaign, publications: dig_publications_of(campaign.semantic_network).flatten }
     end
   end
 
-  def dig_publications(node, publications = [])
+  def dig_publications_of(node)
     if node.children.empty?
-      publications + [{ publications: node.publications, of: node.name }]
+      node.publications.map do |p|
+        publication = p.as_json
+        publication = publication.merge(node: Node.find(p.node_id).as_json)
+        publication
+      end
     else
-      node.children.map { |child| dig_publications(child) }
+      node.children.map { |child| dig_publications_of(child) }
     end
-    publications
   end
 end

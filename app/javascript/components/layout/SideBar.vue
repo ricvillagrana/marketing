@@ -32,7 +32,7 @@
           Community Manager
         </p>
         <ul class="menu-list">
-          <li><a>Publicaciones</a></li>
+          <li><a href="/community_manager/publications">Publicaciones</a></li>
           <li><a href="/community_manager/campaigns">Campañas</a></li>
         </ul>
       </div>

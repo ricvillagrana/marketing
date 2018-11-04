@@ -1,1 +1,1 @@
-json.array! semantic_network
+json.sn semantic_network
