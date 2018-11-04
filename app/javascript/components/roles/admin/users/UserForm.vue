@@ -14,7 +14,10 @@
         <label for="lastname">Apellido:</label>
         <input type="text" class="input" name="lastname" v-model="user.lastname" />
 
-        <roles-select v-if="user.id" :user_id="user.id"></roles-select>
+        <roles-select
+          v-if="user.id"
+          :user_id="user.id"
+          :company_id="company_id"></roles-select>
 
         <label for="email">Correo electrónico:</label>
         <input type="mail" class="input" name="email" v-model="user.email" />

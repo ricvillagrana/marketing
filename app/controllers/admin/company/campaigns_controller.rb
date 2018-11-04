@@ -1,7 +1,8 @@
-class Admin::Companies::CampaignsController < ApplicationController
-  before_action :authenticate_user!
+class Admin::Company::CampaignsController < ApplicationController
+  before_action :authenticate_user!, :should_be_admin!
+
   def index
-    @campaigns = Company.find(params[:company_id]).campaigns
+    @campaigns = current_user.company.campaigns
     render json: { campaigns: @campaigns }
   end
 
@@ -11,7 +12,8 @@ class Admin::Companies::CampaignsController < ApplicationController
   end
 
   def create
-    @campaign = Company.find(params[:company_id]).campaigns.new(campaign_params)
+    @campaign = current_user.company.campaigns.new(campaign_params)
+    @campaign.semantic_network = Node.new(name: 'Red semántica')
     if @campaign.save
       render json: { campaign: @campaign, status: 200 }
     else

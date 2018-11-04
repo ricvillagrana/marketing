@@ -2,7 +2,7 @@
   <div v-if="campaign">
     <div class="mb-30">
       <p class="title is-3">
-        <a :href="`/admin/companies/${campaign.company.id}`"><i class="fa fa-arrow-left fa-0-8x"></i></a>
+        <a :href="`/admin/company`"><i class="fa fa-arrow-left fa-0-8x"></i></a>
         {{ campaign.name }} <span v-if="campaign.finished" class="tag">Finalizada</span>
         <app-dropdown
           :title="dropdown.title"
@@ -113,7 +113,7 @@
             this.$axios.delete(`/admin/campaigns/${that.campaign.id}`)
             .then(({data}) => {
               if (data.status == 200) {
-                that.$redirect(`/admin/companies/${that.campaign.company.id}`)
+                that.$redirect(`/admin/company`)
                 that.$swal({
                   type: 'success',
                   title: 'Elminado',

@@ -14,7 +14,7 @@
     <div id="app" class="h-100 container-fluid">
       <notifications group="app" position="bottom right" width="350px"></notifications>
       <% if user_signed_in? %>
-        <layout :alert="'<%= alert %>'" :notice="'<%= notice %>'" :user="<%= current_user.to_json(include: :roles) %>">
+        <layout :alert="'<%= alert %>'" :notice="'<%= notice %>'" :user="<%= current_user.to_json(include: :role) %>">
           <%= yield %>
         </layout>
        

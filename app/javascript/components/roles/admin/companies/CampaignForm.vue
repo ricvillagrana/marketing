@@ -68,7 +68,7 @@
         const that = this
         this.saving = true
         if (!this.id) {
-          this.$axios.post(`/admin/companies/${this.company_id}/campaigns`, { campaign: this.campaign })
+          this.$axios.post(`/admin/company/campaigns`, { campaign: this.campaign })
           .then(({data}) => {
             if(data.status === 200) {
               that.saving = false

@@ -13,10 +13,10 @@
         <textarea class="textarea" :class="{ 'is-danger': errors.description }" name="description" v-model="company.description"></textarea>
         <span class="has-text-danger is-small">{{ errors.description }}</span><br />
 
-        <div v-if="!noChangeAdmin">
+        <!--<div v-if="!noChangeAdmin">
           <label for="user_id">Administrador:</label>
           <admin-selector @user-selected="company.user_id = $event" :user_id="company.user_id"></admin-selector>
-        </div>
+        </div>-->
 
         <label for="contact_name">Nombre de contacto:</label>
         <input type="text" class="input" :class="{ 'is-danger': errors.contact_name }" name="contact_name" v-model="company.contact_name" />

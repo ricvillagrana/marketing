@@ -5,16 +5,24 @@
       <app-card :nested="true" :padding="15" class="column is-6">
         <p class="title is-6">Usuarios en campaña</p>
         <draggable v-model="inCampaign" :class="{ 'draggable-area' : inCampaign.length === 0 }" :options="{group:'people'}" @change="addUserToCampaign($event)">
-          <div class="campaign-user-item grab box p-15 my-5" v-for="(element, key) in inCampaign" :key="`designer-stored-${key}`" :user_id="element.id">
-            <b>{{ element.id }} - {{element.name}}</b> - <span class="tag" v-for="(role, key) in element.roles" :key="`role-${key}`">{{ role.name }}</span>
+          <div
+            class="campaign-user-item grab box p-15 my-5"
+            v-for="(element, key) in inCampaign"
+            :key="`designer-stored-${key}`"
+            :user_id="element.id">
+            <b>{{element.name}}</b> - <span class="tag">{{ element.role.name }}</span>
           </div>
         </draggable>
       </app-card>
       <app-card :nested="true" :padding="15" class="column is-6">
         <p class="title is-6">Usuarios de la empresa</p>
         <draggable v-model="inServer" :class="{ 'draggable-area' : inServer.length === 0 }" :options="{group:'people'}" @change="removeUserFromCampaign($event)">
-          <div class="campaign-user-item grab box p-15 my-5" v-for="(element, key) in inServer" :key="`designer-server-${key}`" :user_id="element.id">
-            <b>{{ element.id }} - {{element.name}}</b> - <span class="tag" v-for="(role, key) in element.roles" :key="`role-${key}`">{{ role.name }}</span>
+          <div
+            class="campaign-user-item grab box p-15 my-5"
+            v-for="(element, key) in inServer"
+            :key="`designer-server-${key}`"
+            :user_id="element.id">
+            <b>{{element.name}}</b> - <span class="tag">{{ element.role.name }}</span>
           </div>
         </draggable>
       </app-card>
@@ -41,6 +49,7 @@
       this.fetchUsers()
     },
     methods: {
+      isAdmin: role => role.keyword === 'superadmin' || role.keyword === 'admin',
       addUserToCampaign: function (event) {
         this.$swal({
           title: 'Espere...',
@@ -90,7 +99,7 @@
         const that = this
         this.$axios.get(`/admin/campaigns_users/${this.company_id}`)
         .then(({data}) => {
-          that.allUsers = data.users
+          that.allUsers = data.users.filter(user => !this.isAdmin(user.role))
           that.checkCampaignUsers()
         })
         .catch(err => {

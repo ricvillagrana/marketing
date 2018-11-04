@@ -7,6 +7,7 @@
       <form>
         <label for="name">Usuario:</label>
         <input type="text" class="input" name="username" v-model="user.username" />
+        <span class="has-text-danger is-small">{{ errors.username }}</span><br />
 
         <label for="name">Nombre:</label>
         <input type="text" class="input" name="name" v-model="user.name" />
@@ -17,6 +18,12 @@
         <label for="email">Correo electrónico:</label>
         <input type="mail" class="input" name="email" v-model="user.email" />
         <span class="has-text-danger is-small">{{ errors.email }}</span><br />
+
+        <label v-if="user_id" for="comapny">Selecciona una Empresa</label>
+        <company-selector
+          v-if="user_id"
+          :company_id="user.company_id"
+          @selected="user.company_id = $event"></company-selector>
 
         <label for="brithday">Fecha de nacimiento:</label>
         <input type="date" class="input" v-model="user.born_date">
@@ -31,21 +38,25 @@
 
 <script>
   import AppModal from '../../../app/AppModal'
+  import CompanySelector from './CompanySelectror'
   
   export default {
-    components: {AppModal},
+    components: {AppModal, CompanySelector},
     name: 'user-form',
     data() {
       return {
         user: {
+          id: 0,
           username: '',
           name: '',
           lastname: '',
           born_date: '',
-          email: ''
+          email: '',
+          company_id: 0
         },
         errors: {
-          email: ''
+          email: '',
+          username: ''
         },
         saving: false
       }
@@ -68,6 +79,7 @@
                 text: `El usuario ${data.user.username} se actualizó correctamente`
               })
               that.$emit('update-users')
+              that.user.company_id = 0
             }
           })
           .catch(err => {
@@ -92,6 +104,7 @@
                   <pre><code>${data.link}</code></pre>`
               })
               that.$emit('update-users')
+              that.user.company_id = 0
             } else {
               that.saving = false
               that.$swal({
@@ -123,7 +136,11 @@
         const email = emailRegEx.test(this.user.email)
         if (!email) { this.errors.email = "Debe ser un email válido" }
 
-        return email
+        // username
+         const username = this.user.username.length >= 3
+        if (!username) { this.errors.username = "Debe ser un usuario válido, 3 o más caracteres" }
+
+        return email && username
       }
     },
     watch: {
@@ -131,12 +148,7 @@
         const that = this
         this.$axios.get(`/superadmin/admins/${this.user_id}`)
         .then(({data}) => {
-          that.user.id = data.user.id
-          that.user.username = data.user.username
-          that.user.name = data.user.name
-          that.user.lastname = data.user.lastname
-          that.user.born_date = data.user.born_date
-          that.user.email = data.user.email
+          that.user = data.user
           this.$swal.close()
         })
         .catch(err => {

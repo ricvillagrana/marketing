@@ -8,9 +8,11 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :companies do
-      resources :campaigns, controller: 'companies/campaigns' do
-        resources :publications, controller: 'companies/campaigns/publications'
+    get '/company', to: 'companies#index'
+    put '/company', to: 'companies#update'
+    namespace :company do
+      resources :campaigns, controller: 'campaigns' do
+        resources :publications, controller: 'campaigns/publications'
       end
     end
 
@@ -21,19 +23,27 @@ Rails.application.routes.draw do
     delete '/campaigns_users/:campaign_id/:user_id', to: 'campaigns#remove_user'
 
     resources :users
-    get '/users/:id/roles/', to: 'users#roles'
-    put '/users/:id/roles/append', to: 'users#roles_append'
-    delete '/users/:id/roles/remove/:role_id', to: 'users#roles_remove'
 
     get '/community_managers/:company_id', to: 'users#community_managers'
   end
 
+  namespace :community_manager do
+    resources :campaigns 
+    resources :nodes, only: %i[show create update destroy] do
+      resources :publications, controller: 'nodes/publications'
+    end
+
+    resources :publications do
+      resources :tasks, only: %i[show create update destroy], controller: 'publications/tasks'
+    end
+
+    get '/campaigns/semantic_network/:id', to: 'campaigns#semantic_network'
+  end
+
   get '/roles', to: 'roles#index'
 
-  # route for user profile 
-
+  # Route for user profile
   get '/profile', to: 'profile#index'
- 
 
   get '/invited/:creation_token', to: 'invite#edit'
   put '/invited/:id', to: 'invite#update'

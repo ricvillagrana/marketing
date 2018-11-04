@@ -126,7 +126,7 @@
         const that = this
         this.$axios.get('/superadmin/companies.json')
         .then(({data}) => {
-          that.companies = data.companies
+          that.companies = data.companies.sort((a, b) => b.id - a.id)
         })
         .catch(err => {
           that.$swal({
