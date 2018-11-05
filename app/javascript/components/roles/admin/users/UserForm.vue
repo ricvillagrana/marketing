@@ -14,10 +14,11 @@
         <label for="lastname">Apellido:</label>
         <input type="text" class="input" name="lastname" v-model="user.lastname" />
 
-        <roles-select
-          v-if="user.id"
-          :user_id="user.id"
-          :company_id="company_id"></roles-select>
+        <label for="role">Rol:</label>
+        <role-select
+          :is_new="!user_id"
+          :role_id="current_role_id"
+          @selected="user.role_id = $event"></role-select>
 
         <label for="email">Correo electrónico:</label>
         <input type="mail" class="input" name="email" v-model="user.email" />
@@ -36,16 +37,19 @@
 
 <script>
   import AppModal from '../../../app/AppModal'
-  import RolesSelect from './RolesSelect'
+  import RoleSelect from './RoleSelect'
   
   export default {
     components: {
-      AppModal, RolesSelect
+      AppModal, RoleSelect
     },
     name: 'user-form',
     data() {
       return {
-        user: null,
+        current_role_id: 0,
+        user: {
+          role_id: 0
+        },
         errors: {
           email: ''
         },
@@ -149,15 +153,10 @@
     watch: {
       user_id: function () {
         const that = this
-        this.$axios.get(`/admin/users/${this.user_id}.json`)
+        if (this.user_id > 0) this.$axios.get(`/admin/users/${this.user_id}.json`)
         .then(({data}) => {
-          that.user.id = data.user.id
-          that.user.username = data.user.username
-          that.user.name = data.user.name
-          that.user.lastname = data.user.lastname
-          that.user.born_date = data.user.born_date
-          that.user.email = data.user.email
-          this.$swal.close()
+          that.user = data.user
+          that.current_role_id = data.user.role_id
         })
         .catch(err => {
           that.$swal({

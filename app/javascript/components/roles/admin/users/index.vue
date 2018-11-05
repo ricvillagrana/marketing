@@ -42,7 +42,7 @@
           </td>
           <td>
             <div class="buttons has-addons">
-              <a class="button is-warning" @click="handleEditUser(user, company)"><i class="fa fa-edit"></i></a>
+              <a class="button is-warning" @click="handleEditUser(user)"><i class="fa fa-edit"></i></a>
               <a class="button is-danger" @click="handleDeleteUser(user)"><i class="fa fa-times"></i></a>
             </div>
           </td>
@@ -83,7 +83,6 @@
         editOptions: {
           open: false,
           user_id: 0,
-          company_id: 0
         }
       }
     },
@@ -106,13 +105,19 @@
             footer: `Error: ${err}`
           })
         })
+        this.resetOptions()
+      },
+      resetOptions: function () {
+        this.editOptions = {
+          open: false,
+          user_id: 0,
+        }
       },
       handleAddUser: function ({id}) {
         this.addOptions.company_id = id
         this.addOptions.open = true
       },
-      handleEditUser: function (user, company) {
-        this.editOptions.company_id = company.id
+      handleEditUser: function (user) {
         this.editOptions.user_id = user.id
         this.editOptions.open = true
       },

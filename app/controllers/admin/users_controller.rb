@@ -5,7 +5,7 @@ class Admin::UsersController < ApplicationController
     @users = current_user.company.users
     respond_to do |format|
       format.html
-      format.json { render json: {users: @users, status: 200 }, include: [:role, :company, :campaigns, :campaigns_admin] }
+      format.json { render json: {users: @users, status: 200 }, include: [:role, :company, :campaigns, :campaigns_admin, :user_creation] }
     end
   end
 
@@ -63,6 +63,6 @@ class Admin::UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :lastname, :email, :username, :born_date, :company_id)
+    params.require(:user).permit(:name, :lastname, :email, :username, :born_date, :company_id, :role_id)
   end
 end

@@ -12,8 +12,8 @@
           Súper admin
         </p>
         <ul class="menu-list">
-          <li><a href="/superadmin/admins">Gestionar Administradores</a></li>
-          <li><a href="/superadmin/companies">Gestionar Empresas</a></li>
+          <li><a href="/superadmin/admins">Administradores</a></li>
+          <li><a href="/superadmin/companies">Empresas</a></li>
         </ul>
       </div>
       <div v-if="role.keyword === 'admin'">
