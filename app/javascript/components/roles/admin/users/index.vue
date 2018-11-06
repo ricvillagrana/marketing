@@ -2,7 +2,7 @@
   <div>
     <button class="button is-link is-rounded is-pulled-right" @click="handleAddUser"><i class="fa fa-plus"></i>Añadir usuario</button>
     <p class="title is-3">Usuarios</p>
-    <p v-if="!users">Aún no hay usuarios, agrega uno.</p>
+    <p v-if="users.length === 0" class="title is-5 has-text-centered has-text-grey">Aún no hay usuarios, <a @click="handleAddUser">agrega uno</a>.</p>
     <table v-else class="table is-bordered is-striped is-hoverable is-fullwidth">
       <thead>
         <tr class="has-text-weight-bold">
@@ -36,7 +36,7 @@
               <span class="tag is-warning">Link de nvitación</span>
             </div>
           </td>
-          <td>
+          <td @click="showUserDetails(user)" class="pointer">
             Administra: {{ user.campaigns_admin.length }} <br />
             Participa: {{ user.campaigns.length }}
           </td>
@@ -61,21 +61,43 @@
       :company_id="editOptions.company_id"
       @close="editOptions.open = false" 
       @update-user="fetchUsers"></user-form>
+
+      <app-modal :open="showDetails" v-if="selected"  @close="() => {showDetails = false; selected = null}">
+        <div slot="header">Campañas de {{ selected.name }} {{ selected.lastname }}</div>
+        <div class="is-size-5" slot="content">
+          <p class="">Campañas que administra:</p>
+          <ul class="no-list">
+            <li v-for="(campaign, key) in selected.campaigns_admin" :key="key"><a :href="`/admin/campaigns/${campaign.id}`">{{ campaign.name }}</a></li>
+            <li v-show="selected.campaigns_admin.length == 0" class="has-text-grey has-text-weight-bold">Ninguna</li>
+          </ul>
+
+          <p class="">Campañas en las que participa:</p>
+          <ul class="no-list">
+            <li v-for="(campaign, key) in selected.campaigns" :key="key"><a :href="`/admin/campaigns/${campaign.id}`">{{ campaign.name }}</a></li>
+            <li v-show="selected.campaigns.length == 0" class="has-text-grey has-text-weight-bold">Ninguna</li>
+          </ul>
+        </div>
+        <div slot="footer">
+          <button class="button is-link" @click="() => {showDetails = false; selected = null}">Ok</button>
+        </div>
+      </app-modal>
   </div>
 </template>
 
 <script>
   import AppCard from '../../../app/AppCard'
+  import AppModal from '../../../app/AppModal'
   import UserForm from './UserForm'
 
   export default {
     name: 'admin-users',
     components: {
-      AppCard, UserForm
+      AppCard, AppModal, UserForm
     },
     data() {
       return {
         users: [],
+        selected: null,
         addOptions: {
           open: false,
           company_id: 0
@@ -83,7 +105,8 @@
         editOptions: {
           open: false,
           user_id: 0,
-        }
+        },
+        showDetails: false
       }
     },
     beforeMount() {
@@ -112,6 +135,10 @@
           open: false,
           user_id: 0,
         }
+      },
+      showUserDetails: function ({id}) {
+        this.selected = this.users.filter(user => user.id === id)[0]
+        this.showDetails = true
       },
       handleAddUser: function ({id}) {
         this.addOptions.company_id = id

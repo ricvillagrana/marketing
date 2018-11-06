@@ -88,6 +88,14 @@
               })
               that.$emit('update-user')
               that.userReset()
+            } else {
+              that.saving = false
+              that.$swal({
+                type: 'error',
+                title: 'Error',
+                text: `El usuario no se pudo crear.`,
+                footer: `Error: ${data.message}`
+              })
             }
           })
           .catch(err => {
@@ -122,7 +130,7 @@
                 type: 'error',
                 title: 'Error',
                 text: `El usuario no se pudo crear.`,
-                footer: `Error: ${data}`
+                footer: `Error: ${data.message}`
               })
             }
           })

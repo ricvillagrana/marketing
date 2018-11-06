@@ -9,6 +9,14 @@ class CommunityManager::PublicationsController < ApplicationController
     end
   end
 
+  def show
+    @publication = Publication.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render json: { publication: @publication, status: 200 }, include: [:status, node: { include: [users: { include: [:role] }] }] }
+    end
+  end
+
   def cmpaigns_with_publications(user)
     user.campaigns_admin.map do |campaign|
       { data: campaign, publications: dig_publications_of(campaign.semantic_network).flatten }
@@ -18,7 +26,7 @@ class CommunityManager::PublicationsController < ApplicationController
   def dig_publications_of(node)
     if node.children.empty?
       node.publications.map do |p|
-        publication = p.as_json
+        publication = p.as_json(include: :status)
         publication = publication.merge(node: Node.find(p.node_id).as_json)
         publication
       end

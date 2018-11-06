@@ -1,10 +1,11 @@
 <template>
   <div>
     <app-card nested="true" v-if="node">
-      <button class="button is-warning is-rounded is-pulled-right is-small" @click="$emit('add-child', node)"><i class="fa fa-plus"></i>Nuevo hijo</button>
+      <button v-if="node.publications.length === 0" class="button is-warning is-rounded is-pulled-right is-small" @click="$emit('add-child', node)"><i class="fa fa-plus"></i>Nuevo hijo</button>
       <div class="title">
         {{ node.name }}
         <span class="tag is-warning" v-if="node.campaign_id">Es raíz</span>
+        <span class="tag is-success" v-if="node.children.length === 0">Es Hoja</span>
         <app-dropdown
           :title="dropdown.title"
           :color="dropdown.color"

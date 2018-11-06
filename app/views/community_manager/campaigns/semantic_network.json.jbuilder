@@ -5,6 +5,7 @@ if @semantic_network
   json.name @semantic_network.name
   json.created_at @semantic_network.created_at
   json.updated_at @semantic_network.updated_at
+  json.users @semantic_network.users
   json.children do
     json.array! @semantic_network.children.map do |child|
       json.partial! 'node', semantic_network: child

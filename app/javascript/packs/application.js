@@ -56,6 +56,7 @@ import AdminCampaignsShow from '../components/roles/admin/campaigns/show'
 import CommunityManagerCampaigns from '../components/roles/community_manager/campaigns/'
 import CommunityManagerCampaignsShow from '../components/roles/community_manager/campaigns/Show'
 import CommunityManagerPublications from '../components/roles/community_manager/publications/'
+import CommunityManagerPublicationsShow from '../components/roles/community_manager/publications/Show'
 
 // Import of App Components
 import AppModal from '../components/app/AppModal'
@@ -80,6 +81,7 @@ Vue.use('admin-campaigns-show', AdminCampaignsShow)
 Vue.use('community-manager-campaigns', CommunityManagerCampaigns)
 Vue.use('community-manager-campaigns-show', CommunityManagerCampaignsShow)
 Vue.use('community-manager-publications', CommunityManagerPublications)
+Vue.use('community-manager-publications-show', CommunityManagerPublicationsShow)
 
 // Registration of App components
 Vue.use('app-modal', AppModal)
@@ -99,7 +101,7 @@ document.addEventListener('turbolinks:load', () => {
       AdminCompanies, AdminUsers, AdminCampaigns, AdminCampaignsShow,
       
       // Community Manager
-      CommunityManagerCampaigns, CommunityManagerCampaignsShow, CommunityManagerPublications,
+      CommunityManagerCampaigns, CommunityManagerCampaignsShow, CommunityManagerPublications, CommunityManagerPublicationsShow,
 
       // App
       AppModal, AppCard

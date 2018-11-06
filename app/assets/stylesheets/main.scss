@@ -87,6 +87,7 @@ html, body {
 
 .pointer { cursor: pointer; }
 .grab { cursor: -webkit-grab; cursor: grab; }
+.not-allowed { cursor: not-allowed; }
 
 .draggable-area {
   border-radius: 10px;
@@ -105,6 +106,10 @@ html, body {
   background-color: #3273dc;
   color: #fff;
   transition-duration: 0.2s;
+}
+
+.no-list li {
+  list-style: none;
 }
 
 .flex-end {

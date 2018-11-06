@@ -65,11 +65,20 @@ class Admin::CampaignsController < ApplicationController
 
   def remove_user
     campaign = Campaign.find(params[:campaign_id])
-    campaign.users.delete(params[:user_id]) if campaign.users.include?(User.find(params[:user_id]))
+    user = User.find(params[:user_id])
+    campaign.users.delete(params[:user_id]) if campaign.users.include?(user)
+    remove_from_nodes(campaign.semantic_network, user)
     if campaign.save
       render json: { status: 200 }
     else
       render json: { status: 500 }
+    end
+  end
+
+  def remove_from_nodes(node, user)
+    node.users.delete(user) if node.children.empty?
+    node.children.map do |n|
+      remove_from_nodes(n, user)
     end
   end
 

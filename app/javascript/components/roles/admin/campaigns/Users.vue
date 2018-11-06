@@ -1,6 +1,7 @@
 <template>
-  <div class="box">
+  <div class="">
     <p class="title is-4">Usuarios que participan en la campaña.</p>
+    <p class="title is-6 has-text-danger has-text-weight-bold">Si retras a un usuario de una campaña se eliminará de todos sus nodos.</p>
     <div class="columns">
       <app-card :nested="true" :padding="15" class="column is-6">
         <p class="title is-6">Usuarios en campaña</p>
@@ -49,7 +50,7 @@
       this.fetchUsers()
     },
     methods: {
-      isAdmin: role => role.keyword === 'superadmin' || role.keyword === 'admin',
+      isAdminOrClient: role => role.keyword === 'superadmin' || role.keyword === 'admin' || role.keyword === 'client',
       addUserToCampaign: function (event) {
         this.$swal({
           title: 'Espere...',
@@ -99,7 +100,7 @@
         const that = this
         this.$axios.get(`/admin/campaigns_users/${this.company_id}`)
         .then(({data}) => {
-          that.allUsers = data.users.filter(user => !this.isAdmin(user.role))
+          that.allUsers = data.users.filter(user => user.role && !this.isAdminOrClient(user.role))
           that.checkCampaignUsers()
         })
         .catch(err => {

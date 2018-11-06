@@ -14,7 +14,11 @@ class Admin::UsersController < ApplicationController
     user_creation = UserCreation.new
     user_creation.generate_token
     @user.password = user_creation.creation_token
-    if @user.save
+    if !User.where(username: @user.username).empty?
+      render json: { message: 'El usuario ya está tomado', status: 500 }
+    elsif !User.where(email: @user.email).empty?
+      render json: { message: 'El correo ya está tomado', status: 500 }
+    elsif @user.save
       user_creation.user = @user
       user_creation.save
       render json: { user: @user, link: "#{request.protocol + request.host_with_port}/invited/#{user_creation.creation_token}", status: 200 }
@@ -53,7 +57,8 @@ class Admin::UsersController < ApplicationController
 
   # Community Manager
   def community_managers
-    @community_managers = Role.where(keyword: 'cm').first.users
+    company = Company.find(params[:company_id])
+    @community_managers = company.users.where(role_id: Role.where(keyword: 'cm').first.id)
     respond_to do |format|
       format.html
       format.json { render json: { community_managers: @community_managers, status: 200 } }

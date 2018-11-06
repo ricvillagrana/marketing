@@ -26,12 +26,22 @@
     <semantic-network
       :campaign_id="campaign.id"
       :node_id="campaign.semantic_network"
-      @selected-node="selectedNode = $event"></semantic-network>
+      @selected-node="selectedNode = $event"
+      @selected-node-users="nodeUsers = $event"></semantic-network>
+
+    <node-users
+      v-if="campaign && selectedNode && selectedNode.node_id"
+      v-show="selectedIsLeaf"
+      :campaign_id="campaign_id"
+      :users="nodeUsers"
+      :node="selectedNode"
+      class="mb-25"></node-users>
         
     <publications
-      v-if="campaign"
+      v-if="campaign && selectedNode && selectedNode.node_id"
       :community_manager_id="campaign.community_manager.id"
-      :node_id="selectedNode"></publications>
+      :node="selectedNode"
+      @is-leaf="selectedIsLeaf = $event"></publications>
 
   </div>
 </template>
@@ -41,16 +51,19 @@
   import AppDropdown from '../../../app/AppDropdown'
   import SemanticNetwork from './SemanticNetwork'
   import Publications from './Publications'
+  import NodeUsers from './Users'
 
   export default {
     name: 'admin-campaigns-show',
     components: {
-      AppCard, AppDropdown, SemanticNetwork, Publications
+      AppCard, AppDropdown, SemanticNetwork, Publications, NodeUsers
     },
     data() {
       return {
         campaign: null,
         selectedNode: null,
+        selectedIsLeaf: false,
+        nodeUsers: []
       }
     },
     props: ['campaign_id'],
