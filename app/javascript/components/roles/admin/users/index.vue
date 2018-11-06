@@ -2,7 +2,7 @@
   <div>
     <button class="button is-link is-rounded is-pulled-right" @click="handleAddUser"><i class="fa fa-plus"></i>Añadir usuario</button>
     <p class="title is-3">Usuarios</p>
-    <p v-if="!users">Aún no hay usuarios, agrega uno.</p>
+    <p v-if="users.length === 0" class="title is-5 has-text-centered has-text-grey">Aún no hay usuarios, <a @click="handleAddUser">agrega uno</a>.</p>
     <table v-else class="table is-bordered is-striped is-hoverable is-fullwidth">
       <thead>
         <tr class="has-text-weight-bold">

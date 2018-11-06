@@ -1,9 +1,9 @@
 <template>
-  <app-card nested="true" margin="0" v-if="node_id && node.children && node.children.length === 0">
+  <app-card nested="true" margin="0" v-if="node && current_node.children && current_node.children.length === 0">
     <button class="button is-link is-rounded is-pulled-right" @click="form.add.open = true">Agregar</button>
     <p class="title is-3">Publicaciones del nodo {{ node.name }}</p>
-    <div class="columns is-is-fullwidth" v-if="node.publications.length !== 0">
-      <div class="column is-4" v-for="(publication, key) in node.publications" :key="key">
+    <div class="columns is-is-fullwidth" v-if="current_node.publications.length !== 0">
+      <div class="column is-4" v-for="(publication, key) in current_node.publications" :key="key">
         <app-card>
           <p class="title is-4">{{ publication.name }}</p>
           <p>{{ publication.content }}</p>
@@ -19,7 +19,7 @@
 
     <publication-form
       :open="form.add.open"
-      :node_id="node_id"
+      :node_id="node.id"
       :community_manager_id="community_manager_id"
       @should-update-publications="fetchPublications"
       @close="form.add.open = false"></publication-form>
@@ -35,10 +35,10 @@
     components: {
       AppCard, PublicationForm
     },
-    props: ['node_id', 'community_manager_id'],
+    props: ['node', 'community_manager_id'],
     data() {
       return {
-        node: [],
+        current_node: [],
         form: {
           add: {
             open: false
@@ -52,9 +52,9 @@
     methods: {
       fetchPublications: function () {
         const that = this
-        if (this.node_id) this.$axios.get(`/community_manager/nodes/${this.node_id}/publications.json`)
+        if (this.node) this.$axios.get(`/community_manager/nodes/${this.node.id}/publications.json`)
         .then(({data}) => {
-          that.node = data.node
+          that.current_node = data.node
         })
         .catch(err => {
           that.$swal({
@@ -67,11 +67,11 @@
       }
     },
     watch: {
-      node_id: function () {
+      node: function () {
         this.fetchPublications()
       },
-      node: function () {
-        const isLeaf = this.node_id && this.node.children && this.node.children.length === 0
+      current_node: function () {
+        const isLeaf = this.current_node.id && this.current_node.children && this.current_node.children.length === 0
         this.$emit('is-leaf', isLeaf)
       }
     }

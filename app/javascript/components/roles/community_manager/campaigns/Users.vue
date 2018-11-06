@@ -1,5 +1,5 @@
 <template>
-  <app-card nested="true" margin="0"  v-if="node_id">
+  <app-card nested="true" margin="0"  v-if="node">
     <p class="title is-4">Usuarios que participan en el Nodo.</p>
     <div class="columns">
       <app-card :padding="15" class="column is-6">
@@ -37,7 +37,7 @@
 
   export default {
     name: 'node-users',
-    props: ['users', 'node_id', 'community_manager_id', 'campaign_id'],
+    props: ['users', 'node', 'community_manager_id', 'campaign_id'],
     components: { draggable, AppCard },
     data() {
       return {
@@ -60,7 +60,7 @@
         const that = this
         this.$axios.post(`/community_manager/nodes_users`, {
           user_id: event.added.element.id,
-          node_id: that.node_id
+          node_id: that.node.id
         })
         .then(({data}) => {
           if (data.status === 200){
@@ -98,7 +98,7 @@
         })
         const that = this
         console.log(event.added.element)
-        this.$axios.delete(`/community_manager/nodes_users/${that.node_id}/${event.added.element.id}`)
+        this.$axios.delete(`/community_manager/nodes_users/${that.node.id}/${event.added.element.id}`)
         .then(({data}) => {
           this.updateCurrentUsers()
           that.$swal.close()
@@ -113,7 +113,7 @@
         })
       },
       updateCurrentUsers: function () {
-        this.$axios.get(`/community_manager/users_in_node/${this.node_id}.json`)
+        this.$axios.get(`/community_manager/users_in_node/${this.node.id}.json`)
         .then(({data}) => {
           that.currentUsers = data.users
           that.checkNodeUsers()
@@ -133,7 +133,7 @@
       },
       fetchUsers: function () {
         const that = this
-        if (this.node_id) this.$axios.get(`/community_manager/nodes_users/${this.node_id}.json`)
+        if (this.node) this.$axios.get(`/community_manager/nodes_users/${this.node.id}.json`)
         .then(({data}) => {
           that.allUsers = data.users.filter(user => user.role && !this.isAdminOrClient(user.role))
           that.checkNodeUsers()
@@ -157,7 +157,7 @@
       }
     },
     watch: {
-      node_id: function () {
+      node: function () {
         this.fetchUsers()
       },
       users: function () {

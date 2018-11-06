@@ -39,6 +39,7 @@
       <button class="button is-link is-rounded is-pulled-right" @click="addOptions.open = true"><i class="fa fa-plus"></i>Añadir Campaña</button>
       <p class="title is-4">Campañas</p>
     </div>
+    <p v-if="company.campaigns.length === 0" class="title is-5 has-text-centered has-text-grey">Aún no hay campañas, <a @click="addOptions.open = true">agrega una</a>.</p>
     <div class="columns is-is-fullwidth">
       <div class="column is-4" v-for="(campaign, key) in company.campaigns" :key="key">
         <app-card nested="true">

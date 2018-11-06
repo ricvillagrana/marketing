@@ -115,8 +115,9 @@
         this.vis.on('oncontext', node => this.handleRightClickOnNode('node-right-click', { id: node.nodes[0], position: node.pointer.canvas }))
       },
       selectedNode: function () {
-        const users = this.selectedNode ? this.nodesRaw.filter(node => node.id === this.selectedNode)[0].users : []
-        this.$emit('selected-node', this.selectedNode)
+        const node = this.selectedNode ? this.nodesRaw.filter(node => node.id === this.selectedNode)[0] : null
+        const users = node ? node.users : []
+        this.$emit('selected-node', node)
         this.$emit('selected-node-users', users)
       }
     }
