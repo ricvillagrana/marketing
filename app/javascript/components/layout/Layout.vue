@@ -7,7 +7,7 @@
         <div class="title is-5 has-text-centered has-text-grey" v-if="!user.role">No tienes empresas asignadas, pide al Súper Administrador que te asigne a una.</div>
         <slot></slot>
       </app-card>
-      <chat></chat>
+      <chat :user="user"></chat>
     </div>
  
   </div>
