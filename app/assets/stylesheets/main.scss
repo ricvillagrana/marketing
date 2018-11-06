@@ -107,6 +107,10 @@ html, body {
   transition-duration: 0.2s;
 }
 
+.no-list li {
+  list-style: none;
+}
+
 .flex-end {
   display: flex;
   justify-content: flex-end;

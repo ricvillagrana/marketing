@@ -31,9 +31,13 @@ class CommunityManager::NodesController < ApplicationController
   def destroy
     @node = Node.find(params[:id])
     if !@node.children.empty?
-      render json: { message: 'No se puede eliminar, tiene hijos', status: 500 }
+      render json: { message: 'Tiene hijos', status: 500 }
     elsif @node.father.nil?
-      render json: { message: 'No se puede eliminar, es la raíz', status: 500 }
+      render json: { message: 'Es la raíz', status: 500 }
+    elsif !@node.users.empty?
+      render json: { message: 'Tiene usuarios asignados', status: 500 }
+    elsif !@node.publications.empty?
+      render json: { message: 'Tiene publicaciones creadas', status: 500 }      
     elsif @node.destroy
       render json: { status: 200 }
     else

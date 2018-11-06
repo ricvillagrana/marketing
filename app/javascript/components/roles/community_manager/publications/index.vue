@@ -9,7 +9,10 @@
       <div class="columns is-is-fullwidth">
         <div class="column is-4" v-for="(publication, key) in campaign.publications" :key="key">
           <app-card nested="true">
-            <p class="title is-4">{{ publication.name }}</p>
+            <p class="title is-4">
+              {{ publication.name }}
+              <span class="tag is-warning">{{ publication.status.name }}</span>
+            </p>
             <p>
               Nodo: {{ publication.node.name }}
             </p>

@@ -150,7 +150,6 @@
     },
     computed: {
       user_ids: function () {
-
         return this.currentUsers.map(user => user.id)
       },
       cgExists: function () {
@@ -163,6 +162,7 @@
       },
       users: function () {
         this.currentUsers = this.users
+        this.checkNodeUsers()
       }
     }
   }
