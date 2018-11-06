@@ -69,6 +69,10 @@
     watch: {
       node_id: function () {
         this.fetchPublications()
+      },
+      node: function () {
+        const isLeaf = this.node_id && this.node.children && this.node.children.length === 0
+        this.$emit('is-leaf', isLeaf)
       }
     }
   }

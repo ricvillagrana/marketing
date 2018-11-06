@@ -40,7 +40,7 @@
       <p class="title is-4">Campañas</p>
     </div>
     <div class="columns is-is-fullwidth">
-      <div class="column is-3" v-for="(campaign, key) in company.campaigns" :key="key">
+      <div class="column is-4" v-for="(campaign, key) in company.campaigns" :key="key">
         <app-card nested="true">
           <p class="title is-4">{{ campaign.name }}</p>
           <p class="title is-6">Community manager: {{ campaign.community_manager.name }}</p>

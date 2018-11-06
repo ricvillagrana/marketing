@@ -116,6 +116,7 @@
       },
       selectedNode: function () {
         this.$emit('selected-node', this.selectedNode)
+        this.$emit('selected-node-users', this.nodesRaw.filter(node => node.id === this.selectedNode)[0].users)
       }
     }
   }

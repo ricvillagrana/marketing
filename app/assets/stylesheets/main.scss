@@ -86,6 +86,7 @@ html, body {
 
 .pointer { cursor: pointer; }
 .grab { cursor: -webkit-grab; cursor: grab; }
+.not-allowed { cursor: not-allowed; }
 
 .draggable-area {
   border-radius: 10px;
