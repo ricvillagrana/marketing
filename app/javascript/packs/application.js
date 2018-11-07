@@ -14,6 +14,11 @@ import axios from 'axios'
 import swal from 'sweetalert2'
 import moment from 'moment'
 
+import Test from '../cable/Test'
+
+const test = new Test()
+test.subscribe()
+
 Vue.use(TurbolinksAdapter)
 Vue.use(Notifications)
 

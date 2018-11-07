@@ -71,3 +71,6 @@ gem 'koala'
 
 # Seed Dump
 gem 'seed_dump'
+
+# Redis
+gem 'redis'

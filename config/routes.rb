@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount ActionCable.server => '/cable'
+
   devise_for :users
   root 'main#index'
 
@@ -6,6 +8,8 @@ Rails.application.routes.draw do
   get '/facebook/code_callback', to: 'facebook#code_callback'
   get '/facebook/access_token_callback', to: 'facebook#access_token_allback'
   get '/facebook/post', to: 'facebook#make_post'
+
+  get '/ac', to: 'main#test_ac'
 
   namespace :superadmin do
     resources :users, path: :admins
