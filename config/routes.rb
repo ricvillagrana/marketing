@@ -2,6 +2,11 @@ Rails.application.routes.draw do
   devise_for :users
   root 'main#index'
 
+  get '/facebook/auth', to: 'facebook#auth'
+  get '/facebook/code_callback', to: 'facebook#code_callback'
+  get '/facebook/access_token_callback', to: 'facebook#access_token_allback'
+  get '/facebook/post', to: 'facebook#make_post'
+
   namespace :superadmin do
     resources :users, path: :admins
     resources :companies

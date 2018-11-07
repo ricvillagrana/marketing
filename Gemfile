@@ -65,3 +65,9 @@ gem 'bulma-rails'
 
 # FontAwesome
 gem 'font-awesome-rails'
+
+# Koala
+gem 'koala'
+
+# Seed Dump
+gem 'seed_dump'

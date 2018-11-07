@@ -191,9 +191,7 @@ ActiveRecord::Schema.define(version: 20181030022032) do
     t.text "image"
     t.date "born_date"
     t.boolean "deleted", default: false
-    t.string "fb_id"
-    t.string "fb_name"
-    t.string "fb_image"
+    t.string "facebook_access_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email", default: ""

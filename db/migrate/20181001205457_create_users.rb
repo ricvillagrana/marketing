@@ -13,9 +13,7 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.boolean :deleted, default: false
 
       # Facebook data
-      t.string :fb_id, null: true
-      t.string :fb_name, null: true
-      t.string :fb_image, null: true
+      t.string :facebook_access_token, null: true
 
       t.timestamps
     end
