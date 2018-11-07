@@ -12,6 +12,7 @@
           Súper admin
         </p>
         <ul class="menu-list">
+          <li><a href="/">Inicio</a></li>
           <li><a href="/superadmin/admins">Administradores</a></li>
           <li><a href="/superadmin/companies">Empresas</a></li>
         </ul>
@@ -21,8 +22,7 @@
           Administrador
         </p>
         <ul class="menu-list">
-          <li><a>Publicaciones</a></li>
-          <!-- <li><a href="/admin/campaigns">Campañas</a></li> -->
+          <li><a href="/">Inicio</a></li>
           <li><a href="/admin/company">Empresa</a></li>
           <li><a href="/admin/users">Usuarios</a></li>
         </ul>
@@ -32,6 +32,7 @@
           Community Manager
         </p>
         <ul class="menu-list">
+          <li><a href="/">Inicio</a></li>
           <li><a href="/community_manager/publications">Publicaciones</a></li>
           <li><a href="/community_manager/campaigns">Campañas</a></li>
         </ul>
@@ -41,6 +42,7 @@
           Generador de contenido
         </p>
         <ul class="menu-list">
+          <li><a href="/">Inicio</a></li>
           <li><a>Publicaciones</a></li>
           <li><a>Campañas</a></li>
         </ul>
@@ -50,6 +52,7 @@
           Diseñador
         </p>
         <ul class="menu-list">
+          <li><a href="/">Inicio</a></li>
           <li><a>Publicaciones</a></li>
           <li><a>Campañas</a></li>
         </ul>
@@ -59,6 +62,7 @@
           Revisión
         </p>
         <ul class="menu-list">
+          <li><a href="/">Inicio</a></li>
           <li><a>Publicaciones</a></li>
           <li><a>Campañas</a></li>
         </ul>
