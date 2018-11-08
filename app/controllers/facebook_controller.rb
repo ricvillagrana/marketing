@@ -14,19 +14,28 @@ class FacebookController < ApplicationController
     data = JSON.parse(open(url).read)
     current_user.facebook_access_token = data['access_token']
     current_user.save
+
+    user_api = Koala::Facebook::API.new(current_user.facebook_access_token)
+    session["pages-#{current_user.id}"] = user_api.get_object('me/accounts')
+    session["user-#{current_user.id}"] = user_api.get_object('me')
+
     redirect_to('/#_=_')
   end
 
-  def make_post
-    user_api = Koala::Facebook::API.new(current_user.facebook_access_token)
-    pages = user_api.get_object('me/accounts')
+  def data
+    data = {
+      pages: session["pages-#{current_user.id}"],
+      user: session["user-#{current_user.id}"]
+    }
+    render json: { facebook_data: data }
+  end
 
-    page_api = Koala::Facebook::API.new(pages[0]['access_token'])
+  def post
+    page_api = Koala::Facebook::API.new(params[:access_token])
+    page = page_api.get_object(params[:id])
 
-    page = page_api.get_object(pages[0]['id'])
-    publications = page_api.get_connections(pages[0]['id'], 'feed')
-    publication = page_api.put_connections(pages[0]['id'], 'feed', :message =>  'Koala :)')
-    render json: { graph: page_api, pages: pages, page: page, publications: publications, publication: publication}
+    publication = page_api.put_connections(params[:id], 'feed', message: params[:content])
+    render json: { page: page, publication: publication }
   end
 
   def code_callback_url

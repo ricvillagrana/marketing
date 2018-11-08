@@ -14,10 +14,9 @@ import axios from 'axios'
 import swal from 'sweetalert2'
 import moment from 'moment'
 
-import Test from '../cable/Test'
-
-const test = new Test()
-test.subscribe()
+// import Test from '../cable/Test'
+// const test = new Test()
+// test.subscribe()
 
 Vue.use(TurbolinksAdapter)
 Vue.use(Notifications)
@@ -47,6 +46,7 @@ Vue.prototype.$axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 import Login from '../components/sessions/Login'
 import Register from '../components/sessions/Register'
 import Layout from '../components/layout/Layout'
+import Dashboard from '../components/layout/Dashboard/'
 
 // Superadmin
 import SuperadminCompanies from '../components/roles/superadmin/companies'
@@ -71,6 +71,7 @@ import AppCard from '../components/app/AppCard'
 Vue.use('login', Login)
 Vue.use('register', Register)
 Vue.use('layout', Layout)
+Vue.use('dashboard', Dashboard)
 
 // Superadmin
 Vue.use('superadmin-admins', SuperadminAdmins)
@@ -97,7 +98,7 @@ document.addEventListener('turbolinks:load', () => {
     el: '#app',
     components: {
       // Project
-      Login, Register, Layout, 
+      Login, Register, Layout, Dashboard,
       
       // Superadmin
       SuperadminAdmins, SuperadminCompanies,
