@@ -47,9 +47,10 @@ Rails.application.routes.draw do
       resources :tasks, only: %i[show create update destroy], controller: 'publications/tasks'
     end
 
-    get '/users_in_node/:node_id', to: 'nodes#users_in_node'
+    # get '/users_in_node/:node_id', to: 'nodes#users_in_node'
 
-    get '/nodes_users/:node_id', to: 'nodes#all_users'
+    get '/campaign_users/:node_id', to: 'nodes#all_users'
+    get '/nodes_users/:node_id', to: 'nodes#users_in_node'
     post '/nodes_users', to: 'nodes#add_user'
     delete '/nodes_users/:node_id/:user_id', to: 'nodes#remove_user'
 

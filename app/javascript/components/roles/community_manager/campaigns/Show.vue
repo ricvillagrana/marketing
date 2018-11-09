@@ -30,10 +30,8 @@
       @selected-node-users="nodeUsers = $event"></semantic-network>
 
     <node-users
-      v-if="campaign && selectedNode && selectedNode.node_id"
-      v-show="selectedIsLeaf"
+      v-show="selectedIsLeaf && campaign && selectedNode && selectedNode.node_id"
       :campaign_id="campaign_id"
-      :users="nodeUsers"
       :node="selectedNode"
       class="mb-25"></node-users>
         
