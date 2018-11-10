@@ -22,6 +22,7 @@ json.publication {
       json.blob_id image.blob_id
       json.created_at image.created_at
       json.name image.name
+      json.filename image.filename
       json.url url_for(image)
     end
   end

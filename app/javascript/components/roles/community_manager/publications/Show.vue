@@ -18,14 +18,21 @@
 
       <p class="title is-4">Multimedia</p>
       <div class="box p-20 has-text-centered">
-
-        <img v-for="(image, key) in publication.images" :key="key" :src="image.url" :alt="image.name">
         <drag-drop
+          class="mb-15"
+          :publication_id="publication_id"
+          @uploaded="fetchPublication"
           @images="images = $event"></drag-drop>
-        <button v-show="images.length > 0" class="button is-success is-large" @click="handleUpload">
-          <i class="fa fa-upload"></i>
-          {{ images.length > 1 ? `Subir imágenes (${images.length})` : `Subir imagen` }}
-        </button>
+
+        <div class="dropzone-content">
+          <span v-for="(image, key) in publication.images" :key="key" class="flex flex-row-reverse">
+          <img :src="image.url" :alt="image.name" :id="image.id">
+            <a class="button is-danger" @click="handleDeleteImage(image)">
+              <i class="fa fa-times"></i>
+              Eliminar
+            </a>
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -33,7 +40,6 @@
 
 <script>
 import DragDrop from '../../../app/DragDrop'
-import * as ActiveStorage from 'activestorage'
 
 export default {
   name: 'community-manager-publications-show',
@@ -50,33 +56,6 @@ export default {
     this.fetchPublication()
   },
   methods: {
-    handleUpload: function () {
-      const that = this
-      this.images.map(image => {
-        const upload = new ActiveStorage.DirectUpload(image.raw,'/rails/active_storage/direct_uploads')
-        upload.create((error, blob) => {
-          if (error) {
-            console.log(error)
-          } else {
-            that.images[that.images.indexOf(image)].blob = blob
-
-            if (that.images.indexOf(image) === that.images.length -1) {
-              const publication = {
-                'images': that.images
-              }
-              that.$axios.put(`/test/${that.publication_id}`, { publication })
-                .then(result => result)
-                .catch(err => that.$swal({
-                  type: 'error',
-                  title: 'Error',
-                  text: err
-                }))
-            }
-          }
-        })
-
-      })
-    },
     fetchPublication: function () {
       const that = this
       
@@ -91,6 +70,53 @@ export default {
             text: 'Error al consultar la publicación',
             footer: `Error: ${err}`
           })
+        })
+    },
+    handleDeleteImage: function (image) {
+      const that = this
+        this.$swal({
+          title: `Se eliminará el la imágen ${image.filename}`,
+          text: "No se podrá recuprar",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Eliminar',
+          cancelButtonText: 'No, cancelar',
+          cancelButtonColor: 'red',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.value) {
+            this.$swal({
+              title: 'Eliminando...',
+              onOpen: () => that.$swal.showLoading()
+            })
+            this.$axios.delete(`/test/${that.publication_id}/${image.id}`)
+            .then(({data}) => {
+              if (data.status == 200) {
+                that.$swal.close()
+                // that.$swal({
+                //   type: 'success',
+                //   title: 'Elminado',
+                //   text: 'La imagen se eliminó de manera correcta.',
+                // })
+              } else {
+                that.$swal({
+                  type: 'error',
+                  title: 'Error',
+                  text: 'No se pudo eliminar la imagen.',
+                  footer: `Error: ${data.message}`
+                })
+              }
+              that.fetchPublication()
+            })
+            .catch(err => {
+              that.$swal({
+                type: 'error',
+                title: 'Error',
+                text: 'No se pudo eliminar la imagen.',
+                footer: `Error: ${err}`
+              })
+            })
+          }
         })
     }
   }

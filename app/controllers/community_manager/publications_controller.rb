@@ -43,6 +43,12 @@ class CommunityManager::PublicationsController < ApplicationController
       attachment.blob = ActiveStorage::Blob.find image[:blob][:id]
       attachment.save
     end
-    render json: { publication: publication, status: 200 }
+    render json: { publication: publication, status: 200 }, include: [:images]
+  end
+
+  def delete_image
+    publication = Publication.find(params[:publication_id])
+    attachment = publication.images.attachments.find(params[:image_id])
+    render json: { status: 200 } if attachment.destroy
   end
 end
