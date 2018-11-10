@@ -17,6 +17,15 @@ class CommunityManager::PublicationsController < ApplicationController
     # end
   end
 
+  def update
+    @publication = Publication.find(params[:id])
+    if @publication.update!(publication_params)
+      render json: { publication: @publication, status: 200 }
+    else
+      render json: { errors: @publication.errors, status: 500 }
+    end
+  end
+
   def cmpaigns_with_publications(user)
     user.campaigns_admin.map do |campaign|
       { data: campaign, publications: dig_publications_of(campaign.semantic_network).flatten }
@@ -33,5 +42,11 @@ class CommunityManager::PublicationsController < ApplicationController
     else
       node.children.map { |child| dig_publications_of(child) }
     end
+  end
+
+  private
+
+  def publication_params
+    params.require(:publication).permit(:publication_status_id, :node_id, :name, :content, :publication_date, :published, :fb_id, :likes, :shares)
   end
 end

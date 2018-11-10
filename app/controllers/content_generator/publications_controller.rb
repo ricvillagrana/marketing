@@ -1,6 +1,6 @@
-class Designer::PublicationsController < ApplicationController
-  before_action :authenticate_user!, :should_be_communty_manager!
-  
+class ContentGenerator::PublicationsController < ApplicationController
+  before_action :authenticate_user!, :should_be_content_generator!
+
   def index
     @user = current_user
     respond_to do |format|
@@ -18,7 +18,17 @@ class Designer::PublicationsController < ApplicationController
       { data: campaign, publications: dig_publications_of(campaign.semantic_network).flatten }
     end
   end
-  
+
+  def update
+    @publication = Publication.find(params[:id])
+    @publication.log.create!(content: @publication.content, user: current_user)
+    if @publication.update!(publication_params)
+      render json: { publication: @publication, status: 200 }
+    else
+      render json: { errors: @publication.errors, status: 500 }
+    end
+  end
+
   def dig_publications_of(node)
     if node.children.empty?
       node.publications.map do |p|
@@ -45,5 +55,11 @@ class Designer::PublicationsController < ApplicationController
     publication = Publication.find(params[:publication_id])
     attachment = publication.images.attachments.find(params[:image_id])
     render json: { status: 200 } if attachment.destroy
+  end
+
+  private
+
+  def publication_params
+    params.require(:publication).permit(:publication_status_id, :node_id, :name, :content, :publication_date, :published, :fb_id, :likes, :shares)
   end
 end

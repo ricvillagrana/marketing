@@ -43,7 +43,7 @@
         </p>
         <ul class="menu-list">
           <li><a href="/">Inicio</a></li>
-          <li><a>Publicaciones</a></li>
+          <li><a href="/content_generator/publications">Publicaciones</a></li>
         </ul>
       </div>
       <div v-if="role.keyword === 'designer'">

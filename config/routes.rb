@@ -4,9 +4,6 @@ Rails.application.routes.draw do
   devise_for :users
   root 'main#index'
 
-  put '/test/:publication_id', to: 'community_manager/publications#upload_image'
-  delete '/test/:publication_id/:image_id', to: 'community_manager/publications#delete_image'
-
   get '/facebook/auth', to: 'facebook#auth'
   get '/facebook/code_callback', to: 'facebook#code_callback'
   get '/facebook/access_token_callback', to: 'facebook#access_token_allback'
@@ -61,6 +58,12 @@ Rails.application.routes.draw do
   end
 
   namespace :designer do
+    resources :publications
+    put '/upload/:publication_id', to: 'publications#upload_image'
+    delete '/upload/:publication_id/:image_id', to: 'publications#delete_image'
+  end
+
+  namespace :content_generator do
     resources :publications
     put '/upload/:publication_id', to: 'publications#upload_image'
     delete '/upload/:publication_id/:image_id', to: 'publications#delete_image'

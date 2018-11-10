@@ -1,41 +1,55 @@
 <template>
   <div v-if="publication">
-    <p class="title is-3">{{ publication.name }} <span class="tag is-warning">{{ publication.status.name }}</span></p>
-    <p v-if="daysToEnd > 0" class="title is-6 has-text-link">
-      Termina en {{ daysToEnd }} días
-      ({{ $dateText(publication.publication_date) }})
-    </p>
-    <p class="title is-6 has-text-danger" v-if="daysToEnd === 0">Termina hoy</p>
-    <p class="title is-6 has-text-grey" v-if="daysToEnd < 0">
-      Terminada hace {{ daysToEnd * -1 }} días
-      ({{ $dateText(publication.publication_date) }})
-    </p>
-
-    <p class="title is-5">Nodo: {{ publication.node.name }}</p>
-
-    <div>
-      <div class="tags has-addons m-0"  v-for="(user, key) in publication.node.users" :key="key">
-        <span class="tag is-link">{{ user.role.name }}</span>
-        <span class="tag is-grey"> {{ user.name }} {{ user.lastname }}</span>
-      </div>
-      <p class="title is-4">Contenido</p>
-      <div class="box p-20">
-        <p v-if="!publication.content || publication.content === ''" class="title is-5 has-text-centered has-text-grey">
-          No tiene contenido
+    <div class="columns">
+      <div class="column">
+        <p class="title is-3">
+          {{ publication.name }}
+          <span class="tag is-warning">{{ publication.status.name }}</span>
+          <span class="title is-6 has-text-grey">Nodo: {{ publication.node.name }}</span>
         </p>
-        <p v-else>{{ publication.content }}</p>
-      </div>
+        <p v-if="daysToEnd > 0" class="title is-6 has-text-link">
+          Termina en {{ daysToEnd }} días
+          ({{ $dateText(publication.publication_date) }})
+        </p>
+        <p class="title is-6 has-text-danger" v-if="daysToEnd === 0">Termina hoy</p>
+        <p class="title is-6 has-text-grey" v-if="daysToEnd < 0">
+          Terminada hace {{ daysToEnd * -1 }} días
+          ({{ $dateText(publication.publication_date) }})
+        </p>
 
-      <p class="title is-4">Multimedia</p>
-      <div class="box p-20 has-text-centered">
+        <!-- <div class="tags has-addons m-0 is-grouped is-grouped-multiline flex-row" v-for="(user, key) in publication.node.users" :key="key">
+          <span class="tag is-link">{{ user.role.name }}</span>
+          <span class="tag is-grey"> {{ user.name }} {{ user.lastname }}</span>
+        </div> -->
+        <div class="box p-20">
+          <textarea name="content" v-model="publication.content" class="textarea" rows="10" :readonly="saving" placeholder="Escribe tu contenido aquí..."></textarea>
+          <div class="flex flex-end">
+            <p class="has-text-grey-dark mt-25 mr-15 is-size-6">
+              <i class="fa fa-pencil"></i>
+              {{ $dateText(publication.updated_at) }}
+              a las {{ $time(publication.updated_at) }}
+              </p>
+            <button class="button is-link is-medium mt-15" :class="{ 'is-loading' : saving }" @click="handleSave">
+              <i class="fa fa-save"></i>
+              Guardar
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        asldn
+      </div>
+    </div>
+    <div>
+      <div class="box p-20">
         <drag-drop
           class="mb-15"
           :publication_id="publication_id"
-          :url="`/designer/upload/${publication_id}`"
+          :url="`/content_generator/upload/${publication_id}`"
           @uploaded="fetchPublication"
           @images="images = $event"></drag-drop>
 
-        <div class="dropzone-content">
+        <div class="dropzone-content has-text-centered">
           <span v-for="(image, key) in publication.images" :key="key" class="flex flex-row-reverse">
           <img :src="image.url" :alt="image.name" :id="image.id">
             <a class="button is-danger" @click="handleDeleteImage(image)">
@@ -53,12 +67,13 @@
 import DragDrop from '../../../app/DragDrop'
 
 export default {
-  name: 'designer-publications-show',
+  name: 'content-generator-publications-show',
   data() {
     return {
       publication: null,
       dragging: false,
-      images: []
+      images: [],
+      saving: false
     }
   },
   props: ['publication_id'],
@@ -70,7 +85,7 @@ export default {
     fetchPublication: function () {
       const that = this
       
-      this.$axios.get(`/designer/publications/${this.publication_id}.json`)
+      this.$axios.get(`/content_generator/publications/${this.publication_id}.json`)
         .then(({data}) => {
           that.publication = data.publication
         })
@@ -82,6 +97,25 @@ export default {
             footer: `Error: ${err}`
           })
         })
+    },
+    handleSave: function (e) {
+      e.preventDefault()
+      console.info('edit');
+      const that = this
+      this.saving = true
+      this.$axios.put(`/content_generator/publications/${this.publication.id}`, { publication: this.publication })
+      .then(result => {
+        that.fetchPublication()
+        that.saving = false
+      })
+      .catch(err => {
+        that.$swal({
+          type: 'error',
+          title: 'Error',
+          text: 'No se pudo crear la puublicación.',
+          footer: `Error: ${err}`
+        })
+      })
     },
     handleDeleteImage: function (image) {
       const that = this
@@ -101,7 +135,7 @@ export default {
               title: 'Eliminando...',
               onOpen: () => that.$swal.showLoading()
             })
-            this.$axios.delete(`/designer/upload/${that.publication_id}/${image.id}`)
+            this.$axios.delete(`/content_generator/upload/${that.publication_id}/${image.id}`)
             .then(({data}) => {
               if (data.status == 200) {
                 that.$swal.close()

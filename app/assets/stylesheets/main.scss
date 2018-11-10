@@ -119,6 +119,11 @@ html, body {
   justify-content: flex-end;
 }
 
+.flex-self-end {
+  display: flex;
+  align-self: flex-end;
+}
+
 .columns { // Bulma wrapping
   flex-wrap: wrap;
 }

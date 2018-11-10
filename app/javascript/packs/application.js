@@ -30,13 +30,63 @@ Vue.prototype.$moment = moment;
 Vue.prototype.$base_url = window.location.origin
 Vue.prototype.$redirect = path => window.location = path 
 Vue.prototype.$inputTime = function (time) {
-  return moment(time).utcOffset(0).format('HH:mm:ss')
+  return moment(time).utcOffset(-6).format('HH:mm:ss')
 }
 Vue.prototype.$time = function (time) {
-  return moment(time).utcOffset(0).format('h:mm A')
+  return moment(time).utcOffset(-6).format('h:mm A')
 }
 Vue.prototype.$date = function (date) {
-  return moment(date).utcOffset(0).format('DD/MM/YYYY')
+  return moment(date).utcOffset(-6).format('DD/MM/YYYY')
+}
+Vue.prototype.$dateText = function (dateUnformat) {
+  const date = moment(dateUnformat).utcOffset(-6)
+  const day = date.date()
+  const month = date.month()
+  const year = date.year()
+  let monthText = ''
+  switch (month + 1) {
+    case 1:
+      monthText = 'Enero'
+      break;
+    case 2:
+      monthText = 'Febrero'
+      break;
+    case 3:
+      monthText = 'Marzo'
+      break;
+    case 4:
+      monthText = 'Abril'
+      break;
+    case 5:
+      monthText = 'Mayo'
+      break;
+    case 6:
+      monthText = 'Junio'
+      break;
+    case 7:
+      monthText = 'Julio'
+      break;
+    case 8:
+      monthText = 'Agosto'
+      break;
+    case 9:
+      monthText = 'Septiembre'
+      break;
+    case 10:
+      monthText = 'Octubre'
+      break;
+    case 11:
+      monthText = 'Noviembre'
+      break;
+    case 12:
+      monthText = 'Diciembre'
+      break;
+
+    default:
+      monthText = '?'
+      break;
+  }
+  return `${day} de ${monthText} de ${year}`
 }
 Vue.prototype.$datetime = function (datetime) {
   return moment(datetime).utcOffset(0).format('DD/MM/YYYY h:mm:ss A')
@@ -70,6 +120,10 @@ import CommunityManagerPublicationsShow from '../components/roles/community_mana
 import DesignerPublications from '../components/roles/designer/publications/'
 import DesignerPublicationsShow from '../components/roles/designer/publications/Show'
 
+// Content Generator
+import ContentGeneratorPublications from '../components/roles/content_generator/publications/'
+import ContentGeneratorPublicationsShow from '../components/roles/content_generator/publications/Show'
+
 // Import of App Components
 import AppModal from '../components/app/AppModal'
 import AppCard from '../components/app/AppCard'
@@ -95,6 +149,10 @@ Vue.use('community-manager-campaigns', CommunityManagerCampaigns)
 Vue.use('community-manager-campaigns-show', CommunityManagerCampaignsShow)
 Vue.use('community-manager-publications', CommunityManagerPublications)
 Vue.use('community-manager-publications-show', CommunityManagerPublicationsShow)
+
+// Content Generator
+Vue.use('content-generator-publications', ContentGeneratorPublications)
+Vue.use('content-generator-publications-show', ContentGeneratorPublicationsShow)
 
 // Designer
 Vue.use('designer-publications', DesignerPublications)
@@ -122,6 +180,9 @@ document.addEventListener('turbolinks:load', () => {
 
       // Designer
       DesignerPublications, DesignerPublicationsShow,
+
+      // Content Generator
+      ContentGeneratorPublications, ContentGeneratorPublicationsShow,
 
       // App
       AppModal, AppCard
