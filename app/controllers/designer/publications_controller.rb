@@ -1,6 +1,4 @@
-class CommunityManager::PublicationsController < ApplicationController
-  before_action :authenticate_user!, :should_be_communty_manager!
-
+class Designer::PublicationsController < ApplicationController
   def index
     @user = current_user
     respond_to do |format|
@@ -11,18 +9,14 @@ class CommunityManager::PublicationsController < ApplicationController
 
   def show
     @publication = Publication.find(params[:id])
-    # respond_to do |format|
-    #   format.html
-    #   format.json { render json: { publication: @publication, status: 200 }, include: [:status, :images, node: { include: [users: { include: [:role] }] }] }
-    # end
   end
 
   def cmpaigns_with_publications(user)
-    user.campaigns_admin.map do |campaign|
+    user.campaigns.map do |campaign|
       { data: campaign, publications: dig_publications_of(campaign.semantic_network).flatten }
     end
   end
-
+  
   def dig_publications_of(node)
     if node.children.empty?
       node.publications.map do |p|
@@ -33,5 +27,21 @@ class CommunityManager::PublicationsController < ApplicationController
     else
       node.children.map { |child| dig_publications_of(child) }
     end
+  end
+
+  def upload_image
+    publication = Publication.find(params[:publication_id])
+    params[:publication][:images].each do |image|
+      attachment = publication.images.new
+      attachment.blob = ActiveStorage::Blob.find image[:blob][:id]
+      attachment.save
+    end
+    render json: { publication: publication, status: 200 }, include: [:images]
+  end
+
+  def delete_image
+    publication = Publication.find(params[:publication_id])
+    attachment = publication.images.attachments.find(params[:image_id])
+    render json: { status: 200 } if attachment.destroy
   end
 end

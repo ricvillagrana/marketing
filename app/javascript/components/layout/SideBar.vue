@@ -44,7 +44,6 @@
         <ul class="menu-list">
           <li><a href="/">Inicio</a></li>
           <li><a>Publicaciones</a></li>
-          <li><a>Campañas</a></li>
         </ul>
       </div>
       <div v-if="role.keyword === 'designer'">
@@ -53,8 +52,7 @@
         </p>
         <ul class="menu-list">
           <li><a href="/">Inicio</a></li>
-          <li><a>Publicaciones</a></li>
-          <li><a>Campañas</a></li>
+          <li><a href="/designer/publications">Publicaciones</a></li>
         </ul>
       </div>
       <div v-if="role.keyword === 'client'">

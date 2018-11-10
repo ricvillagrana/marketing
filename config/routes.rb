@@ -41,7 +41,7 @@ Rails.application.routes.draw do
   end
 
   namespace :community_manager do
-    resources :campaigns 
+    resources :campaigns
     resources :nodes, only: %i[show create update destroy] do
       resources :publications, controller: 'nodes/publications'
     end
@@ -60,10 +60,18 @@ Rails.application.routes.draw do
     get '/campaigns/semantic_network/:id', to: 'campaigns#semantic_network'
   end
 
-  get '/roles', to: 'roles#index'
+  namespace :designer do
+    resources :publications
+    put '/upload/:publication_id', to: 'publications#upload_image'
+    delete '/upload/:publication_id/:image_id', to: 'publications#delete_image'
+  end
 
-  # Route for user profile
+  # Global routes | requires auth
+
+  get '/roles', to: 'roles#index'
   get '/profile', to: 'profile#index'
+
+  # Global routes | no requires auth
 
   get '/invited/:creation_token', to: 'invite#edit'
   put '/invited/:id', to: 'invite#update'

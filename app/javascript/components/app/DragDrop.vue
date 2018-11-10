@@ -32,7 +32,7 @@ export default {
     dragging: false,
     images: [],
   }),
-  props: ['publication_id'],
+  props: ['publication_id', 'url'],
   methods: {
     handleUpload: function () {
       const that = this
@@ -49,10 +49,12 @@ export default {
               const publication = {
                 'images': that.images
               }
-              that.$axios.put(`/test/${that.publication_id}`, { publication })
+              that.$axios.put(that.url, { publication })
                 .then(result => {
                   that.$emit('uploaded')
                   that.images = []
+                  console.log(document.getElementById('items').value = '')
+                  that.$swal.close()
                 })
                 .catch(err => {
                   that.$swal({
@@ -61,6 +63,7 @@ export default {
                     text: err
                   })
                   that.images = []
+                  console.log(document.getElementById('items').value = '')
                 })
             }
           }
@@ -72,6 +75,8 @@ export default {
       const that = this
       const files = e.target.files
       this.$emit('form-data', files)
+
+      if (files.length > 0) this.$swal.showLoading()
 
       if (files && files[0]) {
         for (const key in files) {
@@ -91,13 +96,15 @@ export default {
               }
               if (image.type == 'image/png' || image.type == 'image/jpeg'){
                 that.images.push(image)
-                console.log(key, that.images.length -1)
                 if (key == that.images.length -1) that.handleUpload()
-              } else that.$swal({
-                type: 'error',
-                title: 'Tipo de archivo no admitido',
-                text: `${image.name} es inválido, los correctos son 'image/png' o 'image/jpeg', tú intentas subir ${image.type}`
-              })
+              } else {
+                that.$swal({
+                  type: 'error',
+                  title: 'Tipo de archivo no admitido',
+                  text: `${image.name} es inválido, los correctos son 'image/png' o 'image/jpeg', tú intentas subir ${image.type}`
+                })
+                that.images = []
+              }
             };
             reader.readAsDataURL(files[key])
           }

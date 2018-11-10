@@ -17,11 +17,9 @@ import * as ActiveStorage from 'activestorage'
 
 ActiveStorage.start()
 
-console.log(new ActiveStorage.DirectUpload)
-
-import Test from '../cable/Test'
-const test = new Test()
-test.subscribe()
+// import Test from '../cable/Test'
+// const test = new Test()
+// test.subscribe()
 
 Vue.use(TurbolinksAdapter)
 Vue.use(Notifications)
@@ -68,6 +66,10 @@ import CommunityManagerCampaignsShow from '../components/roles/community_manager
 import CommunityManagerPublications from '../components/roles/community_manager/publications/'
 import CommunityManagerPublicationsShow from '../components/roles/community_manager/publications/Show'
 
+// Designer
+import DesignerPublications from '../components/roles/designer/publications/'
+import DesignerPublicationsShow from '../components/roles/designer/publications/Show'
+
 // Import of App Components
 import AppModal from '../components/app/AppModal'
 import AppCard from '../components/app/AppCard'
@@ -94,6 +96,10 @@ Vue.use('community-manager-campaigns-show', CommunityManagerCampaignsShow)
 Vue.use('community-manager-publications', CommunityManagerPublications)
 Vue.use('community-manager-publications-show', CommunityManagerPublicationsShow)
 
+// Designer
+Vue.use('designer-publications', DesignerPublications)
+Vue.use('designr-publications-show', DesignerPublicationsShow)
+
 // Registration of App components
 Vue.use('app-modal', AppModal)
 Vue.use('app-card', AppCard)
@@ -113,6 +119,9 @@ document.addEventListener('turbolinks:load', () => {
       
       // Community Manager
       CommunityManagerCampaigns, CommunityManagerCampaignsShow, CommunityManagerPublications, CommunityManagerPublicationsShow,
+
+      // Designer
+      DesignerPublications, DesignerPublicationsShow,
 
       // App
       AppModal, AppCard
