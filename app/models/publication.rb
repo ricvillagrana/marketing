@@ -4,4 +4,6 @@ class Publication < ApplicationRecord
   has_many :log, class_name: 'PublicationLog'
   has_many :tasks
   has_many :channels
+
+  has_many_attached :images
 end

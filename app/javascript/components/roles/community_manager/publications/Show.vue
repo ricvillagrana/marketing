@@ -17,21 +17,32 @@
       </div>
 
       <p class="title is-4">Multimedia</p>
-      <div class="box p-20">
+      <div class="box p-20 has-text-centered">
+        <drag-drop
+          @images="images = $event"></drag-drop>
+        <button v-show="images.length > 0" class="button is-success is-large">
+          <i class="fa fa-upload"></i>
+          {{ images.length > 1 ? `Subir imágenes (${images.length})` : `Subir imagen` }}
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import DragDrop from '../../../app/DragDrop'
+
 export default {
   name: 'community-manager-publications-show',
   data() {
     return {
-      publication: null
+      publication: null,
+      dragging: false,
+      images: []
     }
   },
   props: ['publication_id'],
+  components: { DragDrop },
   beforeMount() {
     this.fetchPublication()
   },
