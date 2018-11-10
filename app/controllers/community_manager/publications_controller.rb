@@ -11,10 +11,10 @@ class CommunityManager::PublicationsController < ApplicationController
 
   def show
     @publication = Publication.find(params[:id])
-    respond_to do |format|
-      format.html
-      format.json { render json: { publication: @publication, status: 200 }, include: [:status, node: { include: [users: { include: [:role] }] }] }
-    end
+    # respond_to do |format|
+    #   format.html
+    #   format.json { render json: { publication: @publication, status: 200 }, include: [:status, :images, node: { include: [users: { include: [:role] }] }] }
+    # end
   end
 
   def cmpaigns_with_publications(user)
@@ -33,5 +33,16 @@ class CommunityManager::PublicationsController < ApplicationController
     else
       node.children.map { |child| dig_publications_of(child) }
     end
+  end
+
+  # DELETE
+  def upload_image
+    publication = Publication.find(params[:publication_id])
+    params[:publication][:images].each do |image|
+      attachment = publication.images.new
+      attachment.blob = ActiveStorage::Blob.find image[:blob][:id]
+      attachment.save
+    end
+    render json: { publication: publication, status: 200 }
   end
 end

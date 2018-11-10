@@ -23,8 +23,8 @@
       <div class="p-10 mt-10">
         <div class="dropzone-content">
           <span v-for="(image, key) in images" :key="key" class="flex flex-row-reverse">
-            <img :src="image.url" :alt="image.name">
-            <a class="button is-danger" @click="handleDeleteImage(image.key)">
+            <img :src="image.url" :alt="image.name" @click="index = images.indexOf(image)">
+            <a class="button is-danger" @click="handleDeleteImage(images.indexOf(image))">
               <i class="fa fa-times"></i>
               Eliminar
             </a>
@@ -35,19 +35,21 @@
 </template>
 
 <script>
+
 export default {
   name: 'drag-drop',
   data: () => ({
     dragging: false,
-    images: []
+    images: [],
   }),
   methods: {
     handleDeleteImage: function (key) {
-      this.images = this.images.filter(image => image.key !== key)
+      this.images = this.images.filter(image => this.images.indexOf(image) !== key)
     },
     checkFiles: function (e) {
       const that = this
       const files = e.target.files
+      this.$emit('form-data', files)
 
       if (files && files[0]) {
         for (const key in files) {
@@ -55,16 +57,15 @@ export default {
             const element = files[key]
             const reader = new FileReader()
             reader.onload = function (e) {
-              console.log(e)
               const image = {
-                key: key,
                 lastModified: element.lastModified,
                 lastModifiedDate: element.lastModifiedDate,
                 name: element.name,
                 size: element.size,
                 type: element.type,
                 webkitRelativePath: element.webkitRelativePath,
-                url: e.target.result
+                url: e.target.result,
+                raw: element
               }
               if (image.type == 'image/png' || image.type == 'image/jpeg') that.images.push(image)
               else that.$swal({

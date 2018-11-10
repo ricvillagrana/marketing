@@ -13,6 +13,11 @@ import Notifications from 'vue-notification'
 import axios from 'axios'
 import swal from 'sweetalert2'
 import moment from 'moment'
+import * as ActiveStorage from 'activestorage'
+
+ActiveStorage.start()
+
+console.log(new ActiveStorage.DirectUpload)
 
 import Test from '../cable/Test'
 const test = new Test()

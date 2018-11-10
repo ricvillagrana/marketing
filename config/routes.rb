@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   devise_for :users
   root 'main#index'
+  
+  put '/test/:publication_id', to: 'community_manager/publications#upload_image'
 
   get '/facebook/auth', to: 'facebook#auth'
   get '/facebook/code_callback', to: 'facebook#code_callback'
