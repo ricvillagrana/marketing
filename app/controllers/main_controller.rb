@@ -7,13 +7,6 @@ class MainController < ApplicationController
   def register
   end
 
-  def user
-    respond_to do |format|
-      format.html
-      format.json { render json: { user: current_user }, include: %i[role campaigns company works_on campaigns_admin] }
-    end
-  end
-
   def test_ac
     message = { message: 'Hola c:' }
     ActionCable.server.broadcast('test', message)

@@ -5,7 +5,6 @@ json.works_on_id user.works_on_id
 json.username user.username
 json.name user.name
 json.lastname user.lastname
-json.image user.image
 json.born_date user.born_date
 json.deleted user.deleted
 json.facebook_access_token user.facebook_access_token

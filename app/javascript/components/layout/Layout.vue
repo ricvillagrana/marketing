@@ -22,6 +22,9 @@
       TopBar, SideBar, AppCard
     },
     props: ['notice', 'alert', 'user'],
+    beforeMount () {
+      this.$fetchUser()
+    },
     mounted() {
       if (this.notice !== '') {
         this.$notify({

@@ -9,7 +9,7 @@
         <div class="mb-20 box" v-for="(page, key) in facebookData.pages" :key="`page-${key}`">
           <div class="columns">
             <div class="column">
-              <p class="title mb-0 has-text-facebook is-size-5">{{ page.name }}</p>
+              <a target="_blank" :href="`https://www.facebook.com/${page.id}`" class="title mb-0 has-text-facebook is-size-5">{{ page.name }}</a>
               <p class="m-0 has-text-grey">ID: {{ page.id }}</p>
               <p class="m-0">Categoría: {{ page.category }}</p>
               <button @click="handleCreatePost(page)" class="button is-facebook my-15">

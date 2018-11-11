@@ -29,10 +29,13 @@ class Admin::FacebookController < ApplicationController
   end
 
   def data
-    data = {
-      pages: current_user.facebook_data[:pages],
-      user: current_user.facebook_data[:user]
-    }
+    data = nil
+    unless current_user.facebook_data.nil?
+      data = {
+        pages: current_user.facebook_data[:pages],
+        user: current_user.facebook_data[:user]
+      }
+    end
     render json: { facebook_data: data }
   end
 

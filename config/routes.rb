@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   devise_for :users
   root 'main#index'
 
-  get '/current_user', to: 'main#user'
+  get '/current_user', to: 'profile#user'
 
   namespace :superadmin do
     resources :users, path: :admins

@@ -4,11 +4,16 @@
       <div class="column">
         <p class="title is-3">
           {{ publication.name }}
+          <app-dropdown
+            :title="dropdown.title"
+            :color="dropdown.color"
+            :options="dropdown.options"
+            @edit="editOptions.open = true"></app-dropdown>
           <span class="tag is-warning">{{ publication.status.name }}</span>
           <span class="title is-6 has-text-grey">Nodo: {{ publication.node.name }}</span>
         </p>
         <div class="flex flex-end mb-15" v-show="publication.content && publication.content !== ''">
-          <button @click="handleCreatePost(page)" class="button is-facebook is-medium my-0">
+          <button @click="handleCreatePost" class="button is-facebook is-medium my-0">
             <i class="fa fa-facebook"></i>
             Pulbicar ahora
           </button>
@@ -28,7 +33,7 @@
           <span class="tag is-grey"> {{ user.name }} {{ user.lastname }}</span>
         </div> -->
         <div class="box p-20">
-          <p v-if="!publication.content || publication.content === ''" class="title is-5 has-text-centered has-text-grey">
+          <p v-if="!publication.content || publication.content === ''" class="title is-5 has-text-centered has-text-grey my-50">
             No tiene contenido
           </p>
           <pre v-else class="is-size-6 p-15 pre">
@@ -59,6 +64,11 @@
         </div>
       </div>
     </div>
+    <publication-form
+      :publication_id="publication.id"
+      :open="editOptions.open"
+      @close="editOptions.open = false"
+      @should-update-publication="fetchPublication"></publication-form>
   </div>
 </template>
 
@@ -96,9 +106,9 @@ export default {
   methods: {
     fetchPublication: function () {
       const that = this
-      
       this.$axios.get(`/community_manager/publications/${this.publication_id}.json`)
         .then(({data}) => {
+          this.$swal.close()
           that.publication = data.publication
         })
         .catch(err => {
@@ -110,52 +120,50 @@ export default {
           })
         })
     },
-    handleDeleteImage: function (image) {
+    handleCreatePost: function () {
+      const imageUrl = this.$base_url + this.publication.images[0].url
       const that = this
-        this.$swal({
-          title: `Se eliminará el la imágen ${image.filename}`,
-          text: "No se podrá recuprar",
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Eliminar',
-          cancelButtonText: 'No, cancelar',
-          cancelButtonColor: 'red',
-          reverseButtons: true
-        }).then((result) => {
-          if (result.value) {
-            this.$swal({
-              title: 'Eliminando...',
-              onOpen: () => that.$swal.showLoading()
+      const page = this.$user.facebook_data.pages.filter(page => page.id === this.publication.facebook_data.id)[0]
+      const access_token = page.access_token
+      this.$swal({
+        title: `Se publicará "${that.publication.name}"`,
+        html: `Estás a punto de publicar en <span class="has-text-weight-bold has-text-facebook">Facebok</span>`,
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Publicar',
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: 'red',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.value) {
+          this.$swal({
+            title: 'Publicando en Facebook...',
+            onOpen: () => that.$swal.showLoading()
+          })
+          this.$axios.post('/community_manager/facebook/post', {
+            id: this.publication.facebook_data.id,
+            access_token: access_token,
+            content: this.publication.content,
+            publication_id: this.publication.id,
+            source: imageUrl
+          }).then(({data}) => {
+            console.log(data)
+            that.$swal({
+              type: 'success',
+              title: '¡Listo!',
+              html: `Se publicó con éxito, ve la publicación <a target="_blank" href="https://www.facebook.com/${data.publication.id}">aquí</a>.`,
+
             })
-            this.$axios.delete(`/test/${that.publication_id}/${image.id}`)
-            .then(({data}) => {
-              if (data.status == 200) {
-                that.$swal.close()
-                // that.$swal({
-                //   type: 'success',
-                //   title: 'Elminado',
-                //   text: 'La imagen se eliminó de manera correcta.',
-                // })
-              } else {
-                that.$swal({
-                  type: 'error',
-                  title: 'Error',
-                  text: 'No se pudo eliminar la imagen.',
-                  footer: `Error: ${data.message}`
-                })
-              }
-              that.fetchPublication()
+          }).catch(err => {
+            that.$swal({
+              type: 'error',
+              title: 'Error',
+              text: 'No se pudo crear la publicación. Intenta no Publicar el mismo texto.',
+              footer: `Error: ${err}`
             })
-            .catch(err => {
-              that.$swal({
-                type: 'error',
-                title: 'Error',
-                text: 'No se pudo eliminar la imagen.',
-                footer: `Error: ${err}`
-              })
-            })
-          }
-        })
+          })
+        }
+      })
     }
   },
   computed: {

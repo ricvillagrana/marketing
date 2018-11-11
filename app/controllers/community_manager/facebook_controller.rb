@@ -16,17 +16,26 @@ class CommunityManager::FacebookController < ApplicationController
     current_user.save
 
     user_api = Koala::Facebook::API.new(current_user.facebook_access_token)
-    session["pages-#{current_user.id}"] = user_api.get_object('me/accounts')
-    session["user-#{current_user.id}"] = user_api.get_object('me')
+
+    facebook_data = {
+      user: user_api.get_object('me'),
+      pages: user_api.get_object('me/accounts')
+    }
+
+    current_user.facebook_data = facebook_data
+    current_user.save
 
     redirect_to('/#_=_')
   end
 
   def data
-    data = {
-      pages: session["pages-#{current_user.id}"],
-      user: session["user-#{current_user.id}"]
-    }
+    data = nil
+    unless current_user.facebook_data.nil?
+      data = {
+        pages: current_user.facebook_data[:pages],
+        user: current_user.facebook_data[:user]
+      }
+    end
     render json: { facebook_data: data }
   end
 
@@ -34,7 +43,7 @@ class CommunityManager::FacebookController < ApplicationController
     page_api = Koala::Facebook::API.new(params[:access_token])
     page = page_api.get_object(params[:id])
 
-    publication = page_api.put_connections(params[:id], 'feed', message: params[:content])
+    publication = page_api.put_connections(params[:id], 'feed', message: params[:content]) #, url: 'https://cdn-images-1.medium.com/max/1600/1*hPfw4OqO3qYmQ5gVWvV-TA.jpeg')
     render json: { page: page, publication: publication }
   end
 

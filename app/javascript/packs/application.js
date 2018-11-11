@@ -24,10 +24,15 @@ ActiveStorage.start()
 Vue.use(TurbolinksAdapter)
 Vue.use(Notifications)
 
-if (!localStorage.getItem('user')) {
+const updateUser = () => {
+  Vue.prototype.$user = JSON.parse(localStorage.getItem('user'))
+}
+
+Vue.prototype.$fetchUser = function () {
   axios.get('/current_user.json')
     .then(({data}) => {
       localStorage.setItem('user', JSON.stringify(data.user))
+      updateUser()
     })
     .catch(err => swal({
       type: 'error',
@@ -35,9 +40,8 @@ if (!localStorage.getItem('user')) {
       text: 'Algo salió mal al recuperar tus datos, recarga la página.'
     }))
 }
-
 Vue.prototype.$user = JSON.parse(localStorage.getItem('user'))
-Vue.prototype.$userWillUpdate = () => localStoragea.clear()
+Vue.prototype.$userWillUpdate = () => localStorage.clear()
 Vue.prototype.$axios = axios;
 Vue.prototype.$swal = swal;
 Vue.prototype.$moment = moment;

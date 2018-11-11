@@ -11,6 +11,7 @@ json.publication {
   json.shares @publication.shares 
   json.created_at @publication.created_at 
   json.updated_at @publication.updated_at 
+  json.facebook_data @publication.campaign.company.facebook_data
 
   json.status @publication.status
   json.partial! 'node', node: @publication.node
