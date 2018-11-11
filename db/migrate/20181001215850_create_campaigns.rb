@@ -10,6 +10,9 @@ class CreateCampaigns < ActiveRecord::Migration[5.1]
       t.date :finish_date
       t.text :image
 
+      t.string :facebook_name
+      t.string :facebook_id
+
       t.boolean :finished, default: false
       t.boolean :deleted, default: false
 

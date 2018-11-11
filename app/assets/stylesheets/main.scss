@@ -206,6 +206,7 @@ html, body {
 
 .dropzone-content {
   display: flex;
+  justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
   span {
@@ -232,4 +233,41 @@ html, body {
       border-radius: inherit;
     }
   }
+}
+
+pre.pre {
+  height: 300px;
+  overflow-y: scroll;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  border-radius: 10px;
+  border: solid $grey-lighter 1px;
+
+  white-space: pre-wrap !important; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+  white-space: -pre-wrap !important; /* Opera 4-6 */
+  white-space: -o-pre-wrap !important; /* Opera 7 */
+  word-wrap: break-word !important;
+}
+
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: $light;
+}
+
+::-webkit-scrollbar
+{
+	width: 12px;
+	border-radius: 10px;
+	background-color: $light;
+}
+
+::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 0px rgba(0,0,0,.3);
+  background-color: $grey-light;
 }

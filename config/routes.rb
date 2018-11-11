@@ -4,12 +4,6 @@ Rails.application.routes.draw do
   devise_for :users
   root 'main#index'
 
-  get '/facebook/auth', to: 'facebook#auth'
-  get '/facebook/code_callback', to: 'facebook#code_callback'
-  get '/facebook/access_token_callback', to: 'facebook#access_token_allback'
-  get '/facebook/data', to: 'facebook#data'
-  post '/facebook/post', to: 'facebook#post'
-
   get '/ac', to: 'main#test_ac'
 
   namespace :superadmin do
@@ -55,6 +49,12 @@ Rails.application.routes.draw do
     delete '/nodes_users/:node_id/:user_id', to: 'nodes#remove_user'
 
     get '/campaigns/semantic_network/:id', to: 'campaigns#semantic_network'
+
+    get '/facebook/auth', to: 'facebook#auth'
+    get '/facebook/code_callback', to: 'facebook#code_callback'
+    get '/facebook/access_token_callback', to: 'facebook#access_token_allback'
+    get '/facebook/data', to: 'facebook#data'
+    post '/facebook/post', to: 'facebook#post'
   end
 
   namespace :designer do

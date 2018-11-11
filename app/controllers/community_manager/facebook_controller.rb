@@ -1,4 +1,4 @@
-class FacebookController < ApplicationController
+class CommunityManager::FacebookController < ApplicationController
   before_action :authenticate_user!, :should_be_communty_manager!
 
   require 'open-uri'
@@ -39,7 +39,7 @@ class FacebookController < ApplicationController
   end
 
   def code_callback_url
-    request.protocol + request.host_with_port + '/facebook/code_callback'
+    request.protocol + request.host_with_port + '/community_manager/facebook/code_callback'
   end
 
   def permissions

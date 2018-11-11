@@ -1,7 +1,9 @@
 <template>
   <div class="columns">
     <app-card shadowless="true" class="column" padding="15">
-      <p class="title has-text-facebook is-4">Información de Facebook <a href="/facebook/auth" class="is-size-7">Refrescar</a></p>
+      <p class="title has-text-facebook is-4">Información de Facebook
+        <a v-show="facebookData && facebookData.user" href="/community_manager/facebook/auth" class="is-size-7">Refrescar</a>
+      </p>
       <div v-if="facebookData && facebookData.user">
         <p class="title has-text-grey-dark is-5">Páginas que administras</p>
         <div class="mb-20 box" v-for="(page, key) in facebookData.pages" :key="`page-${key}`">
@@ -25,7 +27,7 @@
         </div>
       </div>
       <div v-else class="has-text-grey has-text-centered">
-        <a href="/facebook/auth" class="button is-facebook is-big is-flex">
+        <a href="/community_manager/facebook/auth" class="button is-facebook is-big is-flex">
           <i class="fa fa-facebook"></i>
           Vincular con Facebook
         </a>
@@ -55,7 +57,7 @@ export default {
         input: 'text',
         showCancelButton: true,
         preConfirm: (value) => {
-          this.$axios.post('/facebook/post', {
+          this.$axios.post('/community_manager/facebook/post', {
             id: page.id,
             access_token: page.access_token,
             content: value
@@ -70,7 +72,7 @@ export default {
     },
     fetchFacebookData: function () {
       const that = this
-      this.$axios.get('/facebook/data')
+      this.$axios.get('/community_manager/facebook/data')
         .then(({data}) => {
           that.facebookData = data.facebook_data
         })

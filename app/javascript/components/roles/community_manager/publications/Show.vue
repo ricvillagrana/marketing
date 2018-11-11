@@ -1,51 +1,64 @@
 <template>
   <div v-if="publication">
-    <p class="title is-3">
-      {{ publication.name }}
-      <app-dropdown
-        :title="dropdown.title"
-        :color="dropdown.color"
-        :options="dropdown.options"
-        @edit="editOptions.open = true"></app-dropdown>
-      <span class="tag is-warning">{{ publication.status.name }}</span>
-    </p>
-    <p v-if="daysToEnd > 0" class="title is-6 has-text-link">
-      Termina en {{ daysToEnd }} días
-      ({{ $dateText(publication.publication_date) }})
-    </p>
-    <p class="title is-6 has-text-danger" v-if="daysToEnd === 0">Termina hoy</p>
-    <p class="title is-6 has-text-grey" v-if="daysToEnd < 0">
-      Terminada hace {{ daysToEnd * -1 }} días
-      ({{ $dateText(publication.publication_date) }})
-    </p>
-    <p class="title is-5">Nodo: {{ publication.node.name }}</p>
-    <div>
-      <div class="tags has-addons m-0"  v-for="(user, key) in publication.node.users" :key="key">
-        <span class="tag is-link">{{ user.role.name }}</span>
-        <span class="tag is-grey"> {{ user.name }} {{ user.lastname }}</span>
-      </div>
-      <p class="title is-4">Contenido</p>
-      <div class="box p-20">
-        <p v-if="!publication.content || publication.content === ''" class="title is-5 has-text-centered has-text-grey">
-          No tiene contenido
+    <div class="columns">
+      <div class="column">
+        <p class="title is-3">
+          {{ publication.name }}
+          <span class="tag is-warning">{{ publication.status.name }}</span>
+          <span class="title is-6 has-text-grey">Nodo: {{ publication.node.name }}</span>
         </p>
-        <p v-else>{{ publication.content }}</p>
-      </div>
+        <div class="flex flex-end mb-15" v-show="publication.content && publication.content !== ''">
+          <button @click="handleCreatePost(page)" class="button is-facebook is-medium my-0">
+            <i class="fa fa-facebook"></i>
+            Pulbicar ahora
+          </button>
+        </div>
+        <p v-if="daysToEnd > 0" class="title is-6 has-text-link">
+          Termina en {{ daysToEnd }} días
+          ({{ $dateText(publication.publication_date) }})
+        </p>
+        <p class="title is-6 has-text-danger" v-if="daysToEnd === 0">Termina hoy</p>
+        <p class="title is-6 has-text-grey" v-if="daysToEnd < 0">
+          Terminada hace {{ daysToEnd * -1 }} días
+          ({{ $dateText(publication.publication_date) }})
+        </p>
 
-      <p class="title is-4">Multimedia</p>
-      <div class="box p-20 has-text-centered">
-        <div class="dropzone-content">
-          <span v-for="(image, key) in publication.images" :key="key" class="flex flex-row-reverse">
-          <img :src="image.url" :alt="image.name" :id="image.id">
+        <!-- <div class="tags has-addons m-0 is-grouped is-grouped-multiline flex-row" v-for="(user, key) in publication.node.users" :key="key">
+          <span class="tag is-link">{{ user.role.name }}</span>
+          <span class="tag is-grey"> {{ user.name }} {{ user.lastname }}</span>
+        </div> -->
+        <div class="box p-20">
+          <p v-if="!publication.content || publication.content === ''" class="title is-5 has-text-centered has-text-grey">
+            No tiene contenido
+          </p>
+          <pre v-else class="is-size-6 p-15 pre">
+            {{ publication.content }}<br />
+          </pre>
+          <span v-if="publication.content && publication.content !== ''" class="has-text-grey-dark mt-25 mr-15 is-size-6">
+            <i class="fa fa-pencil"></i>
+            {{ $dateText(publication.updated_at) }}
+            a las {{ $time(publication.updated_at) }}
           </span>
         </div>
       </div>
+      <div class="column">
+        asldn
+      </div>
     </div>
-    <publication-form
-      :publication_id="publication.id"
-      :open="editOptions.open"
-      @should-update-publication="fetchPublication"
-      @close="editOptions.open = false"></publication-form>
+    <div>
+      <div class="box p-20">
+        <div class="dropzone-content has-text-centered">
+          <span v-for="(image, key) in publication.images" :key="key" class="flex flex-row-reverse">
+            <img :src="image.url" :alt="image.name" :id="image.id">
+          </span>
+          <div v-if="publication.images.length === 0">
+            <p class="title is-5 has-text-centered has-text-grey">
+              No tiene multimedia
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

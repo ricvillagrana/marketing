@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(version: 2018_11_09_232148) do
     t.date "init_date"
     t.date "finish_date"
     t.text "image"
+    t.string "facebook_name"
+    t.string "facebook_id"
     t.boolean "finished", default: false
     t.boolean "deleted", default: false
     t.datetime "created_at", null: false
@@ -79,8 +81,6 @@ ActiveRecord::Schema.define(version: 2018_11_09_232148) do
     t.string "address"
     t.time "init_hour"
     t.time "final_hour"
-    t.string "fb_id"
-    t.string "fb_access_token"
     t.boolean "deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

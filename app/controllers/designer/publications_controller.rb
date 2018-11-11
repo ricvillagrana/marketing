@@ -1,5 +1,5 @@
 class Designer::PublicationsController < ApplicationController
-  before_action :authenticate_user!, :should_be_communty_manager!
+  before_action :authenticate_user!, :should_be_designer!
   
   def index
     @user = current_user
