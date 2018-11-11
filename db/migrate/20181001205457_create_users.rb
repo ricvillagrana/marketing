@@ -8,9 +8,10 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.string :username, null: true
       t.string :name, null: true
       t.string :lastname, null: true
-      t.text :image, null: true
       t.date :born_date, null: true
       t.boolean :deleted, default: false
+
+      t.text :facebook_data
 
       # Facebook data
       t.string :facebook_access_token, null: true

@@ -8,10 +8,6 @@ class CreateCampaigns < ActiveRecord::Migration[5.1]
       t.text :objetive
       t.date :init_date
       t.date :finish_date
-      t.text :image
-
-      t.string :facebook_name
-      t.string :facebook_id
 
       t.boolean :finished, default: false
       t.boolean :deleted, default: false

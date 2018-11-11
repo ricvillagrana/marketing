@@ -77,3 +77,6 @@ gem 'seed_dump'
 
 # Redis
 gem 'redis'
+
+# Session Store
+gem 'activerecord-session_store'

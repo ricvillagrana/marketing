@@ -11,6 +11,11 @@ class Admin::CompaniesController < ApplicationController
 
   def update
     @company = current_user.company
+    pages = current_user.facebook_data[:pages]
+    page = pages.map { |page| page['id'] == params[:facebook_page_id] ? page : nil}
+    page.delete nil
+    @company.facebook_data = page[0]
+    @company.save
     if @company.update!(company_params)
       render json: { company: @company, status: 200 }
     else

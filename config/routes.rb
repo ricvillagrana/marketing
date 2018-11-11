@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   devise_for :users
   root 'main#index'
 
-  get '/ac', to: 'main#test_ac'
+  get '/current_user', to: 'main#user'
 
   namespace :superadmin do
     resources :users, path: :admins
@@ -29,6 +29,11 @@ Rails.application.routes.draw do
     resources :users
 
     get '/community_managers/:company_id', to: 'users#community_managers'
+
+    get '/facebook/auth', to: 'facebook#auth'
+    get '/facebook/code_callback', to: 'facebook#code_callback'
+    get '/facebook/access_token_callback', to: 'facebook#access_token_allback'
+    get '/facebook/data', to: 'facebook#data'
   end
 
   namespace :community_manager do

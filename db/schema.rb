@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_09_232148) do
+ActiveRecord::Schema.define(version: 2018_11_11_041150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,9 +43,6 @@ ActiveRecord::Schema.define(version: 2018_11_09_232148) do
     t.text "objetive"
     t.date "init_date"
     t.date "finish_date"
-    t.text "image"
-    t.string "facebook_name"
-    t.string "facebook_id"
     t.boolean "finished", default: false
     t.boolean "deleted", default: false
     t.datetime "created_at", null: false
@@ -81,6 +78,7 @@ ActiveRecord::Schema.define(version: 2018_11_09_232148) do
     t.string "address"
     t.time "init_hour"
     t.time "final_hour"
+    t.string "facebook_data"
     t.boolean "deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -184,6 +182,15 @@ ActiveRecord::Schema.define(version: 2018_11_09_232148) do
     t.index ["keyword"], name: "index_roles_on_keyword", unique: true
   end
 
+  create_table "sessions", force: :cascade do |t|
+    t.string "session_id", null: false
+    t.text "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
+    t.index ["updated_at"], name: "index_sessions_on_updated_at"
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.bigint "publication_id"
     t.bigint "user_id"
@@ -212,9 +219,9 @@ ActiveRecord::Schema.define(version: 2018_11_09_232148) do
     t.string "username"
     t.string "name"
     t.string "lastname"
-    t.text "image"
     t.date "born_date"
     t.boolean "deleted", default: false
+    t.text "facebook_data"
     t.string "facebook_access_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

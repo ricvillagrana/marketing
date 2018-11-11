@@ -1,4 +1,5 @@
 class Company < ApplicationRecord
+  serialize :facebook_data
   has_one :admin, class_name: 'User'
   has_many :campaigns
   has_many :channels
