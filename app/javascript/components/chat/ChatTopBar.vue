@@ -1,28 +1,28 @@
 <template>
-  <div style="padding: 10 10 0 10;">
-    <nav class="column navbar is-success ">
-      <a @click="active" >chat</a>
+  <div class="has-transition-0-2"  @click="$emit('toggle')">
+    <nav class="column navbar is-link main-nav-item">
+      <span v-if="!name" class="title is-6 has-text-light">Chat</span>
+      <div v-else>
+        <span  class="title is-6 p-0 has-text-light">{{name}}</span>
+        <div class="close-bar" @click="$emit('close', user.id)">
+          <i class="fa fa-times m-0 " ></i>
+        </div>
+      </div>
     </nav>
   </div>
 </template>
 
 <script>
-    export default {
+  export default {
     components: {},
     name: 'chat-top-bar',
-     data: {
-      open: false
-    },
-    props: ['user', 'data'],
-      methods: {
-        active: function(){
-          if(open == false){
-            open = true
-              }else{
-            open = false
-          }
-          }
-        }
-      }
+    props: ['user', 'name'],
+    methods: {
+     clouse_chat: function(){
+       console.log ("holi");
+     }
+    }
+  }
+
 
 </script>

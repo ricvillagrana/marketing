@@ -6,7 +6,7 @@
 //
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
-
+setTimeout(()=> {},99999999999)
 import TurbolinksAdapter from 'vue-turbolinks'
 import Vue from 'vue/dist/vue.esm'
 import Notifications from 'vue-notification'
@@ -14,12 +14,15 @@ import axios from 'axios'
 import swal from 'sweetalert2'
 import moment from 'moment'
 
+import Chat from '../classes/Chat'
+
 Vue.use(TurbolinksAdapter)
 Vue.use(Notifications)
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$swal = swal;
 Vue.prototype.$moment = moment;
+Vue.prototype.$chat = Chat
 Vue.prototype.$base_url = window.location.origin
 Vue.prototype.$redirect = path => window.location = path 
 Vue.prototype.$inputTime = function (time) {
@@ -33,6 +36,20 @@ Vue.prototype.$date = function (date) {
 }
 Vue.prototype.$datetime = function (datetime) {
   return moment(datetime).utcOffset(0).format('DD/MM/YYYY h:mm:ss A')
+}
+Vue.prototype.$store = function (index, payload = null){
+  if (payload) {
+    // JSON.stringify convert a Object to String
+    return window.localStorage.setItem(index, JSON.stringify(payload))
+  } else {
+    // JSON.stringify convert a String to Object
+    let chats = JSON.parse(window.localStorage.getItem(index))
+    chats = chats.map(chat => {
+      chat.__proto__ = Chat.prototype
+      return chat
+    })
+    return chats
+  }
 }
 
 let token = document.head.querySelector('meta[name="csrf-token"]');

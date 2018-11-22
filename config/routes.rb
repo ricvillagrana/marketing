@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   devise_for :users
   root 'main#index'
 
+  get '/companies/users', to: 'companies#users'
+
   namespace :superadmin do
     resources :users, path: :admins
     resources :companies
