@@ -1,37 +1,105 @@
 <template>
   <div v-if="publication">
-    <p class="title is-3">{{ publication.name }} <span class="tag is-warning">{{ publication.status.name }}</span></p>
-    <p class="title is-5">Nodo: {{ publication.node.name }}</p>
-
-    <div>
-      <div class="tags has-addons m-0"  v-for="(user, key) in publication.node.users" :key="key">
-        <span class="tag is-link">{{ user.role.name }}</span>
-        <span class="tag is-grey"> {{ user.name }} {{ user.lastname }}</span>
-      </div>
-      <p class="title is-4">Contenido</p>
-      <div class="box p-20">
-        <p v-if="!publication.content || publication.content === ''" class="title is-5 has-text-centered has-text-grey">
-          No tiene contenido
+    <div class="columns">
+      <div class="column">
+        <p class="title is-3">
+          {{ publication.name }}
+          <app-dropdown
+            :title="dropdown.title"
+            :color="dropdown.color"
+            :options="dropdown.options"
+            @edit="editOptions.open = true"></app-dropdown>
+          <span class="tag is-warning">{{ publication.status.name }}</span>
+          <span class="title is-6 has-text-grey">Nodo: {{ publication.node.name }}</span>
         </p>
-        <p v-else>{{ publication.content }}</p>
-      </div>
+        <div class="flex flex-end mb-15" v-show="publication.content && publication.content !== ''">
+          <button @click="handleCreatePost" class="button is-facebook is-medium my-0">
+            <i class="fa fa-facebook"></i>
+            Pulbicar ahora
+          </button>
+        </div>
+        <p v-if="daysToEnd > 0" class="title is-6 has-text-link">
+          Termina en {{ daysToEnd }} días
+          ({{ $dateText(publication.publication_date) }})
+        </p>
+        <p class="title is-6 has-text-danger" v-if="daysToEnd === 0">Termina hoy</p>
+        <p class="title is-6 has-text-grey" v-if="daysToEnd < 0">
+          Terminada hace {{ daysToEnd * -1 }} días
+          ({{ $dateText(publication.publication_date) }})
+        </p>
 
-      <p class="title is-4">Multimedia</p>
-      <div class="box p-20">
+        <!-- <div class="tags has-addons m-0 is-grouped is-grouped-multiline flex-row" v-for="(user, key) in publication.node.users" :key="key">
+          <span class="tag is-link">{{ user.role.name }}</span>
+          <span class="tag is-grey"> {{ user.name }} {{ user.lastname }}</span>
+        </div> -->
+        <div class="box p-20">
+          <p v-if="!publication.content || publication.content === ''" class="title is-5 has-text-centered has-text-grey my-50">
+            No tiene contenido
+          </p>
+          <pre v-else class="is-size-6 p-15 pre">
+            {{ publication.content }}<br />
+          </pre>
+          <span v-if="publication.content && publication.content !== ''" class="has-text-grey-dark mt-25 mr-15 is-size-6">
+            <i class="fa fa-pencil"></i>
+            {{ $dateText(publication.updated_at) }}
+            a las {{ $time(publication.updated_at) }}
+          </span>
+        </div>
+      </div>
+      <div class="column">
+        asldn
       </div>
     </div>
+    <div>
+      <div class="box p-20">
+        <div class="dropzone-content has-text-centered">
+          <span v-for="(image, key) in publication.images" :key="key" class="flex flex-row-reverse">
+            <img :src="image.url" :alt="image.name" :id="image.id">
+          </span>
+          <div v-if="publication.images.length === 0">
+            <p class="title is-5 has-text-centered has-text-grey">
+              No tiene multimedia
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <publication-form
+      :publication_id="publication.id"
+      :open="editOptions.open"
+      @close="editOptions.open = false"
+      @should-update-publication="fetchPublication"></publication-form>
   </div>
 </template>
 
 <script>
+import AppDropdown from '../../../app/AppDropdown'
+import PublicationForm from './PublicationForm'
+
 export default {
   name: 'community-manager-publications-show',
   data() {
     return {
-      publication: null
+      publication: null,
+      editOptions: {
+        open: false
+      },
+      dropdown: {
+        title: '',
+        color: 'light',
+        options: [
+          {
+            name: 'Editar',
+            icon: 'pencil',
+            shouldEmit: 'edit',
+            class: 'has-text-link'
+          }
+        ]
+      }
     }
   },
   props: ['publication_id'],
+  components: { AppDropdown, PublicationForm },
   beforeMount() {
     this.fetchPublication()
   },
@@ -40,6 +108,7 @@ export default {
       const that = this
       this.$axios.get(`/community_manager/publications/${this.publication_id}.json`)
         .then(({data}) => {
+          this.$swal.close()
           that.publication = data.publication
         })
         .catch(err => {
@@ -50,6 +119,56 @@ export default {
             footer: `Error: ${err}`
           })
         })
+    },
+    handleCreatePost: function () {
+      const imageUrl = this.$base_url + this.publication.images[0].url
+      const that = this
+      const page = this.$user.facebook_data.pages.filter(page => page.id === this.publication.facebook_data.id)[0]
+      const access_token = page.access_token
+      this.$swal({
+        title: `Se publicará "${that.publication.name}"`,
+        html: `Estás a punto de publicar en <span class="has-text-weight-bold has-text-facebook">Facebok</span>`,
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Publicar',
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: 'red',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.value) {
+          this.$swal({
+            title: 'Publicando en Facebook...',
+            onOpen: () => that.$swal.showLoading()
+          })
+          this.$axios.post('/community_manager/facebook/post', {
+            id: this.publication.facebook_data.id,
+            access_token: access_token,
+            content: this.publication.content,
+            publication_id: this.publication.id,
+            source: imageUrl
+          }).then(({data}) => {
+            console.log(data)
+            that.$swal({
+              type: 'success',
+              title: '¡Listo!',
+              html: `Se publicó con éxito, ve la publicación <a target="_blank" href="https://www.facebook.com/${data.publication.id}">aquí</a>.`,
+
+            })
+          }).catch(err => {
+            that.$swal({
+              type: 'error',
+              title: 'Error',
+              text: 'No se pudo crear la publicación. Intenta no Publicar el mismo texto.',
+              footer: `Error: ${err}`
+            })
+          })
+        }
+      })
+    }
+  },
+  computed: {
+    daysToEnd: function () {
+      return Math.trunc(this.$moment.duration(this.$moment(this.publication.publication_date).diff(this.$moment(new Date()))).asDays())
     }
   }
 }

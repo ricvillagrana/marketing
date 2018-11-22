@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <p class="title is-4">Usuarios que participan en la campaña.</p>
-    <p class="title is-6 has-text-danger has-text-weight-bold">Si retras a un usuario de una campaña se eliminará de todos sus nodos.</p>
+    <p class="title is-6 has-text-danger has-text-weight-bold">Si quitas a un usuario de una campaña se eliminará de todos sus nodos.</p>
     <div class="columns">
       <app-card :nested="true" :padding="15" class="column is-6">
         <p class="title is-6">Usuarios en campaña</p>

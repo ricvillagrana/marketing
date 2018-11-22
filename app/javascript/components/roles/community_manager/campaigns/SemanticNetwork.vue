@@ -53,6 +53,7 @@
               node: {name: value}
             }).then(({data}) => {
               that.nodesRaw.push(data.node)
+              that.selectedNode = data.node.id
             })
             .catch(err => {
               console.log(err)

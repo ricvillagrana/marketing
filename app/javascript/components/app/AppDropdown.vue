@@ -1,7 +1,7 @@
 <template>
-  <div class="dropdown" :class="{ 'is-active' : dropdownActive }">
+  <div class="dropdown" :class="{ 'is-active' : dropdownActive }" @mouseover="dropdownActive = true" @mouseout="dropdownActive = false">
     <div class="dropdown-trigger">
-      <button class="button" :class="`is-${color}`" aria-haspopup="true" aria-controls="dropdown-menu" @click="dropdownActive = !dropdownActive">
+      <button class="button" :class="`is-${color}`" aria-haspopup="true" aria-controls="dropdown-menu">
         <span v-if="title">{{ title }}</span>
         <span class="icon is-small">
           <i class="fa fa-normal fa-angle-down" aria-hidden="true"></i>

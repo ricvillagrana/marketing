@@ -37,18 +37,19 @@
 
   export default {
     name: 'node-users',
-    props: ['users', 'node', 'community_manager_id', 'campaign_id'],
+    props: ['node', 'community_manager_id', 'campaign_id'],
     components: { draggable, AppCard },
     data() {
       return {
         inNode: [],
         inCampaign: [],
-        allUsers: [],
-        currentUsers: []
+        users: [],
+        nodeUsers: []
       }
     },
     beforeMount() {
       this.fetchUsers()
+      this.fetchNodeUsers()
     },
     methods: {
       isAdminOrClient: role => role.keyword === 'superadmin' || role.keyword === 'admin' || role.keyword === 'client',
@@ -64,7 +65,6 @@
         })
         .then(({data}) => {
           if (data.status === 200){
-            this.updateCurrentUsers()
             that.$swal.close()
           } else {
             that.$swal({
@@ -77,7 +77,7 @@
               setTimeout(() => {
                 console.log('Should return gc', event.added.element.id)
                 that.inNode = that.inNode.filter(user => user.id !== event.added.element.id)
-                that.inCampaign.push(that.currentUsers.find(user => user.id === event.added.element.id))
+                that.inCampaign.push(that.users.find(user => user.id === event.added.element.id))
               }, 1000)
             }
           }
@@ -100,7 +100,6 @@
         console.log(event.added.element)
         this.$axios.delete(`/community_manager/nodes_users/${that.node.id}/${event.added.element.id}`)
         .then(({data}) => {
-          this.updateCurrentUsers()
           that.$swal.close()
         })
         .catch(err => {
@@ -112,10 +111,15 @@
           })
         })
       },
-      updateCurrentUsers: function () {
-        this.$axios.get(`/community_manager/users_in_node/${this.node.id}.json`)
+      checkNodeUsers: function () {
+        this.inNode = this.users.filter(user => this.user_ids.includes(user.id))
+        this.inCampaign = this.users.filter(user => !this.user_ids.includes(user.id))
+      },
+      fetchUsers: function () {
+        const that = this
+        if (this.node) this.$axios.get(`/community_manager/campaign_users/${this.node.id}.json`)
         .then(({data}) => {
-          that.currentUsers = data.users
+          that.users = data.users.filter(user => user.role && !this.isAdminOrClient(user.role))
           that.checkNodeUsers()
         })
         .catch(err => {
@@ -127,16 +131,11 @@
           })
         })
       },
-      checkNodeUsers: function () {
-        this.inNode = this.allUsers.filter(user => this.user_ids.includes(user.id))
-        this.inCampaign = this.allUsers.filter(user => !this.user_ids.includes(user.id))
-      },
-      fetchUsers: function () {
+      fetchNodeUsers: function () {
         const that = this
         if (this.node) this.$axios.get(`/community_manager/nodes_users/${this.node.id}.json`)
         .then(({data}) => {
-          that.allUsers = data.users.filter(user => user.role && !this.isAdminOrClient(user.role))
-          that.checkNodeUsers()
+          that.nodeUsers = data.users.filter(user => user.role && !this.isAdminOrClient(user.role))
         })
         .catch(err => {
           that.$swal({
@@ -150,7 +149,7 @@
     },
     computed: {
       user_ids: function () {
-        return this.currentUsers.map(user => user.id)
+        return this.nodeUsers.map(user => user.id)
       },
       cgExists: function () {
         return this.inNode.some(user => user.role.keyword === 'cg')
@@ -159,11 +158,8 @@
     watch: {
       node: function () {
         this.fetchUsers()
+        this.fetchNodeUsers()
       },
-      users: function () {
-        this.currentUsers = this.users
-        this.checkNodeUsers()
-      }
     }
   }
 </script>

@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  serialize :facebook_data
+
   belongs_to :role, optional: true
   belongs_to :company, optional: true
   belongs_to :works_on, class_name: 'Company', optional: true

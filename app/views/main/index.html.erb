@@ -1,0 +1,1 @@
+<dashboard :user="<%= current_user.to_json(include: [:role, works_on: {include: [:campaigns]}]) %>"></dashboard>

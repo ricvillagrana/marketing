@@ -11,9 +11,18 @@ class CommunityManager::PublicationsController < ApplicationController
 
   def show
     @publication = Publication.find(params[:id])
-    respond_to do |format|
-      format.html
-      format.json { render json: { publication: @publication, status: 200 }, include: [:status, node: { include: [users: { include: [:role] }] }] }
+    # respond_to do |format|
+    #   format.html
+    #   format.json { render json: { publication: @publication, status: 200 }, include: [:status, :images, node: { include: [users: { include: [:role] }] }] }
+    # end
+  end
+
+  def update
+    @publication = Publication.find(params[:id])
+    if @publication.update!(publication_params)
+      render json: { publication: @publication, status: 200 }
+    else
+      render json: { errors: @publication.errors, status: 500 }
     end
   end
 
@@ -33,5 +42,11 @@ class CommunityManager::PublicationsController < ApplicationController
     else
       node.children.map { |child| dig_publications_of(child) }
     end
+  end
+
+  private
+
+  def publication_params
+    params.require(:publication).permit(:publication_status_id, :node_id, :name, :content, :publication_date, :published, :fb_id, :likes, :shares)
   end
 end

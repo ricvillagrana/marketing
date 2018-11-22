@@ -10,8 +10,7 @@ class CreateCompanies < ActiveRecord::Migration[5.1]
       t.time :init_hour, null: true
       t.time :final_hour, null: true
 
-      t.string :fb_id, null: true
-      t.string :fb_access_token, null: true
+      t.string :facebook_data
 
       t.boolean :deleted, default: false
 

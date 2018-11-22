@@ -29,6 +29,10 @@
             <td>{{ company.address }}</td>
           </tr>
           <tr>
+            <th>Información de <span class="has-text-facebook">Facebook</span></th>
+            <td><a class="has-text-weight-bold has-text-facebook" target="_blank" :href="`https://www.facebook.com/${company.facebook_data.id}`">{{ company.facebook_data.name }}</a></td>
+          </tr>
+          <tr>
             <th>Horarios</th>
             <td>De {{ $time(company.init_hour) }} a {{ $time(company.final_hour) }}</td>
           </tr>
@@ -72,7 +76,7 @@
 <script>
   import AppCard from '../../../app/AppCard'
   import AppDropdown from '../../../app/AppDropdown'
-  import CompanyForm from '../../superadmin/companies/CompanyForm'
+  import CompanyForm from './CompanyForm'
   import CampaignForm from './CampaignForm'
 
   export default {

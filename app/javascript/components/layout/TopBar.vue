@@ -40,7 +40,7 @@
                 Perfil
               </a>
               <hr class="navbar-divider">
-              <a class="navbar-item has-text-danger" data-method="delete" href="/users/sign_out">
+              <a class="navbar-item has-text-danger" data-method="delete" href="/users/sign_out" @click="handleSignOut">
                 <i class="fa fa-times"></i>Cerrar sesión
               </a>
             </div>
@@ -62,6 +62,11 @@
         messages: 0
       }
     },
-    props: ['user']
+    props: ['user'],
+    methods: {
+      handleSignOut: function () {
+        this.$userWillUpdate()
+      }
+    }
   }
 </script>
