@@ -19,7 +19,6 @@
     props: ['user', 'name'],
     methods: {
      clouse_chat: function(){
-       console.log ("holi");
      }
     }
   }
