@@ -1,0 +1,2 @@
+module CommunityManager::NodesHelper
+end

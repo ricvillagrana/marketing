@@ -1,0 +1,273 @@
+// Place all the styles related to the main controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "bulma";
+@import "font-awesome";
+
+$sizes: (0,1,2,3,4,5,6,7,8,9,10,15,20,25,30,35,40,45,50);
+$positions: ('top','left','bottom','right');
+
+@each $size in $sizes {
+  .m-#{$size} {
+    margin: $size + px !important;
+  }
+  .p-#{$size} {
+    padding: $size + px !important;
+  }
+  .py-#{$size} {
+    padding-top: $size + px !important;
+    padding-bottom: $size + px !important;
+  }
+  .px-#{$size} {
+    padding-right: $size + px !important;
+    padding-left: $size + px !important;
+  }
+  .my-#{$size} {
+    margin-top: $size + px !important;
+    margin-bottom: $size + px !important;
+  }
+  .mx-#{$size} {
+    margin-right: $size + px !important;
+    margin-left: $size + px !important;
+  }
+  .py-#{$size} {
+    padding-top: $size + px !important;
+    padding-bottom: $size + px !important;
+  }
+  .pr-#{$size} {padding-right: $size + px !important;}
+  .pl-#{$size} {padding-left: $size + px !important;}
+  .pt-#{$size} {padding-top: $size + px !important;}
+  .pb-#{$size} {padding-bottom: $size + px !important;}
+  
+  .mr-#{$size} {margin-right: $size + px !important;}
+  .ml-#{$size} {margin-left: $size + px !important;}
+  .mt-#{$size} {margin-top: $size + px !important;}
+  .mb-#{$size} {margin-bottom: $size + px !important;}
+}
+
+html, body {
+  background: $light;
+  height: 100%;
+}
+
+.fa {
+  margin-right: 5px;
+}
+.fa-0-8x {
+  font-size: 80% !important;
+}
+.fa-normal {
+  margin-right: 0px;
+}
+
+.w-100 {
+  width: 100%;
+}
+.h-100 {
+  height: 100%;
+}
+.h-center {
+  align-items: flex-end;
+}
+.w-center {
+  justify-content: center;
+}
+.float-left {
+  float: left;
+}
+
+.height-inherit {
+  height: inherit;
+}
+
+.menu-mane {
+  min-width: 170px;
+}
+
+.pointer { cursor: pointer; }
+.grab { cursor: -webkit-grab; cursor: grab; }
+.not-allowed { cursor: not-allowed; }
+
+.draggable-area {
+  border-radius: 10px;
+  border: solid 2px #999;
+  border-style: dashed;
+  min-height: 100px;
+}
+
+.is-notification-counter{
+  margin-top: -10px;
+  margin-left: 10px;
+  position: absolute;
+}
+
+.menu-list li a:hover {
+  background-color: #3273dc;
+  color: #fff;
+  transition-duration: 0.2s;
+}
+
+.no-list li {
+  list-style: none;
+}
+
+.flex { display: flex; }
+.flex-row-reverse { flex-direction: row-reverse; }
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.flex-self-end {
+  display: flex;
+  align-self: flex-end;
+}
+
+.columns { // Bulma wrapping
+  flex-wrap: wrap;
+}
+
+// Facebook color
+.button.is-facebook {
+  background: #3B5998;
+  border-color: transparent;
+  color: #fff;
+}
+
+.has-text-facebook {
+  color: #3B5998;
+}
+
+.has-background-facebook {
+  background: #3B5998;
+}
+
+// App
+.app-card {
+  box-sizing: border-box;
+  background: white;
+  box-shadow: 0 5px 15px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+  border-radius: 4px;
+  transition-duration: 0.2s;
+  &:hover {
+    box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+  }
+}
+
+.app-card-shadowless {
+  border: solid 1px #ccc;
+  box-shadow: 0 0px 0px rgba(50,50,93,.1), 0 0px 0px rgba(0,0,0,.07);
+  &:hover {
+    box-shadow: 0 5px 5px rgba(50,50,93,.1), 0 5px 5px rgba(0,0,0,.07);
+  }
+}
+
+.app-card-nested {
+  background: whitesmoke;
+  box-shadow: 0 5px 5px rgba(50,50,93,.1), 0 5px 15px rgba(96, 96, 96, 0.07);
+  &:hover {
+    box-shadow: 0 5px 15px rgba(50,50,93,.1), 0 5px 15px rgba(96, 96, 96, 0.07);
+  }
+}
+
+.semantic-network {
+  width: 100%;
+  height: 500px;
+  // border: solid 2px #ccc;
+}
+
+.dropzone {
+  border: dashed $grey-light 3px;
+  border-radius: 10px;
+  padding: 0px 0px;
+  min-height: 150px;
+  transition-duration: 0.3s;
+  &:hover {
+    border-color: $link;
+  }
+  .drop-reciever {
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: inherit;
+    opacity: 0;
+  }
+}
+
+.dropzone-message {
+  position: relative;
+  top: 85px;
+}
+
+.dropzone.is-dragging {
+  border-color: $link;
+}
+
+.dropzone-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  span {
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+    background: $light;
+    border: solid $grey-light 1px;
+    display: flex;
+    border-radius: 10px;
+    transition-duration: 0.3s;
+    &:hover {
+      box-shadow: 0 5px 15px rgba(50,50,93,.1), 0 5px 15px rgba(96, 96, 96, 0.07);
+    }
+    a {
+      display: flex;
+      position: absolute;
+      z-index: 3;
+    }
+    img {
+      display: flex;
+      max-height: 200px;
+      max-width: 100%;
+      border-radius: inherit;
+    }
+  }
+}
+
+pre.pre {
+  height: 300px;
+  overflow-y: scroll;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  border-radius: 10px;
+  border: solid $grey-lighter 1px;
+
+  white-space: pre-wrap !important; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+  white-space: -pre-wrap !important; /* Opera 4-6 */
+  white-space: -o-pre-wrap !important; /* Opera 7 */
+  word-wrap: break-word !important;
+}
+
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: $light;
+}
+
+::-webkit-scrollbar
+{
+	width: 12px;
+	border-radius: 10px;
+	background-color: $light;
+}
+
+::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 0px rgba(0,0,0,.3);
+  background-color: $grey-light;
+}
