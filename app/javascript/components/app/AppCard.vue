@@ -12,6 +12,6 @@
 <script>
   export default {
     name: 'app-card',
-    props: ['nested', 'padding', 'margin', 'fullHeight', 'shadowless']
+    props: ['nested', 'padding', 'margin', 'fullHeight', 'shadowless', 'noFooter']
   }
 </script>
