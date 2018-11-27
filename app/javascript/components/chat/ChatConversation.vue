@@ -10,8 +10,9 @@
         :name="conversation.user.name"></chat-top-bar>      
       <!-- <div class="has-transition-0-2" :class="isShown ? 'conversation-opened py-5 px-2' : 'conversation-closed p-0'"> -->
       <div class="" >
+        <div class="menu-label">
         {{conversation.name}}
-        {isShown}
+        </div>
          <span>holi</span> <br>
          <span>holi</span> <br>
          <span>holi</span> <br>
