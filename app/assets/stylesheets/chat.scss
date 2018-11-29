@@ -34,7 +34,7 @@
 .conversation-closed {
     height: 0px;
 }
-.flex {display: flex;}
+
 
 .close-bar{
     position: absolute !important;  
@@ -61,3 +61,36 @@
 .main-chat-item:hover{
     background-color: hsl(0, 0%, 96%);
 }
+
+.scroll{
+    overflow-y: scroll;
+}
+.chat-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 170px; 
+  }
+  
+  .chat-message-container {
+    display: flex;
+    width: 100%;
+    height: auto;
+  }
+
+  .chat-message {
+    width: 75%;
+    border-radius: 7px !important;
+    border-top-left-radius: 2px !important;
+  }
+
+  .tag.is-dark-light {
+      background: hsl(0, 0%, 86%);
+  }
+  
+  .chat-message.me {
+    align-self: flex-end;
+    border-radius: 7px !important;
+    border-bottom-right-radius: 0px !important;
+
+  }

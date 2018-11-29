@@ -1,6 +1,6 @@
 <template>
   <div class="column is-3 px-5 pt-8 pb-0">
-    <app-card padding="0" margin="0" noFooter="true" class="is-2 is-sidebar-menu is-hidden-mobile"  
+    <app-card padding="0" margin="0" noFooter="true" class="  is-2 is-sidebar-menu is-hidden-mobile"  
       :class="conversation.state.open ? 'conversation-opened' : 'conversation-closed'">
       <chat-top-bar
         class="pointer"
@@ -9,17 +9,50 @@
         @close="$emit('close', conversation.user.id);"
         :name="conversation.user.name"></chat-top-bar>      
       <!-- <div class="has-transition-0-2" :class="isShown ? 'conversation-opened py-5 px-2' : 'conversation-closed p-0'"> -->
-      <div class="" >
-        <div class="menu-label">
-        {{conversation.name}}
+      <div class="chat-container scroll">
+        <div class=" chat-message-container flex-col flex-end">
+          <span class="chat-message m-4 tag" :class="true ? 'me is-link flex-self-end' : 'is-dark-light'">
+            {{conversation.user.name}}
+            {{conversation.user.lastname}}
+          </span>
         </div>
-         <span>holi</span> <br>
-         <span>holi</span> <br>
-         <span>holi</span> <br>
-         <span>holi</span> <br>
-         <span>holi</span> <br>
-         <span>holi</span> <br>
-         <span>holi</span> <br>
+        <div class="m-5 chat-message-container flex-col flex-end">
+          <span class="chat-message m-4 tag" :class="true ? 'me is-link flex-self-end' : 'is-dark-light'">
+            {{conversation.user.name}}
+            {{conversation.user.lastname}}
+          </span>
+        </div>
+        <div class="m-5 chat-message-container flex-col flex-end">
+          <span class="chat-message m-4 tag" :class="false ? 'me is-link flex-self-end' : 'is-dark-light'">
+            {{conversation.user.name}}
+            {{conversation.user.lastname}}
+          </span>
+        </div>
+        <div class="m-5 chat-message-container flex-col flex-end">
+          <span class="chat-message m-4 tag" :class="false ? 'me is-link flex-self-end' : 'is-dark-light'">
+            {{conversation.user.name}}
+            {{conversation.user.lastname}}
+          </span>
+        </div>
+        <div class="m-5 chat-message-container flex-col flex-end">
+          <span class="chat-message m-4 tag" :class="true ? 'me is-link flex-self-end' : 'is-dark-light'">
+            {{conversation.user.name}}
+            {{conversation.user.lastname}}
+          </span>
+        </div>
+        <div class="m-5 chat-message-container flex-col flex-end">
+          <span class="chat-message m-4 tag" :class="false ? 'me is-link flex-self-end' : 'is-dark-light'">
+            {{conversation.user.name}}
+            {{conversation.user.lastname}}
+          </span>
+        </div>
+        <div class="m-5 chat-message-container flex-col flex-end">
+          <span class="chat-message m-4 tag" :class="true ? 'me is-link flex-self-end' : 'is-dark-light'">
+            {{conversation.user.name}}
+            {{conversation.user.lastname}}
+          </span>
+        </div>
+        
       </div>
       <chat-text-area/>
       <!-- <chat-search-bar v-show="isShown" @update-words="words = $event" /> -->
