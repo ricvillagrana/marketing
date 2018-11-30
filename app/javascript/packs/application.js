@@ -14,12 +14,9 @@ import axios from 'axios'
 import swal from 'sweetalert2'
 import moment from 'moment'
 import * as ActiveStorage from 'activestorage'
+import ActionCable from 'actioncable'
 
 ActiveStorage.start()
-
-// import Test from '../cable/Test'
-// const test = new Test()
-// test.subscribe()
 
 Vue.use(TurbolinksAdapter)
 Vue.use(Notifications)

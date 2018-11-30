@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  publication: one
+  message: MyText
+  seen: false
+  edited: false
+
+two:
+  user: two
+  publication: two
+  message: MyText
+  seen: false
+  edited: false

@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="column">
-        <publication-chat></publication-chat>
+        <publication-chat :publication="publication"></publication-chat>
       </div>
     </div>
     <div>

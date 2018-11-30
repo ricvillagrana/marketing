@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_11_041150) do
+ActiveRecord::Schema.define(version: 2018_11_29_223742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -150,6 +150,18 @@ ActiveRecord::Schema.define(version: 2018_11_11_041150) do
     t.index ["user_id"], name: "index_publication_logs_on_user_id"
   end
 
+  create_table "publication_messages", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "publication_id"
+    t.text "message"
+    t.boolean "seen"
+    t.boolean "edited"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["publication_id"], name: "index_publication_messages_on_publication_id"
+    t.index ["user_id"], name: "index_publication_messages_on_user_id"
+  end
+
   create_table "publication_statuses", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -259,6 +271,8 @@ ActiveRecord::Schema.define(version: 2018_11_11_041150) do
   add_foreign_key "notifications", "tasks"
   add_foreign_key "publication_logs", "publications"
   add_foreign_key "publication_logs", "users"
+  add_foreign_key "publication_messages", "publications"
+  add_foreign_key "publication_messages", "users"
   add_foreign_key "publications", "nodes"
   add_foreign_key "publications", "publication_statuses"
   add_foreign_key "tasks", "publications"

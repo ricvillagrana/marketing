@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="column">
-        asldn
+        <publication-chat :publication="publication"></publication-chat>
       </div>
     </div>
     <div>
@@ -64,6 +64,7 @@
 
 <script>
 import DragDrop from '../../../app/DragDrop'
+import PublicationChat from '../../../app/Chat/'
 
 export default {
   name: 'designer-publications-show',
@@ -75,14 +76,14 @@ export default {
     }
   },
   props: ['publication_id'],
-  components: { DragDrop },
+  components: { DragDrop, PublicationChat },
   beforeMount() {
     this.fetchPublication()
   },
   methods: {
     fetchPublication: function () {
       const that = this
-      
+
       this.$axios.get(`/designer/publications/${this.publication_id}.json`)
         .then(({data}) => {
           that.publication = data.publication
@@ -152,4 +153,3 @@ export default {
   }
 }
 </script>
-

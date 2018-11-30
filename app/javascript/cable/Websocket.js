@@ -6,7 +6,6 @@ class Websocket {
 
   connect() {
     const url = 'ws://localhost:3000/cable'
-    console.log(`Connecting to WebSocket on ${url}`);
     this.consumer = Cable.createConsumer(url);
   }
 
