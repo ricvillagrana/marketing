@@ -148,7 +148,6 @@ export default {
             publication_id: this.publication.id,
             source: imageUrl
           }).then(({data}) => {
-            console.log(data)
             that.$swal({
               type: 'success',
               title: '¡Listo!',
