@@ -5,10 +5,17 @@
     <div class="flex flex-col publication-chat-container">
       <div class="chat-scroller" id="chat-box">
         <div class="flex flex-row w-100" :class="$user.id === message.user.id ? 'flex-end' : ''" v-for="(message, index) in messages" :key="index">
-          <span class="flex flex-col publication-chat-bubble" :class="$user.id === message.user.id ? 'me' : ''">
-            <span class="name">{{ $user.id === message.user.id ? 'Tú' : message.user.name }} a las {{ $time(message.message.created_at) }}</span>
-            {{ message.message.message }}
-          </span>
+          <div class="flex flex-col publication-chat-bubble" :class="$user.id === message.user.id ? 'me' : ''">
+            <span class="name font-bold" v-show="$user.id !== message.user.id">
+              {{ message.user.name }}
+            </span>
+            <span>
+              {{ message.message.message }}
+            </span>
+            <span class="date" :title="$moment(message.message.created_at).calendar()">
+              {{ $moment(message.message.created_at).fromNow() }}
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -80,6 +87,12 @@
     created() {},
     mounted() {
       this.fetchMessages()
+      setInterval(() => {
+        const messages = this.messages
+        this.messages = []
+        this.messages = messages
+
+      }, 1000)
     }
   }
 </script>

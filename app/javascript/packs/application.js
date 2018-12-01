@@ -41,7 +41,10 @@ Vue.prototype.$user = JSON.parse(localStorage.getItem('user'))
 Vue.prototype.$userWillUpdate = () => localStorage.clear()
 Vue.prototype.$axios = axios
 Vue.prototype.$swal = swal
+
+moment.locale('es')
 Vue.prototype.$moment = moment
+
 Vue.prototype.$base_url = window.location.origin
 Vue.prototype.$redirect = path => window.location = path
 Vue.prototype.$inputTime = function (time) {

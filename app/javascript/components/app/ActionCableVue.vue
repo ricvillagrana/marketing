@@ -20,7 +20,7 @@ export default {
   methods: {},
   created() {},
   mounted() {
-    const consumer = ActionCable.createConsumer('ws://localhost:3000/cable');
+    const consumer = ActionCable.createConsumer(`ws://${window.location.host}/cable`);
     if (this.channel && this.room) consumer.subscriptions.create({channel: this.channel, room: this.room}, {
       received:       e     => this.$emit('received', e),
       initialized:    ()    => this.$emit('initialized'),
