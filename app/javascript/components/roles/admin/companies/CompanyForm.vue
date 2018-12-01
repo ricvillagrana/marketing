@@ -26,7 +26,7 @@
         <span class="has-text-danger is-small">{{ errors.email }}</span><br />
 
         <label for="email">Páginas de <span class="has-text-facebook">Facebook</span> vinculadas:</label>
-        <select name="facebook_data" class="input" id="page-selector">
+        <select v-if="$user.facebook_data" name="facebook_data" class="input" id="page-selector">
           <option v-for="(page, key) in $user.facebook_data.pages" :key="`pages-${key}`" :value="page.id">{{ page.name }}</option>
         </select>
 
@@ -80,7 +80,7 @@
         e.preventDefault()
         const that = this
         this.saving = true
-        
+
         const list = document.getElementById('page-selector')
         const page_id = list[list.selectedIndex].value
 
@@ -113,7 +113,7 @@
             text: `No se pude guardar la empresa.`,
             footer: `Error ${err}`
           })
-        }) 
+        })
       }
     },
     computed: {
@@ -123,33 +123,33 @@
         const name = this.company.name !== ''
         if (!name) { this.errors.name = "No puede estar vacío." }
 
-        // Description 
+        // Description
         const descriptionLengthRequired = 50
         const descriptionLength =this.company.description.length
         const description = descriptionLength >= descriptionLengthRequired
         if (!description) { this.errors.description = `Debe tener al menos ${descriptionLengthRequired} letras, son ${descriptionLength}.` }
-        
+
         // Contact name
         const contact_name = this.company.contact_name !== ''
         if (!contact_name) { this.errors.contact_name = "No puede estar vacío." }
-        
+
         // phone
         const phone = this.company.phone.length == 10
         if (!phone) { this.errors.phone = "Deben ser 10 dígitos." }
-        
+
         // email
         var emailRegEx = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         const email = emailRegEx.test(this.company.email)
         if (!email) { this.errors.email = "Debe ser un email válido" }
-        
+
         // address
         const address = this.company.address !== ''
         if (!address) { this.errors.address = "No puede estar vacía" }
-        
+
         // init_hour
         const init_hour = this.company.init_hour !== ''
         if (!init_hour) { this.errors.init_hour = "Debe ser una hora correcta" }
-        
+
         // final_hour
         const final_hour = this.company.final_hour !== ''
         if (!final_hour) { this.errors.final_hour = "Debe ser una hora correcta" }
