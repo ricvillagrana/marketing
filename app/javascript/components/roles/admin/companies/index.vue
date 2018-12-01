@@ -30,7 +30,7 @@
           </tr>
           <tr>
             <th>Información de <span class="has-text-facebook">Facebook</span></th>
-            <td><a class="has-text-weight-bold has-text-facebook" target="_blank" :href="`https://www.facebook.com/${company.facebook_data.id}`">{{ company.facebook_data.name }}</a></td>
+            <td><a class="has-text-weight-bold has-text-facebook" target="_blank" :href="`https://www.facebook.com/${company.facebook_data ? company.facebook_data.id : ''}`">{{ company.facebook_data ? company.facebook_data.name : '' }}</a></td>
           </tr>
           <tr>
             <th>Horarios</th>
@@ -63,7 +63,7 @@
       :company_id="company.id"
       @close="addOptions.open = false"
       @update-company="fetchCompany"></campaign-form>
-    
+
     <company-form v-if="company"
       :open="editOptions.open"
       :company_id="editOptions.company_id"
