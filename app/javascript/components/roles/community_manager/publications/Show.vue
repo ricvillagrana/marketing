@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="column">
-        asldn
+        <publication-chat :publication="publication"></publication-chat>
       </div>
     </div>
     <div>
@@ -74,6 +74,7 @@
 
 <script>
 import AppDropdown from '../../../app/AppDropdown'
+import PublicationChat from '../../../app/Chat/'
 import PublicationForm from './PublicationForm'
 
 export default {
@@ -99,7 +100,7 @@ export default {
     }
   },
   props: ['publication_id'],
-  components: { AppDropdown, PublicationForm },
+  components: { AppDropdown, PublicationForm, PublicationChat },
   beforeMount() {
     this.fetchPublication()
   },
@@ -147,7 +148,6 @@ export default {
             publication_id: this.publication.id,
             source: imageUrl
           }).then(({data}) => {
-            console.log(data)
             that.$swal({
               type: 'success',
               title: '¡Listo!',
@@ -173,4 +173,3 @@ export default {
   }
 }
 </script>
-

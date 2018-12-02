@@ -14,15 +14,10 @@ import axios from 'axios'
 import swal from 'sweetalert2'
 import moment from 'moment'
 import * as ActiveStorage from 'activestorage'
+import ActionCable from 'actioncable'
 
 ActiveStorage.start()
-
-// import Test from '../cable/Test'
-// const test = new Test()
-// test.subscribe()
-
 import Chat from '../classes/Chat'
-
 Vue.use(TurbolinksAdapter)
 Vue.use(Notifications)
 
@@ -44,17 +39,19 @@ Vue.prototype.$fetchUser = function () {
 }
 Vue.prototype.$user = JSON.parse(localStorage.getItem('user'))
 Vue.prototype.$userWillUpdate = () => localStorage.clear()
-Vue.prototype.$axios = axios;
-Vue.prototype.$swal = swal;
-Vue.prototype.$moment = moment;
+Vue.prototype.$axios = axios
+Vue.prototype.$swal = swal
 Vue.prototype.$chat = Chat
+moment.locale('es')
+Vue.prototype.$moment = moment
+
 Vue.prototype.$base_url = window.location.origin
-Vue.prototype.$redirect = path => window.location = path 
+Vue.prototype.$redirect = path => window.location = path
 Vue.prototype.$inputTime = function (time) {
   return moment(time).utcOffset(-6).format('HH:mm:ss')
 }
 Vue.prototype.$time = function (time) {
-  return moment(time).utcOffset(-6).format('h:mm A')
+  return moment(time).utcOffset(-6).format('h:mm:ss A')
 }
 Vue.prototype.$date = function (date) {
   return moment(date).utcOffset(-6).format('DD/MM/YYYY')
@@ -68,44 +65,44 @@ Vue.prototype.$dateText = function (dateUnformat) {
   switch (month + 1) {
     case 1:
       monthText = 'Enero'
-      break;
+      break
     case 2:
       monthText = 'Febrero'
-      break;
+      break
     case 3:
       monthText = 'Marzo'
-      break;
+      break
     case 4:
       monthText = 'Abril'
-      break;
+      break
     case 5:
       monthText = 'Mayo'
-      break;
+      break
     case 6:
       monthText = 'Junio'
-      break;
+      break
     case 7:
       monthText = 'Julio'
-      break;
+      break
     case 8:
       monthText = 'Agosto'
-      break;
+      break
     case 9:
       monthText = 'Septiembre'
-      break;
+      break
     case 10:
       monthText = 'Octubre'
-      break;
+      break
     case 11:
       monthText = 'Noviembre'
-      break;
+      break
     case 12:
       monthText = 'Diciembre'
-      break;
+      break
 
     default:
       monthText = '?'
-      break;
+      break
   }
   return `${day} de ${monthText} de ${year}`
 }
@@ -127,8 +124,8 @@ Vue.prototype.$store = function (index, payload = null){
   }
 }
 
-let token = document.head.querySelector('meta[name="csrf-token"]');
-Vue.prototype.$axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+let token = document.head.querySelector('meta[name="csrf-token"]')
+Vue.prototype.$axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content
 
 // Import of own components
 import Login from '../components/sessions/Login'
@@ -163,53 +160,19 @@ import ContentGeneratorPublicationsShow from '../components/roles/content_genera
 import AppModal from '../components/app/AppModal'
 import AppCard from '../components/app/AppCard'
 
-// Registration of own components
-Vue.use('login', Login)
-Vue.use('register', Register)
-Vue.use('layout', Layout)
-Vue.use('dashboard', Dashboard)
-
-// Superadmin
-Vue.use('superadmin-admins', SuperadminAdmins)
-Vue.use('superadmin-companies', SuperadminCompanies)
-
-// Admin
-Vue.use('admin-companies', AdminCompanies)
-Vue.use('admin-users', AdminUsers)
-Vue.use('admin-campaigns', AdminCampaigns)
-Vue.use('admin-campaigns-show', AdminCampaignsShow)
-
-// Community Manager
-Vue.use('community-manager-campaigns', CommunityManagerCampaigns)
-Vue.use('community-manager-campaigns-show', CommunityManagerCampaignsShow)
-Vue.use('community-manager-publications', CommunityManagerPublications)
-Vue.use('community-manager-publications-show', CommunityManagerPublicationsShow)
-
-// Content Generator
-Vue.use('content-generator-publications', ContentGeneratorPublications)
-Vue.use('content-generator-publications-show', ContentGeneratorPublicationsShow)
-
-// Designer
-Vue.use('designer-publications', DesignerPublications)
-Vue.use('designr-publications-show', DesignerPublicationsShow)
-
-// Registration of App components
-Vue.use('app-modal', AppModal)
-Vue.use('app-card', AppCard)
-
 document.addEventListener('turbolinks:load', () => {
   const app = new Vue({
     el: '#app',
     components: {
       // Project
       Login, Register, Layout, Dashboard,
-      
+
       // Superadmin
       SuperadminAdmins, SuperadminCompanies,
 
       // Admin
       AdminCompanies, AdminUsers, AdminCampaigns, AdminCampaignsShow,
-      
+
       // Community Manager
       CommunityManagerCampaigns, CommunityManagerCampaignsShow, CommunityManagerPublications, CommunityManagerPublicationsShow,
 
