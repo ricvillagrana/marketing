@@ -6,7 +6,6 @@ class Chat {
   }
 
   toggle() {
-    console.log(this)
     this.state.open = !this.state.open
   }
 

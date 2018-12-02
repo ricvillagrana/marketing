@@ -11,6 +11,7 @@
       <!-- <div class="has-transition-0-2" :class="isShown ? 'conversation-opened py-5 px-2' : 'conversation-closed p-0'"> -->
       <div class="chat-container scroll">
         <div class=" chat-message-container flex-col flex-end">
+          
           <span class="chat-message m-4 tag" :class="true ? 'me is-link flex-self-end' : 'is-dark-light'">
             {{conversation.user.name}}
             {{conversation.user.lastname}}
@@ -44,6 +45,7 @@
           <span class="chat-message m-4 tag" :class="false ? 'me is-link flex-self-end' : 'is-dark-light'">
             {{conversation.user.name}}
             {{conversation.user.lastname}}
+            
           </span>
         </div>
         <div class="m-5 chat-message-container flex-col flex-end">
@@ -87,19 +89,26 @@
     methods:{
       pulse: function({user}){
         this.conversation.toggle()
-
         const chats = this.$store('chats')
         const chat = chats.filter(chat => chat.user.id === user.id)[0]
         chat.state = this.conversation.state
         this.$store('chats', chats)
       },
       shown: function(id){
+        
         var chats = this.$store("chats");
-        console.log(id);
         if(chats.filter(chat => chat.user.id == id)){
           return true;
         };
-      }
+      },
+      down() {
+        setTimeout(() => {
+          let boxes = document.getElementsByClassName('chat-container')
+          boxes = [...boxes]
+          
+          boxes.map(box => box.scrollTo(0, box.scrollHeight))
+        }, 1)
+      },
     },
     computed: {
       conversationName: function () {
@@ -110,6 +119,9 @@
       resetTo: function () {
         this.isShown = this.resetTo
       }
-    }
+    },
+  mounted: function () {
+    this.down();
+}
   }
 </script>

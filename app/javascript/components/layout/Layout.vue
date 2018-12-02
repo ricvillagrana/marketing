@@ -6,9 +6,7 @@
       <app-card class="column is-main-content content is-small">
         <div class="title is-5 has-text-centered has-text-grey" v-if="!user.role">No tienes empresas asignadas, pide al Súper Administrador que te asigne a una.</div>
         <slot></slot>
-      </app-card>
-      <!-- <chat :user="user"></chat> -->
-     
+      </app-card>     
     </div>
     <chat @open-chat="appendChat($event)"></chat>
     <div class="chat-area">
@@ -41,15 +39,6 @@
     },
     props: ['notice', 'alert', 'user'],
     methods: {
-/*    appendChat: function (user) {
-         var active = false;
-        this.chats.forEach(function(element) {
-          if(user.id == element.id ){
-            active = true;
-          }
-        });
-        if(!active){this.chats.push(user)}
-      }, */
       appendChat: function (user) {
         var active = false;
         var newChat = new this.$chat(user);
@@ -62,10 +51,11 @@
         }
       },
       closeChat: function (id) {
+        setTimeout(() => {
         let chats = this.$store('chats')
         chats = chats.filter(chat => chat.user.id !== id)
         this.$store('chats', chats)
-        this.updateChats()
+        this.updateChats()},1)
       },
       updateChats () {
         this.chats = this.$store('chats')
