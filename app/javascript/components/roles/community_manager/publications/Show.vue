@@ -111,6 +111,17 @@ export default {
         .then(({data}) => {
           this.$swal.close()
           that.publication = data.publication
+          const xhr = new XMLHttpRequest();
+          xhr.open('GET', that.publication.images[0], true);
+          xhr.responseType = 'blob';
+          xhr.onload = function(e) {
+            if (this.status == 200) {
+              const myBlob = this.response;
+              console.log(myBlob)
+              // myBlob is now the blob that the object URL pointed to.
+            }
+          };
+          xhr.send();
         })
         .catch(err => {
           that.$swal({
@@ -130,6 +141,7 @@ export default {
         title: `Se publicará "${that.publication.name}"`,
         html: `Estás a punto de publicar en <span class="has-text-weight-bold has-text-facebook">Facebok</span>`,
         type: 'info',
+        footer: 'Por el momento sólo se publicará la primera imágen.',
         showCancelButton: true,
         confirmButtonText: 'Publicar',
         cancelButtonText: 'Cancelar',
@@ -141,24 +153,42 @@ export default {
             title: 'Publicando en Facebook...',
             onOpen: () => that.$swal.showLoading()
           })
-          this.$axios.post('/community_manager/facebook/post', {
+          this.$axios.post('/community_manager/facebook/albums', {
             id: this.publication.facebook_data.id,
             access_token: access_token,
-            content: this.publication.content,
-            publication_id: this.publication.id,
-            source: imageUrl
-          }).then(({data}) => {
-            that.$swal({
-              type: 'success',
-              title: '¡Listo!',
-              html: `Se publicó con éxito, ve la publicación <a target="_blank" href="https://www.facebook.com/${data.publication.id}">aquí</a>.`,
-
+            name: `${this.publication.id}-${this.publication.name}`,
+            message: `Album identifier: ${this.$guidGenerator()}`
+          })
+          .then(({data}) => {
+            this.$axios.post('/community_manager/facebook/albums/photos', {
+              id: this.publication.facebook_data.id,
+              publication_id: that.publication.id,
+              access_token: access_token,
+              caption: that.$guidGenerator(),
+              content: that.publication.content,
+              images: that.publication.images
             })
-          }).catch(err => {
+            .then(({data}) => {
+              that.$swal({
+                type: 'success',
+                title: 'Listo',
+                text: 'Se creará la publicación pronto, espera la notificación.'
+              })
+            })
+            .catch(err => {
+              that.$swal({
+                type: 'error',
+                title: 'Error',
+                text: 'No se pudo crear la publicación.',
+                footer: `Error: ${err}`
+              })
+            })
+          })
+          .catch(err => {
             that.$swal({
               type: 'error',
               title: 'Error',
-              text: 'No se pudo crear la publicación. Intenta no Publicar el mismo texto.',
+              text: 'No se pudieron subir las imágenes a Facebook.',
               footer: `Error: ${err}`
             })
           })
@@ -167,7 +197,7 @@ export default {
     }
   },
   computed: {
-    daysToEnd: function () {
+    daysToEnd() {
       return Math.trunc(this.$moment.duration(this.$moment(this.publication.publication_date).diff(this.$moment(new Date()))).asDays())
     }
   }

@@ -65,6 +65,8 @@ Rails.application.routes.draw do
     get '/facebook/access_token_callback', to: 'facebook#access_token_allback'
     get '/facebook/data', to: 'facebook#data'
     post '/facebook/post', to: 'facebook#post'
+    post '/facebook/albums', to: 'facebook#album'
+    post '/facebook/albums/photos', to: 'facebook#upload_photos'
   end
 
   namespace :designer do

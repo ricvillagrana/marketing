@@ -47,6 +47,14 @@ Vue.prototype.$moment = moment
 
 Vue.prototype.$base_url = window.location.origin
 Vue.prototype.$redirect = path => window.location = path
+
+Vue.prototype.$guidGenerator = () => {
+    const S4 = function() {
+       return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    };
+    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+}
+
 Vue.prototype.$inputTime = function (time) {
   return moment(time).utcOffset(-6).format('HH:mm:ss')
 }

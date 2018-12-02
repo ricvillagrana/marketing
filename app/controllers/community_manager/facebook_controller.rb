@@ -1,7 +1,6 @@
 class CommunityManager::FacebookController < ApplicationController
   before_action :authenticate_user!, :should_be_communty_manager!
 
-  require 'open-uri'
   def auth
     @auth = Koala::Facebook::OAuth.new(ENV['facebook_app_id'], ENV['facebook_app_secret_key'], code_callback_url)
     redirect_to @auth.url_for_oauth_code(permissions: permissions)
@@ -43,9 +42,36 @@ class CommunityManager::FacebookController < ApplicationController
     page_api = Koala::Facebook::API.new(params[:access_token])
     page = page_api.get_object(params[:id])
 
-    publication = page_api.put_connections(params[:id], 'feed', message: params[:content]) #, url: 'https://cdn-images-1.medium.com/max/1600/1*hPfw4OqO3qYmQ5gVWvV-TA.jpeg')
-    render json: { page: page, publication: publication }
+    publication = page_api.put_connections(params[:id], 'feed', message: params[:content], attached_media: params[:attached_media].map { |a| a })
+    render json: { page: page, publication: publication, attached_media: params[:attached_media].map { |a| a } }
   end
+
+  def album
+    page_api = Koala::Facebook::API.new(params[:access_token])
+    page = page_api.get_object(params[:id])
+
+    album = page_api.put_connections(params[:id], 'albums', name: params[:name], message: params[:message])
+    render json: { album: {id:"190917075168806"} }
+  end
+
+  def upload_photos
+    process = fork do
+      require 'open-uri'
+      page_api = Koala::Facebook::API.new(params[:access_token])
+
+      image_urls = params[:images].map do |image|
+        open("#{request.protocol}#{request.host_with_port}#{image[:url]}") do |f|
+          page_api.put_picture(f, f.content_type, { "caption" => params[:content], 'published' => true }, params[:id])
+        end
+      end
+      # page_api.put_connections(params[:id], 'feed', message: params[:content], attached_media: image_urls.map { |i| { 'media_fbid': "#{i['id']}" } })
+      render json: { image_urls: image_urls, album_id: params[:id] }
+    end
+
+    render json: {}
+    Process.detach(process)
+  end
+
 
   def code_callback_url
     request.protocol + request.host_with_port + '/community_manager/facebook/code_callback'
