@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get '/publication_messages/:publication_id', to: 'main#publication_messages'
   post '/publication_messages', to: 'main#send_message'
 
+  get '/companies/users', to: 'companies#users'
   get '/current_user', to: 'profile#user'
 
   namespace :superadmin do
