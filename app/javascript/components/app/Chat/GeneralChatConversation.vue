@@ -18,7 +18,7 @@
               <!-- <span class="name font-bold" v-show="$user.id !== message.user.id">
                   {{ message.user.name }}
                 </span> -->
-              <span>
+                <span :class="{ 'word-break' : $containsLink(message.message) }">
                   {{ message.message }}
                 </span>
             </div>

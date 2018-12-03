@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-row">
+    <div class="flex flex-row w-50">
       <input @keydown.enter="send" class="publication-chat-input px-10" name="" v-model="message" placeholder="Escribe un mensaje...">
       <button @click="send" class="button is-link publication-chat-button" type="button"><i class="fa fa-normal fa-send"></i></button>
     </div>

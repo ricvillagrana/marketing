@@ -48,6 +48,12 @@ Vue.prototype.$moment = moment
 Vue.prototype.$base_url = window.location.origin
 Vue.prototype.$redirect = path => window.location = path
 
+Vue.prototype.$containsLink = message => {
+  const expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+  const regex = new RegExp(expression);
+  return regex.test(message)
+}
+
 Vue.prototype.$storage = function (index, value = null) {
   if (value === null) {
     return JSON.parse(localStorage.getItem(index))

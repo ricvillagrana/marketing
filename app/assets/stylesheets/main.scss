@@ -264,6 +264,10 @@ pre.pre {
   word-wrap: break-word !important;
 }
 
+.word-break {
+  word-break: break-all;
+}
+
 // Publication chat
 .publication-chat-input {
   width: 100%;
@@ -304,7 +308,7 @@ pre.pre {
   background: whitesmoke;
   color: black;
   max-width: 75%;
-  word-wrap: break-word;
+  overflow-wrap: break-word;
   flex-wrap: wrap;
   border-radius: 7px;
   border-top-left-radius: 0px;
@@ -340,6 +344,7 @@ pre.pre {
   bottom: 0;
   right: 0;
   width: 100%;
+  height: 0;
   z-index: 99;
 
   & .general-chat-list {
