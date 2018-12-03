@@ -4,10 +4,11 @@ Rails.application.routes.draw do
   devise_for :users
   root 'main#index'
 
-  get '/chat/users', to: 'chat#users'
 
   get '/publication_messages/:publication_id', to: 'main#publication_messages'
   post '/publication_messages', to: 'main#send_message'
+
+  get '/companies/users', to: 'companies#users'
 
   get '/notifications', to: 'profile#notifications'
   put '/notifications/see', to: 'profile#see_notifications'

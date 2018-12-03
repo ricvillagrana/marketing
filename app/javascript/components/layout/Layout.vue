@@ -8,6 +8,7 @@
         <slot></slot>
       </app-card>
     </div>
+    <general-chat></general-chat>
   </div>
 </template>
 
@@ -15,11 +16,12 @@
   import TopBar from './TopBar'
   import SideBar from './SideBar'
   import AppCard from '../app/AppCard'
+  import GeneralChat from '../app/Chat/GeneralChat'
 
   export default {
     name: 'layout',
     components: {
-      TopBar, SideBar, AppCard
+      TopBar, SideBar, AppCard, GeneralChat
     },
     props: ['notice', 'alert', 'user'],
     beforeMount () {

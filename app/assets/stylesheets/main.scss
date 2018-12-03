@@ -129,6 +129,12 @@ html, body {
   align-self: flex-end;
 }
 
+.justify-center { justify-content: center; }
+.justify-end { justify-content: end; }
+
+.items-center { align-items: center; }
+.items-end { align-items: end; }
+
 .columns { // Bulma wrapping
   flex-wrap: wrap;
 }
@@ -322,6 +328,34 @@ pre.pre {
     & .date {
       font-size: 11px;
       color: #eee;
+    }
+  }
+}
+
+.general-chat-area {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  & .general-chat-list {
+    width: 300px;
+  }
+  & .general-chat-list-head {
+    background: #3273dc;
+    color: white;
+    height: 100%;
+  }
+  & .general-chat-list-content {
+    height: 100%;
+    width: 100%;
+    background: white;
+    max-height: 400px;
+    overflow-y: auto;
+
+    & .user {
+      &:hover {
+        background: #eee;
+      }
     }
   }
 }
