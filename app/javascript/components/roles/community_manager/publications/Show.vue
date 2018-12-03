@@ -13,7 +13,7 @@
           <span class="title is-6 has-text-grey">Nodo: {{ publication.node.name }}</span>
         </p>
         <div class="flex flex-end mb-15" v-show="publication.content && publication.content !== ''">
-          <button @click="handleCreatePost" class="button is-facebook is-medium my-0">
+          <button @click="handleCreatePost" class="button is-facebook is-medium my-0 h-full">
             <i class="fa fa-facebook"></i>
             Pulbicar ahora
           </button>
@@ -65,6 +65,9 @@
       :open="editOptions.open"
       @close="editOptions.open = false"
       @should-update-publication="fetchPublication"></publication-form>
+    <action-cable-vue :channel="'PublicationUpdateChannel'"
+                      :room="publication_id.toString()"
+                      @received="fetchPublication()"></action-cable-vue>
   </div>
 </template>
 
@@ -72,6 +75,7 @@
 import AppDropdown from '../../../app/AppDropdown'
 import PublicationChat from '../../../app/Chat/'
 import PublicationForm from './PublicationForm'
+import ActionCableVue from '../../../app/ActionCableVue'
 
 export default {
   name: 'community-manager-publications-show',
@@ -96,12 +100,13 @@ export default {
     }
   },
   props: ['publication_id'],
-  components: { AppDropdown, PublicationForm, PublicationChat },
+  components: { AppDropdown, PublicationForm, PublicationChat, ActionCableVue },
   beforeMount() {
     this.fetchPublication()
   },
   methods: {
     fetchPublication: function () {
+      console.log('fetch');
       const that = this
       this.$axios.get(`/community_manager/publications/${this.publication_id}.json`)
         .then(({data}) => {

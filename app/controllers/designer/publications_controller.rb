@@ -38,12 +38,14 @@ class Designer::PublicationsController < ApplicationController
       attachment.blob = ActiveStorage::Blob.find image[:blob][:id]
       attachment.save
     end
+    PublicationUpdateChannel.broadcast_to(publication.id, nil)
     render json: { publication: publication, status: 200 }, include: [:images]
   end
 
   def delete_image
     publication = Publication.find(params[:publication_id])
     attachment = publication.images.attachments.find(params[:image_id])
+    PublicationUpdateChannel.broadcast_to(publication.id, nil)
     render json: { status: 200 } if attachment.destroy
   end
 end

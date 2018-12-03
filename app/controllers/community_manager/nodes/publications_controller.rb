@@ -5,7 +5,7 @@ class CommunityManager::Nodes::PublicationsController < ApplicationController
     @node = Node.find(params[:node_id])
     respond_to do |format|
       format.html
-      format.json { render json: { node: @node }, include: %i[publications children] }
+      format.json { render json: { node: @node }, include: [:children, publications: { except: %i[images] }] }
     end
   end
 
@@ -13,7 +13,7 @@ class CommunityManager::Nodes::PublicationsController < ApplicationController
     @publication = Node.find(params[:node_id]).publications.new(node_params)
     @publication.status = PublicationStatus.first
     if @publication.save
-      render json: { publication: @publication, status: 200 }
+      render json: { publication: @publication, status: 200 }, except: %i[images]
     else
       render json: { errors: @publication.errors, status: 500 }
     end

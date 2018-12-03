@@ -23,7 +23,8 @@ class ContentGenerator::PublicationsController < ApplicationController
     @publication = Publication.find(params[:id])
     @publication.log.create!(content: @publication.content, user: current_user)
     if @publication.update!(publication_params)
-      render json: { publication: @publication, status: 200 }
+      PublicationUpdateChannel.broadcast_to(@publication.id, nil)
+      render json: { publication: @publication, status: 200 }, except: [:images]
     else
       render json: { errors: @publication.errors, status: 500 }
     end
@@ -48,12 +49,14 @@ class ContentGenerator::PublicationsController < ApplicationController
       attachment.blob = ActiveStorage::Blob.find image[:blob][:id]
       attachment.save
     end
+    PublicationUpdateChannel.broadcast_to(publication.id, nil)
     render json: { publication: publication, status: 200 }, include: [:images]
   end
 
   def delete_image
     publication = Publication.find(params[:publication_id])
     attachment = publication.images.attachments.find(params[:image_id])
+    PublicationUpdateChannel.broadcast_to(publication.id, nil)
     render json: { status: 200 } if attachment.destroy
   end
 

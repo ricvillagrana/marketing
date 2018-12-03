@@ -60,12 +60,16 @@
         </div>
       </div>
     </div>
+    <action-cable-vue :channel="'PublicationUpdateChannel'"
+                      :room="publication_id.toString()"
+                      @received="fetchPublication()"></action-cable-vue>
   </div>
 </template>
 
 <script>
 import DragDrop from '../../../app/DragDrop'
 import PublicationChat from '../../../app/Chat/'
+import ActionCableVue from '../../../app/ActionCableVue'
 
 export default {
   name: 'content-generator-publications-show',
@@ -78,7 +82,7 @@ export default {
     }
   },
   props: ['publication_id'],
-  components: { DragDrop, PublicationChat },
+  components: { DragDrop, PublicationChat, ActionCableVue },
   beforeMount() {
     this.fetchPublication()
   },

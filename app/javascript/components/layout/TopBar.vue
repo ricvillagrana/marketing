@@ -88,55 +88,10 @@
                 <p class="px-7 mb-10 title is-5">Notificaciones</p>
                 <hr class="hr p-0 m-0">
                 <div class="notification-list flex-col cursor-pointer">
-                  <div class="notification-item flex-row">
-                    <p class="title mb-5 is-7">Se creó la publicación</p>
+                  <div class="notification-item flex-row" v-for="(item, index) in notifications" :key="`notifications${index}`">
+                    <p class="title mb-5 is-7">{{ item.name }}</p>
                     <span class="content is-small">loremsaknd klasdnlkas dlkasdl asldkasld sal as</span>
                   </div>
-                  <div class="notification-item flex-row">
-                    <p class="title mb-5 is-7">Se creó la publicación</p>
-                    <span class="content is-small">loremsaknd klasdnlkas dlkasdl asldkasld sal as</span>
-                  </div>
-                  <div class="notification-item flex-row">
-                    <p class="title mb-5 is-7">Se creó la publicación</p>
-                    <span class="content is-small">loremsaknd klasdnlkas dlkasdl asldkasld sal as</span>
-                  </div>
-                  <div class="notification-item flex-row">
-                    <p class="title mb-5 is-7">Se creó la publicación</p>
-                    <span class="content is-small">loremsaknd klasdnlkas dlkasdl asldkasld sal as</span>
-                  </div>
-                  <div class="notification-item flex-row">
-                    <p class="title mb-5 is-7">Se creó la publicación</p>
-                    <span class="content is-small">loremsaknd klasdnlkas dlkasdl asldkasld sal as</span>
-                  </div>
-                  <div class="notification-item flex-row">
-                    <p class="title mb-5 is-7">Se creó la publicación</p>
-                    <span class="content is-small">loremsaknd klasdnlkas dlkasdl asldkasld sal as</span>
-                  </div>
-                  <div class="notification-item flex-row">
-                    <p class="title mb-5 is-7">Se creó la publicación</p>
-                    <span class="content is-small">loremsaknd klasdnlkas dlkasdl asldkasld sal as</span>
-                  </div>
-                  <div class="notification-item flex-row">
-                    <p class="title mb-5 is-7">Se creó la publicación</p>
-                    <span class="content is-small">loremsaknd klasdnlkas dlkasdl asldkasld sal as</span>
-                  </div>
-                  <div class="notification-item flex-row">
-                    <p class="title mb-5 is-7">Se creó la publicación</p>
-                    <span class="content is-small">loremsaknd klasdnlkas dlkasdl asldkasld sal as</span>
-                  </div>
-                  <div class="notification-item flex-row">
-                    <p class="title mb-5 is-7">Se creó la publicación</p>
-                    <span class="content is-small">loremsaknd klasdnlkas dlkasdl asldkasld sal as</span>
-                  </div>
-                  <div class="notification-item flex-row">
-                    <p class="title mb-5 is-7">Se creó la publicación</p>
-                    <span class="content is-small">loremsaknd klasdnlkas dlkasdl asldkasld sal as</span>
-                  </div>
-                  <div class="notification-item flex-row">
-                    <p class="title mb-5 is-7">Se creó la publicación</p>
-                    <span class="content is-small">loremsaknd klasdnlkas dlkasdl asldkasld sal as</span>
-                  </div>
-
                 </div>
               </div>
             </div>
