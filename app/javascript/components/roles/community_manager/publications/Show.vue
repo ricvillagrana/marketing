@@ -13,7 +13,7 @@
           <span class="title is-6 has-text-grey">Nodo: {{ publication.node.name }}</span>
         </p>
         <div class="flex flex-end mb-15" v-show="publication.content && publication.content !== ''">
-          <button @click="handleCreatePost" class="button is-facebook is-medium my-0">
+          <button @click="handleCreatePost" class="button is-facebook is-medium my-0 h-full">
             <i class="fa fa-facebook"></i>
             Pulbicar ahora
           </button>
@@ -28,10 +28,6 @@
           ({{ $dateText(publication.publication_date) }})
         </p>
 
-        <!-- <div class="tags has-addons m-0 is-grouped is-grouped-multiline flex-row" v-for="(user, key) in publication.node.users" :key="key">
-          <span class="tag is-link">{{ user.role.name }}</span>
-          <span class="tag is-grey"> {{ user.name }} {{ user.lastname }}</span>
-        </div> -->
         <div class="box p-20">
           <p v-if="!publication.content || publication.content === ''" class="title is-5 has-text-centered has-text-grey my-50">
             No tiene contenido
@@ -69,6 +65,9 @@
       :open="editOptions.open"
       @close="editOptions.open = false"
       @should-update-publication="fetchPublication"></publication-form>
+    <action-cable-vue :channel="'PublicationUpdateChannel'"
+                      :room="publication_id.toString()"
+                      @received="fetchPublication()"></action-cable-vue>
   </div>
 </template>
 
@@ -76,6 +75,7 @@
 import AppDropdown from '../../../app/AppDropdown'
 import PublicationChat from '../../../app/Chat/'
 import PublicationForm from './PublicationForm'
+import ActionCableVue from '../../../app/ActionCableVue'
 
 export default {
   name: 'community-manager-publications-show',
@@ -100,7 +100,7 @@ export default {
     }
   },
   props: ['publication_id'],
-  components: { AppDropdown, PublicationForm, PublicationChat },
+  components: { AppDropdown, PublicationForm, PublicationChat, ActionCableVue },
   beforeMount() {
     this.fetchPublication()
   },
@@ -130,6 +130,7 @@ export default {
         title: `Se publicará "${that.publication.name}"`,
         html: `Estás a punto de publicar en <span class="has-text-weight-bold has-text-facebook">Facebok</span>`,
         type: 'info',
+        footer: 'Por el momento sólo se publicará la primera imágen.',
         showCancelButton: true,
         confirmButtonText: 'Publicar',
         cancelButtonText: 'Cancelar',
@@ -141,24 +142,42 @@ export default {
             title: 'Publicando en Facebook...',
             onOpen: () => that.$swal.showLoading()
           })
-          this.$axios.post('/community_manager/facebook/post', {
+          this.$axios.post('/community_manager/facebook/albums', {
             id: this.publication.facebook_data.id,
             access_token: access_token,
-            content: this.publication.content,
-            publication_id: this.publication.id,
-            source: imageUrl
-          }).then(({data}) => {
-            that.$swal({
-              type: 'success',
-              title: '¡Listo!',
-              html: `Se publicó con éxito, ve la publicación <a target="_blank" href="https://www.facebook.com/${data.publication.id}">aquí</a>.`,
-
+            name: `${this.publication.id}-${this.publication.name}`,
+            message: `Album identifier: ${this.$guidGenerator()}`
+          })
+          .then(({data}) => {
+            this.$axios.post('/community_manager/facebook/albums/photos', {
+              id: this.publication.facebook_data.id,
+              publication_id: that.publication.id,
+              access_token: access_token,
+              caption: that.$guidGenerator(),
+              content: that.publication.content,
+              images: that.publication.images
             })
-          }).catch(err => {
+            .then(({data}) => {
+              that.$swal({
+                type: 'success',
+                title: 'Listo',
+                text: 'Se creará la publicación pronto, espera la notificación.'
+              })
+            })
+            .catch(err => {
+              that.$swal({
+                type: 'error',
+                title: 'Error',
+                text: 'No se pudo crear la publicación.',
+                footer: `Error: ${err}`
+              })
+            })
+          })
+          .catch(err => {
             that.$swal({
               type: 'error',
               title: 'Error',
-              text: 'No se pudo crear la publicación. Intenta no Publicar el mismo texto.',
+              text: 'No se pudieron subir las imágenes a Facebook.',
               footer: `Error: ${err}`
             })
           })
@@ -167,7 +186,7 @@ export default {
     }
   },
   computed: {
-    daysToEnd: function () {
+    daysToEnd() {
       return Math.trunc(this.$moment.duration(this.$moment(this.publication.publication_date).diff(this.$moment(new Date()))).asDays())
     }
   }

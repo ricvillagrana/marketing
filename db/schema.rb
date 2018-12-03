@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_29_223742) do
+ActiveRecord::Schema.define(version: 2018_12_03_012651) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,14 +129,14 @@ ActiveRecord::Schema.define(version: 2018_11_29_223742) do
   end
 
   create_table "notifications", force: :cascade do |t|
-    t.bigint "task_id"
     t.integer "reciever_id"
     t.integer "sender_id"
     t.text "message"
     t.boolean "seen", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["task_id"], name: "index_notifications_on_task_id"
+    t.string "title"
+    t.text "hotlink"
   end
 
   create_table "publication_logs", force: :cascade do |t|
@@ -181,6 +181,7 @@ ActiveRecord::Schema.define(version: 2018_11_29_223742) do
     t.integer "shares", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "images"
     t.index ["node_id"], name: "index_publications_on_node_id"
     t.index ["publication_status_id"], name: "index_publications_on_publication_status_id"
   end
@@ -191,6 +192,7 @@ ActiveRecord::Schema.define(version: 2018_11_29_223742) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "path_prefix"
     t.index ["keyword"], name: "index_roles_on_keyword", unique: true
   end
 
@@ -268,7 +270,6 @@ ActiveRecord::Schema.define(version: 2018_11_29_223742) do
   add_foreign_key "node_users", "users"
   add_foreign_key "nodes", "campaigns"
   add_foreign_key "nodes", "nodes"
-  add_foreign_key "notifications", "tasks"
   add_foreign_key "publication_logs", "publications"
   add_foreign_key "publication_logs", "users"
   add_foreign_key "publication_messages", "publications"

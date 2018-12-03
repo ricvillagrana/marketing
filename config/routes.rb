@@ -4,10 +4,11 @@ Rails.application.routes.draw do
   devise_for :users
   root 'main#index'
 
-  get '/test_ac', to: 'main#test_ac'
 
   get '/publication_messages/:publication_id', to: 'main#publication_messages'
   post '/publication_messages', to: 'main#send_message'
+
+  get '/notifications', to: 'profile#notifications'
 
   get '/current_user', to: 'profile#user'
 
@@ -65,6 +66,8 @@ Rails.application.routes.draw do
     get '/facebook/access_token_callback', to: 'facebook#access_token_allback'
     get '/facebook/data', to: 'facebook#data'
     post '/facebook/post', to: 'facebook#post'
+    post '/facebook/albums', to: 'facebook#album'
+    post '/facebook/albums/photos', to: 'facebook#upload_photos'
   end
 
   namespace :designer do

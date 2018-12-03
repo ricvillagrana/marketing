@@ -12,6 +12,10 @@ class Publication < ApplicationRecord
     Campaign.find get_campaign_id(node)
   end
 
+  def images_on_disk
+    images.each { |image| ActiveStorage::Blob.service.send(:path_for, image.blob.key) }
+  end
+
   def get_campaign_id(node)
     if node.father
       get_campaign_id(node.father)

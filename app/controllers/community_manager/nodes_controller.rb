@@ -5,7 +5,7 @@ class CommunityManager::NodesController < ApplicationController
     @node = Node.find(params[:id])
     respond_to do |format|
       format.html
-      format.json { render json: { node: @node, statuis: 200 }, include: [:children, :campaign, :father, :publications] }
+      format.json { render json: { node: @node, statuis: 200 }, include: [:children, :campaign, :father, publications: { except: %i[images] }] }
     end
   end
 
@@ -37,7 +37,7 @@ class CommunityManager::NodesController < ApplicationController
     elsif !@node.users.empty?
       render json: { message: 'Tiene usuarios asignados', status: 500 }
     elsif !@node.publications.empty?
-      render json: { message: 'Tiene publicaciones creadas', status: 500 }      
+      render json: { message: 'Tiene publicaciones creadas', status: 500 }
     elsif @node.destroy
       render json: { status: 200 }
     else
