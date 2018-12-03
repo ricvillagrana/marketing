@@ -106,7 +106,6 @@ export default {
   },
   methods: {
     fetchPublication: function () {
-      console.log('fetch');
       const that = this
       this.$axios.get(`/community_manager/publications/${this.publication_id}.json`)
         .then(({data}) => {

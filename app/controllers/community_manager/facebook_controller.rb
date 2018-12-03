@@ -24,6 +24,17 @@ class CommunityManager::FacebookController < ApplicationController
     current_user.facebook_data = facebook_data
     current_user.save
 
+    NotificationsChannel.broadcast_to(current_user.id,
+      {
+        title: "Iniciaste sesión con Facebook",
+        message: "¡Felicidades! ya estás conectado a Facebook",
+        sender: current_user,
+        reciever: current_user,
+        hotlink: "/",
+        seen: false
+      }
+    )
+
     redirect_to('/#_=_')
   end
 
@@ -51,21 +62,60 @@ class CommunityManager::FacebookController < ApplicationController
     page = page_api.get_object(params[:id])
 
     album = page_api.put_connections(params[:id], 'albums', name: params[:name], message: params[:message])
-    render json: { album: {id:"190917075168806"} }
+    render json: { album: album }
   end
 
   def upload_photos
+
+    publication = Publication.find(params[:publication_id])
+    publication.node.users.each do |user|
+      payload = {
+        title: "Pulbicación creada '#{publication.name}'",
+        message: "Se creó la publicación en Facebook",
+        sender: { name: current_user.name },
+        hotlink: "/#{user.role.path_prefix}/publications/#{publication.id}",
+        seen: false
+      }
+      Notification.new(
+        title: "Pulbicación creada '#{publication.name}'",
+        message: "Se creó la publicación en Facebook",
+        sender: current_user,
+        reciever: user,
+        hotlink: "/#{user.role.path_prefix}/publications/#{publication.id}",
+        seen: false
+      ).save
+      NotificationsChannel.broadcast_to(user.id, payload)
+    end
+
+    Notification.new(
+      title: "Pulbicación creada '#{publication.name}'",
+      message: "Se creó la publicación en Facebook",
+      sender: current_user,
+      reciever: current_user,
+      hotlink: "/#{current_user.role.path_prefix}/publications/#{publication.id}",
+      seen: false
+    ).save
+    NotificationsChannel.broadcast_to(current_user.id,
+      {
+        title: "Pulbicación creada '#{publication.name}'",
+        message: "Se creó la publicación en Facebook",
+        sender: current_user,
+        reciever: current_user,
+        hotlink: "/#{current_user.role.path_prefix}/publications/#{publication.id}",
+        seen: false
+      }
+    )
+
     process = fork do
       require 'open-uri'
       page_api = Koala::Facebook::API.new(params[:access_token])
 
-      image_urls = params[:images].map do |image|
-        open("#{request.protocol}#{request.host_with_port}#{image[:url]}") do |f|
-          page_api.put_picture(f, f.content_type, { "caption" => params[:content], 'published' => true }, params[:id])
-        end
+      open("#{request.protocol}#{request.host_with_port}#{params[:images][0][:url]}") do |f|
+        page_api.put_picture(f, f.content_type, { "caption" => params[:content], 'published' => true }, params[:id])
       end
+
       # page_api.put_connections(params[:id], 'feed', message: params[:content], attached_media: image_urls.map { |i| { 'media_fbid': "#{i['id']}" } })
-      render json: { image_urls: image_urls, album_id: params[:id] }
+      # render json: { image_urls: image_urls }
     end
 
     render json: {}

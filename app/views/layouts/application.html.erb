@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Project</title>
-    <%= csrf_meta_tag %> 
+    <%= csrf_meta_tag %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -12,7 +12,7 @@
 
   <body>
     <div id="app" class="h-100 container-fluid">
-      <notifications group="app" position="bottom right" width="350px"></notifications>
+      <notifications group="app" class="notification-area" position="top right" width="350px"></notifications>
       <% if user_signed_in? %>
         <layout :alert="'<%= alert %>'" :notice="'<%= notice %>'" :user="<%= current_user.to_json(include: :role) %>">
           <%= yield %>
