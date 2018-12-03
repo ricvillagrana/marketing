@@ -35,7 +35,7 @@ class CommunityManager::PublicationsController < ApplicationController
   def dig_publications_of(node)
     if node.children.empty?
       node.publications.map do |p|
-        publication = p.as_json(include: :status)
+        publication = p.as_json(include: :status, except: :images)
         publication = publication.merge(node: Node.find(p.node_id).as_json)
         publication
       end

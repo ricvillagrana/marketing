@@ -1,11 +1,11 @@
 class Designer::PublicationsController < ApplicationController
   before_action :authenticate_user!, :should_be_designer!
-  
+
   def index
     @user = current_user
     respond_to do |format|
       format.html
-      format.json { render json: { campaigns: cmpaigns_with_publications(@user) } }
+      format.json { render json: { campaigns: campaigns_with_publications(@user) } }
     end
   end
 
@@ -13,16 +13,16 @@ class Designer::PublicationsController < ApplicationController
     @publication = Publication.find(params[:id])
   end
 
-  def cmpaigns_with_publications(user)
+  def campaigns_with_publications(user)
     user.campaigns.map do |campaign|
       { data: campaign, publications: dig_publications_of(campaign.semantic_network).flatten }
     end
   end
-  
+
   def dig_publications_of(node)
     if node.children.empty?
       node.publications.map do |p|
-        publication = p.as_json(include: :status)
+        publication = p.as_json(include: :status, except: :images)
         publication = publication.merge(node: Node.find(p.node_id).as_json)
         publication
       end

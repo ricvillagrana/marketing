@@ -28,10 +28,6 @@
           ({{ $dateText(publication.publication_date) }})
         </p>
 
-        <!-- <div class="tags has-addons m-0 is-grouped is-grouped-multiline flex-row" v-for="(user, key) in publication.node.users" :key="key">
-          <span class="tag is-link">{{ user.role.name }}</span>
-          <span class="tag is-grey"> {{ user.name }} {{ user.lastname }}</span>
-        </div> -->
         <div class="box p-20">
           <p v-if="!publication.content || publication.content === ''" class="title is-5 has-text-centered has-text-grey my-50">
             No tiene contenido
@@ -111,17 +107,6 @@ export default {
         .then(({data}) => {
           this.$swal.close()
           that.publication = data.publication
-          const xhr = new XMLHttpRequest();
-          xhr.open('GET', that.publication.images[0], true);
-          xhr.responseType = 'blob';
-          xhr.onload = function(e) {
-            if (this.status == 200) {
-              const myBlob = this.response;
-              console.log(myBlob)
-              // myBlob is now the blob that the object URL pointed to.
-            }
-          };
-          xhr.send();
         })
         .catch(err => {
           that.$swal({
