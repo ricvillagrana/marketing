@@ -48,6 +48,14 @@ Vue.prototype.$moment = moment
 Vue.prototype.$base_url = window.location.origin
 Vue.prototype.$redirect = path => window.location = path
 
+Vue.prototype.$storage = function (index, value = null) {
+  if (value === null) {
+    return JSON.parse(localStorage.getItem(index))
+  } else {
+    return localStorage.setItem(index, JSON.stringify(value))
+  }
+}
+
 Vue.prototype.$guidGenerator = () => {
     const S4 = function() {
        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);

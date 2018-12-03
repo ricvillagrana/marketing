@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   root 'main#index'
 
   get '/chat/users', to: 'chat#users'
+  post '/chat/conversation', to: 'chat#find_or_create_conversation'
+  post '/chat/message', to: 'chat#send_message'
+
 
   get '/publication_messages/:publication_id', to: 'main#publication_messages'
   post '/publication_messages', to: 'main#send_message'

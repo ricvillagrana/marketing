@@ -130,10 +130,12 @@ html, body {
 }
 
 .justify-center { justify-content: center; }
-.justify-end { justify-content: end; }
+.justify-end { justify-content: flex-end; }
+.justify-between { justify-content: space-between; }
+.justify-around { justify-content: space-around; }
 
 .items-center { align-items: center; }
-.items-end { align-items: end; }
+.items-end { align-items: flex-end; }
 
 .columns { // Bulma wrapping
   flex-wrap: wrap;
@@ -269,6 +271,7 @@ pre.pre {
   border-radius: 0px;
   border-bottom-left-radius: 7px;
   height: 40px;
+  font-size: 14px;
 }
 
 .publication-chat-button {
@@ -292,7 +295,7 @@ pre.pre {
   padding: 15px;
   padding-bottom: 0px;
   height: 400px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .publication-chat-bubble {
@@ -337,6 +340,8 @@ pre.pre {
   bottom: 0;
   right: 0;
   width: 100%;
+  z-index: 99;
+
   & .general-chat-list {
     width: 300px;
   }
@@ -345,12 +350,18 @@ pre.pre {
     color: white;
     height: 100%;
   }
-  & .general-chat-list-content {
+  & .general-chat-content-head {
+    background: #3273dc;
+    color: white;
     height: 100%;
+  }
+  & .general-chat-list-content {
     width: 100%;
     background: white;
-    max-height: 400px;
+    min-height: 350px;
+    max-height: 500px;
     overflow-y: auto;
+    border: solid 1px #fff;
 
     & .user {
       &:hover {
@@ -358,6 +369,29 @@ pre.pre {
       }
     }
   }
+  & .general-chat-conversation-content {
+    height: 300px;
+    width: 100%;
+    background: #fff;
+    max-height: 300px;
+    overflow-y: auto;
+    border: solid 1px #eee;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+
+    & .user {
+      &:hover {
+        background: #eee;
+      }
+    }
+  }
+}
+
+.general-chat-input {
+  width: 100%;
+  height: 40px;
+  border: none;
+  padding: 7px;
+  font-size: 14px;
 }
 
 .notification-box {
