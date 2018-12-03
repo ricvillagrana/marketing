@@ -1,6 +1,8 @@
 class CommunityManager::FacebookController < ApplicationController
   before_action :authenticate_user!, :should_be_communty_manager!
 
+  require 'open-uri'
+
   def auth
     @auth = Koala::Facebook::OAuth.new(ENV['facebook_app_id'], ENV['facebook_app_secret_key'], code_callback_url)
     redirect_to @auth.url_for_oauth_code(permissions: permissions)
@@ -107,7 +109,6 @@ class CommunityManager::FacebookController < ApplicationController
     )
 
     process = fork do
-      require 'open-uri'
       page_api = Koala::Facebook::API.new(params[:access_token])
 
       open("#{request.protocol}#{request.host_with_port}#{params[:images][0][:url]}") do |f|

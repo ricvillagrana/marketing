@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post '/publication_messages', to: 'main#send_message'
 
   get '/notifications', to: 'profile#notifications'
+  put '/notifications/see', to: 'profile#see_notifications'
 
   get '/current_user', to: 'profile#user'
 

@@ -4,7 +4,7 @@
       <div class="column">
         <p class="title is-3">
           {{ publication.name }}
-          <span class="tag is-warning">{{ publication.status.name }}</span>
+          <!-- <span class="tag is-warning">{{ publication.status.name }}</span> -->
           <span class="title is-6 has-text-grey">Nodo: {{ publication.node.name }}</span>
         </p>
         <p v-if="daysToEnd > 0" class="title is-6 has-text-link">

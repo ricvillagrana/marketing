@@ -9,7 +9,7 @@
             :color="dropdown.color"
             :options="dropdown.options"
             @edit="editOptions.open = true"></app-dropdown>
-          <span class="tag is-warning">{{ publication.status.name }}</span>
+          <!-- <span class="tag is-warning">{{ publication.status.name }}</span> -->
           <span class="title is-6 has-text-grey">Nodo: {{ publication.node.name }}</span>
         </p>
         <div class="flex flex-end mb-15" v-show="publication.content && publication.content !== ''">

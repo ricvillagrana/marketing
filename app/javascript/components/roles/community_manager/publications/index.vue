@@ -17,10 +17,10 @@
           <app-card nested="true">
             <div class="mb-15">
               <p class="title is-4 mb-0">{{ publication.name }}</p>
-              <div class="tags has-addons">
+              <!-- <div class="tags has-addons">
                 <span class="tag is-white">Estatus</span>
                 <span class="tag is-success">{{ publication.status.name }}</span>
-              </div>
+              </div> -->
             </div>
             <p>
               Nodo: {{ publication.node.name }}

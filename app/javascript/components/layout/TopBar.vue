@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="$user">
    <nav class="navbar is-link">
       <div class="navbar-brand">
         <a class="navbar-item" href="/">
@@ -23,27 +23,27 @@
             <div class="field is-grouped">
               <span class="button is-link is-rounded" @click="toggleMessagess">
                 <i class="fa fa-comment fa-normal"></i>
-                <span class="tag is-warning is-rounded is-notification-counter" v-if="messages.length > 0">{{ messages.length }}</span>
+                <span class="tag is-warning is-rounded is-notification-counter" v-if="unseenMessages > 0">{{ unseenMessages }}</span>
               </span>
               <div class="notification-box messages" v-show="messagessOpen">
                 <p class="px-7 mb-10 title is-5">Mensajes</p>
                 <hr class="hr p-0 m-0">
                 <div class="notification-list flex-col cursor-pointer">
-                  <div class="notification-item flex-row">
-                    <p class="title mb-5 is-7">Se creó la publicación</p>
-                    <span class="content is-small">loremsaknd klasdnlkas dlkasdl asldkasld sal as</span>
+                  <div class="notification-item flex-row" v-for="(item, index) in messages" :key="`message-${index}`" @click="$redirect(item.hotlink)">
+                    <p class="title mb-5 is-7">{{ item.title }}</p>
+                    <span class="content is-small">{{ item.message }}</span>
                   </div>
                 </div>
               </div>
               <span class="button is-link is-rounded" @click="toggleNotifications">
                 <i class="fa fa-bell fa-normal"></i>
-                <span class="tag is-warning is-rounded is-notification-counter" v-if="notifications.length > 0">{{ notifications.length }}</span>
+                <span class="tag is-warning is-rounded is-notification-counter" v-if="unseenNotifications > 0">{{ unseenNotifications }}</span>
               </span>
               <div class="notification-box" v-show="notificationsOpen">
                 <p class="px-7 mb-10 title is-5">Notificaciones</p>
                 <hr class="hr p-0 m-0">
                 <div class="notification-list flex-col cursor-pointer">
-                  <div class="notification-item flex-row" v-for="(item, index) in notifications" :key="`notifications${index}`" @click="$redirect(item.hotlink)">
+                  <div class="notification-item flex-row" v-for="(item, index) in notifications" :key="`notification-${index}`" @click="$redirect(item.hotlink)">
                     <p class="title mb-5 is-7">{{ item.title }}</p>
                     <span class="content is-small">{{ item.message }}</span>
                   </div>
@@ -93,10 +93,17 @@
       ActionCableVue
     },
     beforeMount() {
+      this.$fetchUser()
       this.fetchNotifications()
     },
     props: ['user'],
     methods: {
+      seeNotifications() {
+        this.$axios.put('/notifications/see')
+        .catch(err => {
+          console.log(err)
+        })
+      },
       handleSignOut() {
         this.$userWillUpdate()
       },
@@ -114,6 +121,7 @@
         this.notificationsOpen = false
       },
       toggleNotifications() {
+        this.seeNotifications()
         this.notificationsOpen = !this.notificationsOpen
         this.messagessOpen = false
       },
@@ -131,6 +139,14 @@
             text: 'No se pudieron obtener las notificaciones'
           })
         })
+      }
+    },
+    computed: {
+      unseenMessages() {
+        return 0
+      },
+      unseenNotifications() {
+        return this.notifications.filter(notification => !notification.seen).length
       }
     }
   }
