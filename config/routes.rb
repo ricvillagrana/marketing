@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   root 'main#index'
 
   get '/chat/users', to: 'chat#users'
+  get '/chat/conversations', to: 'chat#user_conversations'
+  get '/chat/unread_messages', to: 'chat#unread_messages'
   post '/chat/conversation', to: 'chat#find_or_create_conversation'
   post '/chat/message', to: 'chat#send_message'
 

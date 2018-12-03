@@ -1,6 +1,7 @@
 <template>
   <div>
-    <top-bar :user="user"/>
+    <top-bar :user="user" @update="updateConversations" />
+
     <div class="columns h-100 p-25">
       <side-bar :role="user.role"/>
       <app-card class="column is-main-content content is-small">
@@ -8,7 +9,13 @@
         <slot></slot>
       </app-card>
     </div>
-    <general-chat></general-chat>
+    <general-chat
+      :conversations="conversations"
+      @removeConversation="removeConversation($event)"
+      @toggleChatStatus="toggleChatStatus($event)"
+      @appendConversation="appendConversation($event)"
+      @update="updateConversations"
+    ></general-chat>
   </div>
 </template>
 
@@ -24,10 +31,46 @@
       TopBar, SideBar, AppCard, GeneralChat
     },
     props: ['notice', 'alert', 'user'],
+    data() {
+      return {
+        conversations: []
+      }
+    },
     beforeMount () {
       this.$fetchUser()
     },
+    methods: {
+      appendConversation(user) {
+        let chats = this.$storage('chats')
+        if (!chats) chats = []
+        if (chats.filter(chat => chat.user.id === user.id).length === 0) {
+          chats.push({
+            user: user,
+            opened: true
+          })
+          this.$storage('chats', chats)
+          this.updateConversations()
+        } else console.log('is opened')
+      },
+      removeConversation(user) {
+        let chats = this.$storage('chats')
+        chats = chats.filter(chat => chat.user.id !== user.id)
+        this.$storage('chats', chats)
+        this.updateConversations()
+      },
+      toggleChatStatus({user}) {
+        const chats = this.$storage('chats')
+        const chat = chats.filter(chat => chat.user.id === user.id)[0]
+        chat.opened = !chat.opened
+        this.$storage('chats', chats)
+        this.updateConversations()
+      },
+      updateConversations() {
+        this.conversations = this.$storage('chats')
+      }
+    },
     mounted() {
+      this.updateConversations()
       if (this.notice !== '') {
         this.$notify({
           group: 'app',

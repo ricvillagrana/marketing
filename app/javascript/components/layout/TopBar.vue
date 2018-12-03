@@ -29,9 +29,9 @@
                 <p class="px-7 mb-10 title is-5">Mensajes</p>
                 <hr class="hr p-0 m-0">
                 <div class="notification-list flex-col cursor-pointer">
-                  <div class="notification-item flex-row" v-for="(item, index) in messages" :key="`message-${index}`" @click="$redirect(item.hotlink)">
-                    <p class="title mb-5 is-7">{{ item.title }}</p>
-                    <span class="content is-small">{{ item.message }}</span>
+                  <div class="notification-item flex-row" v-for="(item, index) in conversations" :key="`message-${index}`" @click="appendConversation(mate(item))">
+                    <p class="title mb-5 is-7">{{ mate(item).name }} {{ mate(item).lastname }}  {{ $moment(lastMessage(item).created_at).fromNow() }}</p>
+                    <span class="content is-small">{{ lastMessage(item).user.id === $user.id ? 'Tú' : lastMessage(item).user.name }} {{ lastMessage(item).message }}</span>
                   </div>
                 </div>
               </div>
@@ -84,9 +84,10 @@
       return {
         showNavbar: false,
         notifications: [],
-        messages: [],
+        conversations: [],
         notificationsOpen: false,
-        messagessOpen: false
+        messagessOpen: false,
+        unseenMessages: 0
       }
     },
     components: {
@@ -95,9 +96,23 @@
     beforeMount() {
       this.$fetchUser()
       this.fetchNotifications()
+      this.fetchMessagesCount()
+      this.fetchConversations()
     },
     props: ['user'],
     methods: {
+      appendConversation(user) {
+        let chats = this.$storage('chats')
+        if (!chats) chats = []
+        if (chats.filter(chat => chat.user.id === user.id).length === 0) {
+          chats.push({
+            user: user,
+            opened: true
+          })
+          this.$storage('chats', chats)
+          this.$emit('update')
+        } else console.log('is opened')
+      },
       seeNotifications() {
         this.$axios.put('/notifications/see')
         .catch(err => {
@@ -139,12 +154,45 @@
             text: 'No se pudieron obtener las notificaciones'
           })
         })
+      },
+      fetchConversations() {
+        const that = this
+
+        this.$axios.get('/chat/conversations.json')
+        .then(({data}) => {
+          that.conversations = data.conversations
+        })
+        .catch(err => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: 'No se pudieron obtener las conversaciones'
+          })
+        })
+      },
+      fetchMessagesCount() {
+        const that = this
+
+        this.$axios.get('/chat/unread_messages.json')
+        .then(({data}) => {
+          that.unseenMessages = data.count
+        })
+        .catch(err => {
+          this.$swal({
+            type: 'error',
+            title: 'Error',
+            text: 'No se pudieron obtener los mensajes nuevos'
+          })
+        })
+      },
+      mate(conversation) {
+        return conversation.users.filter(user => user.id !== this.$user.id).pop()
+      },
+      lastMessage(conversation) {
+        return conversation.messages[conversation.messages.length - 1]
       }
     },
     computed: {
-      unseenMessages() {
-        return 0
-      },
       unseenNotifications() {
         return this.notifications.filter(notification => !notification.seen).length
       }

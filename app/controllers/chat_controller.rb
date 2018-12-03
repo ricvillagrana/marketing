@@ -11,6 +11,22 @@ class ChatController < ApplicationController
     end
   end
 
+  def unread_messages
+    count = current_user.conversations.map { |c| c.messages.where(seen: false).size }.sum
+    respond_to do |format|
+      format.html
+      format.json { render json: { count: count, status: 200 } }
+    end
+  end
+
+  def user_conversations
+    conversations = current_user.conversations
+    respond_to do |format|
+      format.html
+      format.json { render json: { conversations: conversations, status: 200 }, include: [:users, messages: { include: [user: { only: [:name, :lastname, :id, :username] }] }] }
+    end
+  end
+
   def send_message
     conversation = Conversation.find(params[:conversation_id])
     message = conversation.messages.create(

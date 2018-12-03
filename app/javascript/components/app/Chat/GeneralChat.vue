@@ -9,7 +9,7 @@
           <div v-for="(user, index) in filteredUsers"
                class="w-100 py-5 px-10 cursor-pointer items-center user"
                :title="user.username"
-               @click="appendConversation(user)"
+               @click="$emit('appendConversation', user)"
                :key="`user-${index}`">
             {{ user.name }} {{ user.lastname }} - <span class="tag is-blue">{{ user.role.name }}</span>
           </div>
@@ -20,9 +20,9 @@
 
 
     <div class="flex flex-col mx-5" v-for="(chat, index) in conversations" :key="`chat-${index}`">
-      <general-chat-conversation :chat="chat"
-                                 @removeConversation="removeConversation($event)"
-                                 @toggleChatStatus="toggleChatStatus($event)"></general-chat-conversation>
+    <general-chat-conversation :chat="chat"
+                               @removeConversation="$emit('removeConversation', $event)"
+                               @toggleChatStatus="$emit('toggleChatStatus', $event)"></general-chat-conversation>
     </div>
 
   </div>
@@ -36,13 +36,14 @@
     components: {
       GeneralChatConversation
     },
-    props: {},
+    props: {
+      conversations: Array
+    },
     data() {
       return {
         users: [],
         chatListVisible: false,
-        searchPattern: '',
-        conversations: []
+        searchPattern: ''
       }
     },
     computed: {
@@ -60,32 +61,6 @@
       }
     },
     methods: {
-      appendConversation(user) {
-        let chats = this.$storage('chats')
-        if (!chats) chats = []
-        if (chats.filter(chat => chat.user.id === user.id).length === 0) {
-          chats.push({
-            user: user,
-            opened: false
-          })
-          this.$storage('chats', chats)
-          this.updateConversations()
-        } else console.log('is opened')
-      },
-      removeConversation(user) {
-        let chats = this.$storage('chats')
-        chats = chats.filter(chat => chat.user.id !== user.id)
-        this.$storage('chats', chats)
-        this.updateConversations()
-      },
-      toggleChatStatus({user}) {
-        const chats = this.$storage('chats')
-        const chat = chats.filter(chat => chat.user.id === user.id)[0]
-        chat.opened = !chat.opened
-        this.$storage('chats', chats)
-        this.updateConversations()
-      },
-      updateConversations() { this.conversations = this.$storage('chats') },
       fetchUsers() {
         const that = this
 
@@ -104,7 +79,6 @@
     },
     created() {
       this.fetchUsers()
-      this.updateConversations()
     },
     mounted() {}
   }
