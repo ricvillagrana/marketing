@@ -364,6 +364,16 @@ pre.pre {
   cursor: pointer;
 }
 
+.publication-message div .date {
+  opacity: 0;
+  transition-duration: 0.2s;
+}
+
+.publication-message:hover > div .date {
+  opacity: 1;
+}
+
+
 *:focus {
   outline-color: $blue;
   outline-width: 1px;
