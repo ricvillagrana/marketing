@@ -17,11 +17,16 @@
           ({{ $dateText(publication.publication_date) }})
         </p>
 
+        <div class="tags has-addons m-0 is-grouped is-grouped-multiline flex-row">
+          <span class="tag is-link">Community Manager</span>
+          <span class="tag is-grey"> {{ publication.community_manager.name }} {{ publication.community_manager.lastname }}</span>
+        </div>
+
         <div class="tags has-addons m-0 is-grouped is-grouped-multiline flex-row" v-for="(user, key) in publication.node.users" :key="key">
           <span class="tag is-link">{{ user.role.name }}</span>
           <span class="tag is-grey"> {{ user.name }} {{ user.lastname }}</span>
         </div>
-        
+
         <div class="box p-20">
           <textarea name="content" v-model="publication.content" class="textarea" rows="10" :readonly="saving" placeholder="Escribe tu contenido aquí..."></textarea>
           <div class="flex flex-end">

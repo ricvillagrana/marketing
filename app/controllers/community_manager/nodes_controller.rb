@@ -69,6 +69,16 @@ class CommunityManager::NodesController < ApplicationController
       if !content_generator?(@node) || user.role.keyword != 'cg'
         nu = NodeUser.new(node: @node, user: user, granter: current_user)
         if nu.save
+          notification = Notification.new(
+            title: "Fuiste añadido al nodo #{@node.name}",
+            message: "Ahora participas en el nodo #{@node.name} y en sus publicaciones",
+            sender: current_user,
+            reciever: user,
+            hotlink: "/#{user.role.path_prefix}/publications/",
+            seen: false
+          )
+          notification.save
+          NotificationsChannel.broadcast_to(user.id, notification)
           render json: { status: 200 }
         else
           render json: { message: 'No se pudo guardar', status: 500 }

@@ -79,42 +79,28 @@ class CommunityManager::FacebookController < ApplicationController
 
     publication = Publication.find(params[:publication_id])
     publication.node.users.each do |user|
-      payload = {
-        title: "Pulbicación creada '#{publication.name}'",
-        message: "Se creó la publicación en Facebook",
-        sender: { name: current_user.name },
-        hotlink: "/#{user.role.path_prefix}/publications/#{publication.id}",
-        seen: false
-      }
-      Notification.new(
+      notification = Notification.new(
         title: "Pulbicación creada '#{publication.name}'",
         message: "Se creó la publicación en Facebook",
         sender: current_user,
         reciever: user,
         hotlink: "/#{user.role.path_prefix}/publications/#{publication.id}",
         seen: false
-      ).save
-      NotificationsChannel.broadcast_to(user.id, payload)
+      )
+      notification.save
+      NotificationsChannel.broadcast_to(user.id, notification)
     end
 
-    Notification.new(
+    notification = Notification.new(
       title: "Pulbicación creada '#{publication.name}'",
       message: "Se creó la publicación en Facebook",
       sender: current_user,
       reciever: current_user,
       hotlink: "/#{current_user.role.path_prefix}/publications/#{publication.id}",
       seen: false
-    ).save
-    NotificationsChannel.broadcast_to(current_user.id,
-      {
-        title: "Pulbicación creada '#{publication.name}'",
-        message: "Se creó la publicación en Facebook",
-        sender: current_user,
-        reciever: current_user,
-        hotlink: "/#{current_user.role.path_prefix}/publications/#{publication.id}",
-        seen: false
-      }
     )
+    notification.save
+    NotificationsChannel.broadcast_to(current_user.id, notification)
 
     process = fork do
       page_api = Koala::Facebook::API.new(params[:access_token])

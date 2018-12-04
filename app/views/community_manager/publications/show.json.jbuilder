@@ -1,16 +1,17 @@
 json.publication {
-  json.id @publication.id 
-  json.publication_status_id @publication.publication_status_id 
-  json.node_id @publication.node_id 
-  json.name @publication.name 
-  json.content @publication.content 
-  json.publication_date @publication.publication_date 
-  json.published @publication.published 
-  json.fb_id @publication.fb_id 
-  json.likes @publication.likes 
-  json.shares @publication.shares 
-  json.created_at @publication.created_at 
-  json.updated_at @publication.updated_at 
+  json.id @publication.id
+  json.publication_status_id @publication.publication_status_id
+  json.node_id @publication.node_id
+  json.name @publication.name
+  json.content @publication.content
+  json.publication_date @publication.publication_date
+  json.published @publication.published
+  json.fb_id @publication.fb_id
+  json.likes @publication.likes
+  json.shares @publication.shares
+  json.community_manager @publication.node.community_manager
+  json.created_at @publication.created_at
+  json.updated_at @publication.updated_at
   json.facebook_data @publication.campaign.company.facebook_data
 
   json.status @publication.status
