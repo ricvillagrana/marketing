@@ -29,9 +29,9 @@
                 <p class="px-7 mb-10 title is-5">Mensajes</p>
                 <hr class="hr p-0 m-0">
                 <div class="notification-list flex-col cursor-pointer">
-                  <div class="notification-item flex-row" v-for="(item, index) in conversations" :key="`message-${index}`" @click="appendConversation(mate(item))" v-if="lastMessage(item)">
-                    <p class="title mb-5 is-7">{{ mate(item).name }} {{ mate(item).lastname }}  {{ $moment(lastMessage(item).created_at).fromNow() }}</p>
-                    <span class="content is-small"><b>{{ lastMessage(item).user.id === currentUser.id ? 'Tú' : lastMessage(item).user.name }}</b>: {{ lastMessage(item).message }}</span>
+                  <div class="notification-item flex-row" v-for="(conversation, index) in conversations" :key="`message-${index}`" @click="appendConversation(mate(item))" v-if="lastMessage(conversation)">
+                    <p class="title mb-5 is-7">{{ mate(conversation).name }} {{ mate(conversation).lastname }}  {{ $moment(lastMessage(conversation).created_at).fromNow() }}</p>
+                    <span class="content is-small"><b>{{ lastMessage(conversation).user.id === currentUser.id ? 'Tú' : lastMessage(conversation).user.name }}</b>: {{ lastMessage(conversation).message }}</span>
                   </div>
                 </div>
               </div>
@@ -72,6 +72,10 @@
     <action-cable-vue :channel="'NotificationsChannel'"
                       :room="currentUser.id.toString()"
                       @received="appendNotification($event)"></action-cable-vue>
+
+    <action-cable-vue :channel="'ConversationNotificationChannel'"
+                      :room="$user.id.toString()"
+                      @received="appendConversationNotificaton($event)"></action-cable-vue>
   </div>
 </template>
 
@@ -146,6 +150,14 @@
           type: 'blue'
         })
       },
+      appendConversationNotificaton(notification) {
+        this.$notify({
+          group: 'app',
+          title: notification.title,
+          text: notification.message,
+          type: 'normal'
+        })
+      },
       toggleMessagess() {
         this.messagessOpen = !this.messagessOpen
         this.notificationsOpen = false
@@ -208,7 +220,7 @@
         return conversation.users.filter(user => user.id !== this.$user.id).pop()
       },
       lastMessage(conversation) {
-        return conversation.messages[conversation.messages.length - 1]
+        return conversation.messages.length > 0 ? null : conversation.messages[conversation.messages.length - 1]
       }
     },
     computed: {

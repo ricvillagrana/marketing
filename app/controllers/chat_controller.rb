@@ -43,6 +43,17 @@ class ChatController < ApplicationController
       conversation.id,
       message: message.to_json(include: [user: { except: %i[facebook_data facebook_access_token] }])
     )
+
+    ConversationNotificationChannel.broadcast_to(
+      mate.id,
+      {
+        title: "Mensaje de #{current_user.fullname}",
+        message: params[:message],
+        sender: current_user,
+        reciever: mate,
+        seen: false
+      }
+    )
   end
 
   def find_or_create_conversation
@@ -62,5 +73,11 @@ class ChatController < ApplicationController
       conversation = conversation.pop
     end
     conversation
+  end
+
+  def mate
+    users = Conversation.find(params[:conversation_id]).users
+    user = users.where.not(id: current_user.id)
+    user.first
   end
 end

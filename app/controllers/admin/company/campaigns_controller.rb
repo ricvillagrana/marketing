@@ -19,7 +19,7 @@ class Admin::Company::CampaignsController < ApplicationController
 
       notification = Notification.new(
         title: "Campaña #{@campaign.name} asignada",
-        message: "Fuiste asignadoa la campaña #{@campaign.name}",
+        message: "Fuiste asignado a la campaña #{@campaign.name}",
         sender: current_user,
         reciever: cm,
         hotlink: "/#{cm.role.path_prefix}/campaigns/#{@campaign.id}",
@@ -45,7 +45,7 @@ class Admin::Company::CampaignsController < ApplicationController
       if current_cm != cm
         notification = Notification.new(
           title: "Campaña #{@campaign.name} asignada",
-          message: "Fuiste asignadoa la campaña #{@campaign.name}",
+          message: "Fuiste asignado a la campaña #{@campaign.name}",
           sender: current_user,
           reciever: current_cm,
           hotlink: "/#{current_cm.role.path_prefix}/campaigns/#{@campaign.id}",
