@@ -15,6 +15,18 @@ class Admin::Company::CampaignsController < ApplicationController
     @campaign = current_user.company.campaigns.new(campaign_params)
     @campaign.semantic_network = Node.new(name: 'Red semántica')
     if @campaign.save
+      cm = @campaign.community_manager
+
+      notification = Notification.new(
+        title: "Campaña #{@campaign.name} asignada",
+        message: "Fuiste asignadoa la campaña #{@campaign.name}",
+        sender: current_user,
+        reciever: cm,
+        hotlink: "/#{cm.role.path_prefix}/campaigns/#{@campaign.id}",
+        seen: false
+      )
+      notification.save
+      NotificationsChannel.broadcast_to(cm.id, notification)
       render json: { campaign: @campaign, status: 200 }
     else
       render json: { error: @campaign.errors, status: 500 }
@@ -23,7 +35,27 @@ class Admin::Company::CampaignsController < ApplicationController
 
   def update
     @campaign = Campaign.find(params[:id])
-    render json: { campaign: @campaign, status: 200 } if @campaign.update!(campaign_params)
+    cm = @campaign.community_manager
+
+    @campaign.update(campaign_params)
+
+    if @campaign.save
+      current_cm = @campaign.community_manager
+
+      if current_cm != cm
+        notification = Notification.new(
+          title: "Campaña #{@campaign.name} asignada",
+          message: "Fuiste asignadoa la campaña #{@campaign.name}",
+          sender: current_user,
+          reciever: current_cm,
+          hotlink: "/#{current_cm.role.path_prefix}/campaigns/#{@campaign.id}",
+          seen: false
+        )
+        notification.save
+        NotificationsChannel.broadcast_to(current_cm.id, notification)
+      end
+      render json: { campaign: @campaign, status: 200 }
+    end
   end
 
   def destroy
@@ -41,7 +73,6 @@ class Admin::Company::CampaignsController < ApplicationController
         :objetive,
         :init_date,
         :finish_date,
-        :image,
         :finished,
         :deleted,
         :community_manager_id

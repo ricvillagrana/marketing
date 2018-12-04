@@ -24,7 +24,7 @@ class Admin::FacebookController < ApplicationController
 
     current_user.facebook_data = facebook_data
     current_user.save
-    
+
     redirect_to('/#_=_')
   end
 

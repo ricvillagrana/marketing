@@ -1,6 +1,8 @@
 <template>
   <div class="flex flex-col h-100">
-    <p class="title flex flex-row">Chat</p>
+    <p class="title flex flex-row mb-0">
+      Chat
+    </p>
 
     <div class="flex flex-col publication-chat-container">
       <div class="chat-scroller" id="chat-box">

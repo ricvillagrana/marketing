@@ -8,6 +8,14 @@ class CommunityManager::FacebookController < ApplicationController
     redirect_to @auth.url_for_oauth_code(permissions: permissions)
   end
 
+  def test
+    page_api = Koala::Facebook::API.new('EAAMObWsURRIBADHsZAsX5THKgVZA1mwSGebytGbcERtdgfduq8DRgCTWwXstZBZBwLdryrX0jjn1sRhmnWZBTDj2jXzkKxBzFVIAYanPaGZApnRTzaXGDsZCUl8n8ciZBde24WKTvdZAy9Q9I18uq9vL9XzjP39x4bsvi9ZAp1wmGg1gZDZD')
+    page = page_api.get_object('190917075168806')
+
+    data = page_api.get_connections('353285364725821', 'insights', metric: 'page_fan_adds_unique')
+    render json: { page: page, data: data }
+  end
+
   def code_callback
     @auth = Koala::Facebook::OAuth.new(ENV['facebook_app_id'], ENV['facebook_app_secret_key'], code_callback_url)
 

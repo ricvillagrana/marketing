@@ -15,7 +15,9 @@ class ContentGenerator::PublicationsController < ApplicationController
 
   def campaigns_with_publications(user)
     user.campaigns.map do |campaign|
-      { data: campaign, publications: dig_publications_of(campaign.semantic_network).flatten }
+      publications = dig_publications_of(campaign.semantic_network).flatten
+      publications.delete(nil)
+      { data: campaign, publications: publications }
     end
   end
 
@@ -33,9 +35,11 @@ class ContentGenerator::PublicationsController < ApplicationController
   def dig_publications_of(node)
     if node.children.empty?
       node.publications.map do |p|
-        publication = p.as_json(include: :status, except: :images)
-        publication = publication.merge(node: Node.find(p.node_id).as_json)
-        publication
+        if p.node.users.include?(current_user)
+          publication = p.as_json(include: :status, except: :images)
+          publication = publication.merge(node: Node.find(p.node_id).as_json)
+          publication
+        end
       end
     else
       node.children.map { |child| dig_publications_of(child) }

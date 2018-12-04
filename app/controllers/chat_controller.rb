@@ -5,6 +5,10 @@ class ChatController < ApplicationController
     users = []
     users = users + current_user.company.users unless current_user.company.nil?
     users = users + current_user.works_on.users unless current_user.works_on.nil?
+    users = users + [current_user.works_on.admin] unless current_user.works_on.nil?
+
+    users = users + User.where(role: Role.where(keyword: 'superadmin').first) if current_user.role.keyword == 'admin'
+    users = users + User.where(role: Role.where(keyword: 'admin').first) if current_user.role.keyword == 'superadmin'
     respond_to do |format|
       format.html
       format.json { render json: { users: users.flatten }, include: %i[role] }
@@ -37,7 +41,7 @@ class ChatController < ApplicationController
 
     ConversationChannel.broadcast_to(
       conversation.id,
-      message: message.to_json(include: [:user])
+      message: message.to_json(include: [user: { except: %i[facebook_data facebook_access_token] }])
     )
   end
 

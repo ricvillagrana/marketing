@@ -8,7 +8,7 @@
       <div class="general-chat-conversation-content p-10 flex-col" :id="`chat-box-general-${conversation.id}`" v-show="chat.opened"
            @click="focusInput">
         <div class="flex flex-row w-100 publication-message animate fadeInRight delay-2s" :class="$user.id === message.user.id ? 'flex-end' : ''"
-             v-for="(message, index) in messages"
+             v-for="(message, index) in conversation.messages"
              :key="index">
           <div class="flex" :class="$user.id === message.user.id ? 'flex-row' : 'flex-row-reverse'">
             <span class="date mt-0 flex flex-row flex-self-end content is-small mx-7 mb-7" :title="$moment(message.message.created_at).fromNow()">
@@ -55,14 +55,13 @@
     data() {
       return {
         conversation: null,
-        messages: [],
         message: ''
       }
     },
     computed: {},
     methods: {
       appendMessage({ message }) {
-        this.messages.push(JSON.parse(message))
+        this.conversation.messages.push(JSON.parse(message))
         this.down()
       },
       send() {
@@ -94,7 +93,7 @@
           })
           .then(({ data }) => {
             that.conversation = data.conversation
-            that.messages = data.conversation.messages
+            that.conversation.messages = data.conversation.messages
             that.down()
           })
           .catch(err => {
@@ -109,6 +108,11 @@
     created() {},
     mounted() {
       this.fetchConversation()
+    },
+    watch: {
+      chat() {
+        this.fetchConversation()
+      }
     }
   }
 </script>

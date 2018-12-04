@@ -23,15 +23,15 @@
             <div class="field is-grouped">
               <span class="button is-link is-rounded" @click="toggleMessagess">
                 <i class="fa fa-comment fa-normal"></i>
-                <span class="tag is-warning is-rounded is-notification-counter" v-if="unseenMessages > 0">{{ unseenMessages }}</span>
+                <span class="tag is-warning is-rounded is-notification-counter" v-if="-unseenMessages > 0">{{ unseenMessages }}</span>
               </span>
               <div class="notification-box messages" v-show="messagessOpen">
                 <p class="px-7 mb-10 title is-5">Mensajes</p>
                 <hr class="hr p-0 m-0">
                 <div class="notification-list flex-col cursor-pointer">
-                  <div class="notification-item flex-row" v-for="(item, index) in conversations" :key="`message-${index}`" @click="appendConversation(mate(item))">
+                  <div class="notification-item flex-row" v-for="(item, index) in conversations" :key="`message-${index}`" @click="appendConversation(mate(item))" v-if="lastMessage(item)">
                     <p class="title mb-5 is-7">{{ mate(item).name }} {{ mate(item).lastname }}  {{ $moment(lastMessage(item).created_at).fromNow() }}</p>
-                    <span class="content is-small">{{ lastMessage(item).user.id === currentUser.id ? 'Tú' : lastMessage(item).user.name }} {{ lastMessage(item).message }}</span>
+                    <span class="content is-small"><b>{{ lastMessage(item).user.id === currentUser.id ? 'Tú' : lastMessage(item).user.name }}</b>: {{ lastMessage(item).message }}</span>
                   </div>
                 </div>
               </div>

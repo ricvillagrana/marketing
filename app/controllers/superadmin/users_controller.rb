@@ -22,7 +22,7 @@ class Superadmin::UsersController < ApplicationController
 
       notification = Notification.new(
         title: "Bienvenido #{@admin.name}",
-        message: "Tu cuenta fue creada exitosamente pot #{current_user.fullname}",
+        message: "Tu cuenta fue creada exitosamente por #{current_user.fullname}",
         sender: current_user,
         reciever: @admin,
         hotlink: "/profile",

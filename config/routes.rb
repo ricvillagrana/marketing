@@ -75,6 +75,7 @@ Rails.application.routes.draw do
     post '/facebook/post', to: 'facebook#post'
     post '/facebook/albums', to: 'facebook#album'
     post '/facebook/albums/photos', to: 'facebook#upload_photos'
+    get '/facebook/insights/test', to: 'facebook#test'
   end
 
   namespace :designer do
