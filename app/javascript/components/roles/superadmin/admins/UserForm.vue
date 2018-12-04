@@ -39,7 +39,7 @@
 <script>
   import AppModal from '../../../app/AppModal'
   import CompanySelector from './CompanySelectror'
-  
+
   export default {
     components: {AppModal, CompanySelector},
     name: 'user-form',
@@ -100,7 +100,7 @@
               that.$swal({
                 type: 'success',
                 title: 'Guardado',
-                html: `El link de invitación para el usuario: 
+                html: `El link de invitación para el usuario:
                   <pre><code>${data.link}</code></pre>`
               })
               that.$emit('update-users')
@@ -111,7 +111,7 @@
                 type: 'error',
                 title: 'Error',
                 text: `El usuario no se pudo crear.`,
-                footer: `Error: email ${data.errors.email[0]}`
+                footer: `Error: el email o el usuario ya fue tomado por alguien más`
               })
             }
           })
@@ -124,7 +124,7 @@
               footer: `Error ${err}`
             })
           })
-        }  
+        }
       }
     },
     computed: {

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$user">
+  <div v-if="currentUser">
    <nav class="navbar is-link">
       <div class="navbar-brand">
         <a class="navbar-item" href="/">
@@ -31,7 +31,7 @@
                 <div class="notification-list flex-col cursor-pointer">
                   <div class="notification-item flex-row" v-for="(item, index) in conversations" :key="`message-${index}`" @click="appendConversation(mate(item))">
                     <p class="title mb-5 is-7">{{ mate(item).name }} {{ mate(item).lastname }}  {{ $moment(lastMessage(item).created_at).fromNow() }}</p>
-                    <span class="content is-small">{{ lastMessage(item).user.id === $user.id ? 'Tú' : lastMessage(item).user.name }} {{ lastMessage(item).message }}</span>
+                    <span class="content is-small">{{ lastMessage(item).user.id === currentUser.id ? 'Tú' : lastMessage(item).user.name }} {{ lastMessage(item).message }}</span>
                   </div>
                 </div>
               </div>
@@ -53,7 +53,7 @@
           </div>
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link menu-name">
-              {{ user.name }} {{ user.lastname }}
+              {{ currentUser.name }} {{ currentUser.lastname }}
             </a>
             <div class="navbar-dropdown ">
               <a href="/profile" class="navbar-item ">
@@ -70,7 +70,7 @@
     </nav>
 
     <action-cable-vue :channel="'NotificationsChannel'"
-                      :room="$user.id.toString()"
+                      :room="currentUser.id.toString()"
                       @received="appendNotification($event)"></action-cable-vue>
   </div>
 </template>
@@ -87,17 +87,29 @@
         conversations: [],
         notificationsOpen: false,
         messagessOpen: false,
-        unseenMessages: 0
+        unseenMessages: 0,
+        currentUser: null
       }
     },
     components: {
       ActionCableVue
     },
     beforeMount() {
-      this.$fetchUser()
       this.fetchNotifications()
       this.fetchMessagesCount()
       this.fetchConversations()
+
+      this.currentUser = this.$user
+      if (!this.$user) {
+        const retry = setInterval(() => {
+          if (!this.$user) {
+            this.$fetchUser()
+          } else {
+            this.currentUser = this.$user
+            clearInterval(retry)
+          }
+        }, 1000)
+      }
     },
     props: ['user'],
     methods: {
@@ -123,12 +135,15 @@
         this.$userWillUpdate()
       },
       appendNotification(notification) {
-        this.notifications.push(notification)
+        this.notifications = [
+          notification,
+          ...this.notifications
+        ]
         this.$notify({
           group: 'app',
           title: notification.title,
           text: notification.message,
-          type: 'normal'
+          type: 'blue'
         })
       },
       toggleMessagess() {
@@ -137,6 +152,10 @@
       },
       toggleNotifications() {
         this.seeNotifications()
+        this.notifications = this.notifications.map(notification => {
+          notification.seen = true
+          return notification
+        })
         this.notificationsOpen = !this.notificationsOpen
         this.messagessOpen = false
       },
