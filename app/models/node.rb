@@ -5,4 +5,12 @@ class Node < ApplicationRecord
   has_many :publications
   has_many :node_user
   has_many :users, through: :node_user
+
+  def community_manager
+    if father.nil?
+      campaign.community_manager
+    else
+      father.community_manager
+    end
+  end
 end

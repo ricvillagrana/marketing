@@ -4,8 +4,7 @@
     <div v-if="campaigns">
       <div v-for="(campaign, key) in campaigns" :key="`campaign-${key}`">
         <div class="my-30">
-          <!--<button class="button is-link is-rounded is-pulled-right" @click="addOptions.open = true"><i class="fa fa-plus"></i>Añadir Campaña</button>-->
-          <p class="title is-4"><a :href="`/community_manager/campaigns/${campaign.data.id}`">{{ campaign.data.name }} <span class="tag">{{ campaign.publications.length }} publicaciones</span></a></p>
+          <p class="title is-4"><span class="tag">{{ campaign.publications.length }} publicaciones</span></p>
           <p
             v-if="campaign.publications.length === 0"
             class="title is-5 has-text-centered has-text-grey">
@@ -18,10 +17,10 @@
             <app-card nested="true">
               <div class="mb-15">
                 <p class="title is-4 mb-0">{{ publication.name }}</p>
-                <div class="tags has-addons">
+                <!-- <div class="tags has-addons">
                   <span class="tag is-white">Estatus</span>
                   <span class="tag is-success">{{ publication.status.name }}</span>
-                </div>
+                </div> -->
               </div>
               <p>
                 Nodo: {{ publication.node.name }}

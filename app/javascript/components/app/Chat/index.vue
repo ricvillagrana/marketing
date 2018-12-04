@@ -1,26 +1,30 @@
 <template>
   <div class="flex flex-col h-100">
-    <p class="title flex flex-row">Chat</p>
+    <p class="title flex flex-row mb-0">
+      Chat
+    </p>
 
     <div class="flex flex-col publication-chat-container">
       <div class="chat-scroller" id="chat-box">
-        <div class="flex flex-row w-100" :class="$user.id === message.user.id ? 'flex-end' : ''" v-for="(message, index) in messages" :key="index">
-          <div class="flex flex-col publication-chat-bubble" :class="$user.id === message.user.id ? 'me' : ''">
-            <span class="name font-bold" v-show="$user.id !== message.user.id">
-              {{ message.user.name }}
+        <div class="flex flex-row w-100 publication-message animate fadeInRight delay-2s" :class="$user.id === message.user.id ? 'flex-end' : ''" v-for="(message, index) in messages" :key="index">
+          <div class="flex" :class="$user.id === message.user.id ? 'flex-row' : 'flex-row-reverse'">
+            <span class="date mt-0 flex flex-row flex-self-end mx-7 mb-7">
+              {{ $moment(message.message.created_at).fromNow() }}, {{ $moment(message.message.created_at).calendar() }}
             </span>
-            <span>
-              {{ message.message.message }}
-            </span>
-            <span class="date" :title="$moment(message.message.created_at).calendar()">
-              {{ $moment(message.message.created_at).fromNow() }}
-            </span>
+            <div class="publication-chat-bubble flex flex-col" :class="$user.id === message.user.id ? 'me' : ''">
+              <span class="name font-bold" v-show="$user.id !== message.user.id">
+                {{ message.user.name }}
+              </span>
+              <span>
+                {{ message.message.message }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="flex flex-row">
-      <input @keydown.enter="send" class="publication-chat-input px-10" type="text" name="" v-model="message" placeholder="Escribe un mensaje...">
+    <div class="flex flex-row w-50">
+      <input @keydown.enter="send" class="publication-chat-input px-10" name="" v-model="message" placeholder="Escribe un mensaje...">
       <button @click="send" class="button is-link publication-chat-button" type="button"><i class="fa fa-normal fa-send"></i></button>
     </div>
 
@@ -52,10 +56,10 @@
         this.down()
       },
       send() {
-        if (this.message !== '') {
+        if (this.message.trim() !== '' && this.message.trim().length !== 0) {
           this.$axios.post('/publication_messages',{
             publication_id: this.publication.id,
-            message: this.message
+            message: this.message.trim()
           })
           this.message = ''
         }

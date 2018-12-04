@@ -8,7 +8,7 @@ class MainController < ApplicationController
   end
 
   def publication_messages
-    @messages = Publication.find(params[:publication_id]).messages
+    @messages = Publication.find(params[:publication_id]).messages.order(created_at: :asc)
   end
 
   def send_message

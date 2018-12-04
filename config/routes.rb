@@ -4,11 +4,18 @@ Rails.application.routes.draw do
   devise_for :users
   root 'main#index'
 
+  get '/chat/users', to: 'chat#users'
+  get '/chat/conversations', to: 'chat#user_conversations'
+  get '/chat/unread_messages', to: 'chat#unread_messages'
+  post '/chat/conversation', to: 'chat#find_or_create_conversation'
+  post '/chat/message', to: 'chat#send_message'
+
 
   get '/publication_messages/:publication_id', to: 'main#publication_messages'
   post '/publication_messages', to: 'main#send_message'
 
   get '/notifications', to: 'profile#notifications'
+  put '/notifications/see', to: 'profile#see_notifications'
 
   get '/current_user', to: 'profile#user'
 
@@ -68,6 +75,7 @@ Rails.application.routes.draw do
     post '/facebook/post', to: 'facebook#post'
     post '/facebook/albums', to: 'facebook#album'
     post '/facebook/albums/photos', to: 'facebook#upload_photos'
+    get '/facebook/insights/test', to: 'facebook#test'
   end
 
   namespace :designer do

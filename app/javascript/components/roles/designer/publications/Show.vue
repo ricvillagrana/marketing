@@ -4,7 +4,7 @@
       <div class="column">
         <p class="title is-3">
           {{ publication.name }}
-          <span class="tag is-warning">{{ publication.status.name }}</span>
+          <!-- <span class="tag is-warning">{{ publication.status.name }}</span> -->
           <span class="title is-6 has-text-grey">Nodo: {{ publication.node.name }}</span>
         </p>
         <p v-if="daysToEnd > 0" class="title is-6 has-text-link">
@@ -17,10 +17,16 @@
           ({{ $dateText(publication.publication_date) }})
         </p>
 
-        <!-- <div class="tags has-addons m-0 is-grouped is-grouped-multiline flex-row" v-for="(user, key) in publication.node.users" :key="key">
+        <div class="tags has-addons m-0 is-grouped is-grouped-multiline flex-row">
+          <span class="tag is-link">Community Manager</span>
+          <span class="tag is-grey"> {{ publication.community_manager.name }} {{ publication.community_manager.lastname }}</span>
+        </div>
+
+        <div class="tags has-addons m-0 is-grouped is-grouped-multiline flex-row" v-for="(user, key) in publication.node.users" :key="key">
           <span class="tag is-link">{{ user.role.name }}</span>
           <span class="tag is-grey"> {{ user.name }} {{ user.lastname }}</span>
-        </div> -->
+        </div>
+
         <div class="box p-20">
           <p v-if="!publication.content || publication.content === ''" class="title is-5 has-text-centered has-text-grey">
             No tiene contenido
@@ -44,7 +50,7 @@
         <drag-drop
           class="mb-15"
           :publication_id="publication_id"
-          :url="`/content_generator/upload/${publication_id}`"
+          :url="`/designer/upload/${publication_id}`"
           @uploaded="fetchPublication"
           @images="images = $event"></drag-drop>
 

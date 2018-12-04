@@ -20,7 +20,8 @@ class CommunityManager::PublicationsController < ApplicationController
   def update
     @publication = Publication.find(params[:id])
     if @publication.update!(publication_params)
-      render json: { publication: @publication, status: 200 }
+      PublicationUpdateChannel.broadcast_to(@publication.id, nil)
+      render json: { publication: @publication, status: 200 }, except: %i[images]
     else
       render json: { errors: @publication.errors, status: 500 }
     end

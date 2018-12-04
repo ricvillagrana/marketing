@@ -19,6 +19,18 @@ class Superadmin::UsersController < ApplicationController
     if @admin.save
       user_creation.user = @admin
       user_creation.save
+
+      notification = Notification.new(
+        title: "Bienvenido #{@admin.name}",
+        message: "Tu cuenta fue creada exitosamente por #{current_user.fullname}",
+        sender: current_user,
+        reciever: @admin,
+        hotlink: "/profile",
+        seen: false
+      )
+      notification.save
+      NotificationsChannel.broadcast_to(@admin.id, notification)
+
       render json: { user: @admin, link: "#{request.protocol + request.host_with_port}/invited/#{user_creation.creation_token}", status: 200 }
     else
       render json: { errors: @admin.errors, status: 500 }
@@ -36,10 +48,40 @@ class Superadmin::UsersController < ApplicationController
 
   def update
     @admin = User.find(params[:id])
+    company = @admin.company
     if @admin.update!(user_params)
+      check_company_for_notification(company, @admin.company)
       render json: { user: @admin, status: 200 }
     else
       render json: { status: 500 }
+    end
+  end
+
+  def check_company_for_notification(company, current_company)
+    if company != current_company
+      if current_company.nil?
+        notification = Notification.new(
+          title: "Se te revocó el acceso a la empresa",
+          message: "Ahora no administras ninguna",
+          sender: current_user,
+          reciever: @admin,
+          hotlink: "/#{@admin.role.path_prefix}/company",
+          seen: false
+        )
+        notification.save
+        NotificationsChannel.broadcast_to(@admin.id, notification)
+      else
+        notification = Notification.new(
+          title: "Se te asignó una nueva empresa",
+          message: "Ahora administras #{@admin.company.name}",
+          sender: current_user,
+          reciever: @admin,
+          hotlink: "/#{@admin.role.path_prefix}/company",
+          seen: false
+        )
+        notification.save
+        NotificationsChannel.broadcast_to(@admin.id, notification)
+      end
     end
   end
 
@@ -52,7 +94,7 @@ class Superadmin::UsersController < ApplicationController
     end
   end
 
-  private 
+  private
 
   def user_params
     params.require(:user).permit(:name, :lastname, :email, :username, :born_date, :company_id)

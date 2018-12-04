@@ -13,7 +13,13 @@ class ProfileController < ApplicationController
   def notifications
     respond_to do |format|
       format.html
-      format.json { render json: { notifications: current_user.notifications } }
+      format.json { render json: { notifications: current_user.notifications.order(id: :desc) } }
+    end
+  end
+
+  def see_notifications
+    if current_user.notifications.each { |notification| notification.update!(seen: true) }
+      render json: { status: 200 }
     end
   end
 end

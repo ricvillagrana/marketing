@@ -9,7 +9,7 @@
             :color="dropdown.color"
             :options="dropdown.options"
             @edit="editOptions.open = true"></app-dropdown>
-          <span class="tag is-warning">{{ publication.status.name }}</span>
+          <!-- <span class="tag is-warning">{{ publication.status.name }}</span> -->
           <span class="title is-6 has-text-grey">Nodo: {{ publication.node.name }}</span>
         </p>
         <div class="flex flex-end mb-15" v-show="publication.content && publication.content !== ''">
@@ -27,6 +27,16 @@
           Terminada hace {{ daysToEnd * -1 }} días
           ({{ $dateText(publication.publication_date) }})
         </p>
+
+        <div class="tags has-addons m-0 is-grouped is-grouped-multiline flex-row">
+          <span class="tag is-link">Community Manager</span>
+          <span class="tag is-grey"> {{ publication.community_manager.name }} {{ publication.community_manager.lastname }}</span>
+        </div>
+
+        <div class="tags has-addons m-0 is-grouped is-grouped-multiline flex-row" v-for="(user, key) in publication.node.users" :key="key">
+          <span class="tag is-link">{{ user.role.name }}</span>
+          <span class="tag is-grey"> {{ user.name }} {{ user.lastname }}</span>
+        </div>
 
         <div class="box p-20">
           <p v-if="!publication.content || publication.content === ''" class="title is-5 has-text-centered has-text-grey my-50">

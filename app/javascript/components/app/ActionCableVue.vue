@@ -14,20 +14,36 @@ export default {
     room: String
   },
   data() {
-    return {}
+    return {
+      consumer: null,
+      subscription: null
+    }
   },
-  computed: {},
-  methods: {},
-  created() {},
+  methods: {
+    subscribe() {
+      if (this.subscription) this.unsubscribe()
+      this.consumer = ActionCable.createConsumer(`ws://${window.location.host}/cable`);
+      if (this.channel && this.room) {
+        this.subscription = this.consumer.subscriptions.create({channel: this.channel, room: this.room}, {
+          received:       e     => this.$emit('received', e),
+          initialized:    ()    => this.$emit('initialized'),
+          connected:      ()    => this.$emit('connected'),
+          disconnected:   ()    => this.$emit('disconnected'),
+          rejected:       ()    => this.$emit('rejected')
+        })
+      }
+    },
+    unsubscribe() {
+      this.consumer.subscriptions.remove(this.subscription)
+    }
+  },
   mounted() {
-    const consumer = ActionCable.createConsumer(`wss://${window.location.host}/cable`);
-    if (this.channel && this.room) consumer.subscriptions.create({channel: this.channel, room: this.room}, {
-      received:       e     => this.$emit('received', e),
-      initialized:    ()    => this.$emit('initialized'),
-      connected:      ()    => this.$emit('connected'),
-      disconnected:   ()    => this.$emit('disconnected'),
-      rejected:       ()    => this.$emit('rejected')
-    })
+      this.subscribe()
   },
+  watch: {
+    room() {
+      this.subscribe()
+    }
+  }
 }
 </script>

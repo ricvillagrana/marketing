@@ -1,9 +1,19 @@
 class CommunityManager::FacebookController < ApplicationController
   before_action :authenticate_user!, :should_be_communty_manager!
 
+  require 'open-uri'
+
   def auth
     @auth = Koala::Facebook::OAuth.new(ENV['facebook_app_id'], ENV['facebook_app_secret_key'], code_callback_url)
     redirect_to @auth.url_for_oauth_code(permissions: permissions)
+  end
+
+  def test
+    page_api = Koala::Facebook::API.new('EAAMObWsURRIBADHsZAsX5THKgVZA1mwSGebytGbcERtdgfduq8DRgCTWwXstZBZBwLdryrX0jjn1sRhmnWZBTDj2jXzkKxBzFVIAYanPaGZApnRTzaXGDsZCUl8n8ciZBde24WKTvdZAy9Q9I18uq9vL9XzjP39x4bsvi9ZAp1wmGg1gZDZD')
+    page = page_api.get_object('190917075168806')
+
+    data = page_api.get_connections('353285364725821', 'insights', metric: 'page_fan_adds_unique')
+    render json: { page: page, data: data }
   end
 
   def code_callback
@@ -69,45 +79,30 @@ class CommunityManager::FacebookController < ApplicationController
 
     publication = Publication.find(params[:publication_id])
     publication.node.users.each do |user|
-      payload = {
-        title: "Pulbicación creada '#{publication.name}'",
-        message: "Se creó la publicación en Facebook",
-        sender: { name: current_user.name },
-        hotlink: "/#{user.role.path_prefix}/publications/#{publication.id}",
-        seen: false
-      }
-      Notification.new(
+      notification = Notification.new(
         title: "Pulbicación creada '#{publication.name}'",
         message: "Se creó la publicación en Facebook",
         sender: current_user,
         reciever: user,
         hotlink: "/#{user.role.path_prefix}/publications/#{publication.id}",
         seen: false
-      ).save
-      NotificationsChannel.broadcast_to(user.id, payload)
+      )
+      notification.save
+      NotificationsChannel.broadcast_to(user.id, notification)
     end
 
-    Notification.new(
+    notification = Notification.new(
       title: "Pulbicación creada '#{publication.name}'",
       message: "Se creó la publicación en Facebook",
       sender: current_user,
       reciever: current_user,
       hotlink: "/#{current_user.role.path_prefix}/publications/#{publication.id}",
       seen: false
-    ).save
-    NotificationsChannel.broadcast_to(current_user.id,
-      {
-        title: "Pulbicación creada '#{publication.name}'",
-        message: "Se creó la publicación en Facebook",
-        sender: current_user,
-        reciever: current_user,
-        hotlink: "/#{current_user.role.path_prefix}/publications/#{publication.id}",
-        seen: false
-      }
     )
+    notification.save
+    NotificationsChannel.broadcast_to(current_user.id, notification)
 
     process = fork do
-      require 'open-uri'
       page_api = Koala::Facebook::API.new(params[:access_token])
 
       open("#{request.protocol}#{request.host_with_port}#{params[:images][0][:url]}") do |f|
